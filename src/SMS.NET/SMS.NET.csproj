@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>SMS.Net</Title>
+    <PackageId>SMS.Net</PackageId>
+    <PackageTags>SMS.Net; SMS; Twilio; MessageBird</PackageTags>
+    <Description>An SMS sender abstraction for .Net to decouple your SMS sending from the underlying provider, with access to different types of delivery channels such as Twilio; MessageBird, etc. and custom in house delivery channels</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 
 </Project>
