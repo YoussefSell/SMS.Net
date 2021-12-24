@@ -40,7 +40,7 @@
         /// <param name="phoneNumber">the sender phone number.</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
         public SmsMessageComposer From(string phoneNumber)
-            => From(new PhoneNumber(phoneNumber));
+            => From(new PhoneNumber(phoneNumber.Trim()));
 
         /// <summary>
         /// add the sender phone number.
