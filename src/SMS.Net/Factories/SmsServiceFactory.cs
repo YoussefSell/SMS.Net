@@ -36,7 +36,7 @@
         /// </summary>
         /// <param name="channel">the <see cref="ISmsChannel"/> instance</param>
         /// <returns>instance of <see cref="SmsServiceFactory"/> to enable method chaining.</returns>
-        public SmsServiceFactory UseEDP(ISmsChannel channel)
+        public SmsServiceFactory UseChannel(ISmsChannel channel)
         {
             if (channel is null)
                 throw new ArgumentNullException(nameof(channel));

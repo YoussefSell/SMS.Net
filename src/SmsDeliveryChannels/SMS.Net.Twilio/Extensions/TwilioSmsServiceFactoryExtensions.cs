@@ -20,7 +20,7 @@
             => builder.UseTwilio(username, password, null);
 
         /// <summary>
-        /// add the Twilio EDP to be used with your SMS service.
+        /// add the Twilio channel to be used with your SMS service.
         /// </summary>
         /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
         /// <param name="username">Set your Twilio username.</param>
@@ -31,7 +31,7 @@
            => builder.UseTwilio(op => { op.Username = username; op.Password = password; op.AccountSID = accountSID; });
 
         /// <summary>
-        /// add the Twilio EDP to be used with your SMS service.
+        /// add the Twilio channel to be used with your SMS service.
         /// </summary>
         /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
         /// <param name="config">the configuration builder instance.</param>
@@ -46,7 +46,7 @@
             configuration.Validate();
 
             // add the Edp to the SMSs service factory
-            builder.UseEDP(new TwilioSmsDeliveryChannel(configuration));
+            builder.UseChannel(new TwilioSmsDeliveryChannel(configuration));
 
             return builder;
         }

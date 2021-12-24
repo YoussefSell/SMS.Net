@@ -35,7 +35,7 @@
                     options.DefaultFrom = defaultEmail;
                     options.DefaultDeliveryChannel = _channel_name;
                 })
-                .UseEDP(_channel)
+                .UseChannel(_channel)
                 .Create() as SmsService;
 
             // assert
