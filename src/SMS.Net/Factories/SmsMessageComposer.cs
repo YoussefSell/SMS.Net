@@ -76,16 +76,24 @@
             // if we have only one email
             if (phoneNumbers.Length == 1)
             {
-                _to.Add(new PhoneNumber(phoneNumber));
+                _to.Add(new PhoneNumber(phoneNumber.Trim()));
                 return this;
             }
 
             // add the email address
             foreach (var number in phoneNumbers)
-                _to.Add(new PhoneNumber(number));
+                _to.Add(new PhoneNumber(number.Trim()));
 
             return this;
         }
+
+        /// <summary>
+        /// add the recipient phone number.
+        /// </summary>
+        /// <param name="mailAddress">recipient phone number.</param>
+        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
+        public SmsMessageComposer To(PhoneNumber mailAddress)
+            => To(new[] { mailAddress });
 
         /// <summary>
         /// add the recipient phone number.
