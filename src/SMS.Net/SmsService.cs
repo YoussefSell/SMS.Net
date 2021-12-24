@@ -150,12 +150,12 @@
         /// <summary>
         /// Get the list of email delivery providers attached to this email service.
         /// </summary>
-        public IEnumerable<ISmsChannel> Edps => _providers.Values;
+        public IEnumerable<ISmsChannel> Channels => _providers.Values;
 
         /// <summary>
         /// Get the default email delivery provider attached to this email service.
         /// </summary>
-        public ISmsChannel DefaultEdp => _defaultProvider;
+        public ISmsChannel DefaultChannel => _defaultProvider;
 
         /// <summary>
         /// check if the message from value is supplied
