@@ -4,6 +4,7 @@
     using SMS.Net.Factories;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// the SMS message.
@@ -43,11 +44,18 @@
     {
         public SmsMessage(Priority priority, string body, PhoneNumber from, ICollection<PhoneNumber> to, ICollection<ChannelData> channelData)
         {
+            if (to is null)
+                throw new ArgumentNullException(nameof(to));
+
+            if (!to.Any())
+                throw new ArgumentException("you must specify at least one recipient phone number in the 'To' list", nameof(to));
+
+            To = to;
+            From = from;
+
             Priority = priority;
-            Body = body ?? throw new ArgumentNullException(nameof(body));
-            From = from ?? throw new ArgumentNullException(nameof(from));
-            To = to ?? throw new ArgumentNullException(nameof(to));
-            ChannelData = channelData ?? throw new ArgumentNullException(nameof(channelData));
+            Body = body ?? string.Empty;
+            ChannelData = channelData ?? new HashSet<ChannelData>();
         }
 
         /// <summary>
