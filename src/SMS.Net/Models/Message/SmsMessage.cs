@@ -4,7 +4,6 @@
     using SMS.Net.Factories;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// the SMS message.
@@ -29,7 +28,7 @@
         /// <summary>
         /// the phone numbers of recipients to send the SMS message to.
         /// </summary>
-        public ICollection<PhoneNumber> To { get; }
+        public PhoneNumber To { get; }
 
         /// <summary>
         /// get the collection of additional data need to be passed to the SMS delivery channel for further configuration
@@ -42,13 +41,10 @@
     /// </summary>
     public partial class SmsMessage
     {
-        public SmsMessage(Priority priority, string body, PhoneNumber from, ICollection<PhoneNumber> to, ICollection<ChannelData> channelData)
+        public SmsMessage(Priority priority, string body, PhoneNumber from, PhoneNumber to, ICollection<ChannelData> channelData)
         {
             if (to is null)
                 throw new ArgumentNullException(nameof(to));
-
-            if (!to.Any())
-                throw new ArgumentException("you must specify at least one recipient phone number in the 'To' list", nameof(to));
 
             To = to;
             From = from;

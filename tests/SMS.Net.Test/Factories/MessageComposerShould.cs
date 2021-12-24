@@ -32,9 +32,7 @@
             // assert
             Assert.Equal("this the message content", message.Body);
 
-            Assert.Equal(1, message.To.Count);
-            Assert.Equal("+212625415254", message.To.First().ToString());
-
+            Assert.Equal("+212625415254", message.To.ToString());
             Assert.Equal("+212625415254", message.From.ToString());
 
             Assert.Equal(1, message.ChannelData.Count);
@@ -103,6 +101,23 @@
             Assert.Equal(expected, message.From.ToString());
         }
 
+        [Fact]
+        public void CreateMessageWithFrom_FromString_WithSpaces()
+        {
+            // arrange
+            var composser = SmsMessage.Compose()
+                .WithContent("this the message content")
+                .To("+212625415254");
+
+            // act
+            var message = composser
+                .From("        +212625415255       ")
+                .Build();
+
+            // assert
+            Assert.Equal("+212625415255", message.To.ToString());
+        }
+
         #endregion
 
         #region Message "To" value tests
@@ -133,67 +148,7 @@
                 .Build();
 
             // assert
-            Assert.Equal(1, message.To.Count);
-            Assert.Equal(expected, message.To.First().ToString());
-        }
-
-        [Fact]
-        public void CreateMessageWithMultipleTo_FromString()
-        {
-            // arrange 
-            var composser = SmsMessage.Compose().WithContent("this the message content");
-            var expected1 = "+212625415254";
-            var expected2 = "+212625415255";
-            var expected3 = "+212625415256";
-
-            // act
-            var message = composser
-                .To("+212625415254; +212625415255; +212625415256")
-                .Build();
-
-            // assert
-            Assert.Equal(3, message.To.Count);
-            Assert.Equal(expected1, message.To.First().ToString());
-            Assert.Equal(expected2, message.To.Skip(1).First().ToString());
-            Assert.Equal(expected3, message.To.Skip(2).First().ToString());
-        }
-
-        [Fact]
-        public void CreateMessageWithMultipleToFromStringWithCustomSeparator()
-        {
-            // arrange 
-            var composser = SmsMessage.Compose().WithContent("this the message content");
-            var expected1 = "+212625415254";
-            var expected2 = "+212625415255";
-            var expected3 = "+212625415256";
-
-            // act
-            var message = composser
-                .To("+212625415254, +212625415255, +212625415256", delimiter: ',')
-                .Build();
-
-            // assert
-            Assert.Equal(3, message.To.Count);
-            Assert.Equal(expected1, message.To.First().ToString());
-            Assert.Equal(expected2, message.To.Skip(1).First().ToString());
-            Assert.Equal(expected3, message.To.Skip(2).First().ToString());
-        }
-
-        [Fact]
-        public void CreateMessageWithOneToIfAllNumbersAreSame()
-        {
-            // arrange 
-            var composser = SmsMessage.Compose().WithContent("this the message content");
-            var expected1 = "+212625415254";
-
-            // act
-            var message = composser
-                .To("+212625415254;+212625415254;+212625415254")
-                .Build();
-
-            // assert
-            Assert.Equal(1, message.To.Count);
-            Assert.Equal(expected1, message.To.First().ToString());
+            Assert.Equal(expected, message.To.ToString());
         }
 
         [Fact]
@@ -209,37 +164,11 @@
                 .Build();
 
             // assert
-            Assert.Equal(1, message.To.Count);
-            Assert.Equal(expected, message.To.First().ToString());
+            Assert.Equal(expected, message.To.ToString());
         }
 
         [Fact]
-        public void CreateMessageWithMultipleTo_FromPhoneNumber()
-        {
-            // arrange 
-            var composser = SmsMessage.Compose().WithContent("this the message content");
-            var expected1 = "+212625415254";
-            var expected2 = "+212625415255";
-            var expected3 = "+212625415256";
-
-            // act
-            var message = composser
-                .To(new[] {
-                    new PhoneNumber("+212625415254"),
-                    new PhoneNumber("+212625415255"),
-                    new PhoneNumber("+212625415256"),
-                })
-                .Build();
-
-            // assert
-            Assert.Equal(3, message.To.Count);
-            Assert.Equal(expected1, message.To.First().ToString());
-            Assert.Equal(expected2, message.To.Skip(1).First().ToString());
-            Assert.Equal(expected3, message.To.Skip(2).First().ToString());
-        }
-
-        [Fact]
-        public void SplitPhoneNumbersWithEmptySpaces()
+        public void CreateMessageWithTo_FromString_WithSpaces()
         {
             // arrange
             var composser = SmsMessage.Compose()
@@ -247,13 +176,11 @@
 
             // act
             var message = composser
-                .To("+212625415254  ;            +212625415255       ")
+                .To("        +212625415255       ")
                 .Build();
 
             // assert
-            Assert.Equal(2, message.To.Count);
-            Assert.Equal("+212625415254", message.To.First().ToString());
-            Assert.Equal("+212625415255", message.To.Skip(1).First().ToString());
+            Assert.Equal("+212625415255", message.To.ToString());
         }
 
         #endregion

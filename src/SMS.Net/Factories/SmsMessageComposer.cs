@@ -9,17 +9,15 @@
     /// </summary>
     public class SmsMessageComposer
     {
+        private PhoneNumber _to;
         private PhoneNumber _from;
         private Priority _priority;
         private string _bodyContent;
-
-        private readonly HashSet<PhoneNumber> _to;
         private readonly HashSet<ChannelData> _channelData;
 
         internal SmsMessageComposer()
         {
             _priority = Priority.Normal;
-            _to = new HashSet<PhoneNumber>();
             _channelData = new HashSet<ChannelData>();
         }
 
@@ -49,6 +47,9 @@
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
         public SmsMessageComposer From(PhoneNumber phoneNumber)
         {
+            if (phoneNumber is null)
+                throw new ArgumentNullException(nameof(phoneNumber));
+
             _from = phoneNumber;
             return this;
         }
@@ -57,54 +58,21 @@
         /// add the recipient phone number.
         /// </summary>
         /// <param name="phoneNumber">recipient phone number.</param>
-        /// <param name="delimiter">if the phone number is a list of phone numbers you can supply the delimiter of the numbers., by default is set to ";"</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
-        public SmsMessageComposer To(string phoneNumber, char delimiter = ';')
+        public SmsMessageComposer To(string phoneNumber)
+            => To(new PhoneNumber(phoneNumber.Trim()));
+
+        /// <summary>
+        /// add the recipient phone number.
+        /// </summary>
+        /// <param name="phoneNumber">recipient phone number.</param>
+        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
+        public SmsMessageComposer To(PhoneNumber phoneNumber)
         {
             if (phoneNumber is null)
                 throw new ArgumentNullException(nameof(phoneNumber));
 
-            if (phoneNumber == string.Empty)
-                throw new AggregateException("the given phone number is empty.");
-
-            if (delimiter == default)
-                delimiter = ';';
-
-            // try to split the email address
-            var phoneNumbers = phoneNumber.Split(delimiter);
-
-            // if we have only one email
-            if (phoneNumbers.Length == 1)
-            {
-                _to.Add(new PhoneNumber(phoneNumber.Trim()));
-                return this;
-            }
-
-            // add the email address
-            foreach (var number in phoneNumbers)
-                _to.Add(new PhoneNumber(number.Trim()));
-
-            return this;
-        }
-
-        /// <summary>
-        /// add the recipient phone number.
-        /// </summary>
-        /// <param name="mailAddress">recipient phone number.</param>
-        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
-        public SmsMessageComposer To(PhoneNumber mailAddress)
-            => To(new[] { mailAddress });
-
-        /// <summary>
-        /// add the recipient phone number.
-        /// </summary>
-        /// <param name="mailAddress">recipient phone number.</param>
-        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
-        public SmsMessageComposer To(params PhoneNumber[] mailAddress)
-        {
-            foreach (var address in mailAddress)
-                _to.Add(address);
-
+            _to = new PhoneNumber(phoneNumber);
             return this;
         }
 
