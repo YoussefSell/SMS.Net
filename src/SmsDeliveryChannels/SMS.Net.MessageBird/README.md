@@ -18,7 +18,7 @@ SmsServiceFactory.Instance
     .Create();
 
 // register MessageBird channel with Dependency Injection
-services.AddEmailNet(MessageBirdSmsDeliveryProvider.Name)
+services.AddSMSNet(MessageBirdSmsDeliveryProvider.Name)
     .UseMessageBird(accessKey: "your-MessageBird-accessKey");
 ```
 

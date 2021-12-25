@@ -18,7 +18,7 @@ SmsServiceFactory.Instance
     .Create();
 
 // register Twilio channel with Dependency Injection
-services.AddEmailNet(TwilioSmsDeliveryProvider.Name)
+services.AddSMSNet(TwilioSmsDeliveryProvider.Name)
     .UseTwilio(userName: "your-Twilio-userName", password:  "your-Twilio-password");
 ```
 
