@@ -115,7 +115,7 @@
                 .Build();
 
             // assert
-            Assert.Equal("+212625415255", message.To.ToString());
+            Assert.Equal("+212625415255", message.From.ToString());
         }
 
         #endregion
@@ -132,7 +132,7 @@
             // act
 
             // assert
-            Assert.Throws<ArgumentException>(() => composser.Build());
+            Assert.Throws<ArgumentNullException>(() => composser.Build());
         }
 
         [Fact]
