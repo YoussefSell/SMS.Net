@@ -29,6 +29,15 @@
             => messageComposer.PassChannelData(CustomChannelData.AuthSecret, value);
 
         /// <summary>
+        /// list of tags to apply to this contact.
+        /// </summary>
+        /// <param name="messageComposer">the message composer instance.</param>
+        /// <param name="value">the Tags value.</param>
+        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
+        public static SmsMessageComposer SetTags(this SmsMessageComposer messageComposer, List<string> value)
+            => messageComposer.PassChannelData(CustomChannelData.Tags, value);
+
+        /// <summary>
         /// Mark this conversation as "addressed" (default: false).
         /// </summary>
         /// <param name="messageComposer">the message composer instance.</param>
@@ -45,15 +54,6 @@
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
         public static SmsMessageComposer SetMediaUrl(this SmsMessageComposer messageComposer, Uri value)
             => messageComposer.PassChannelData(CustomChannelData.MediaUrl, value);
-
-        /// <summary>
-        /// list of tags to apply to this contact.
-        /// </summary>
-        /// <param name="messageComposer">the message composer instance.</param>
-        /// <param name="value">the Tags value.</param>
-        /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
-        public static SmsMessageComposer SetTags(this SmsMessageComposer messageComposer, List<string> value)
-            => messageComposer.PassChannelData(CustomChannelData.Tags, value);
 
         /// <summary>
         /// Send a callback via http POST to this domain when the delivery status is updated.

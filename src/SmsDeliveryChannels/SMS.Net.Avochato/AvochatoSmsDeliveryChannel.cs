@@ -110,9 +110,9 @@
             };
 
             var tagsChannelData = message.ChannelData.GetData(CustomChannelData.Tags);
+            var authIdChannelData = message.ChannelData.GetData(CustomChannelData.AuthKey);
             var mediaUrlChannelData = message.ChannelData.GetData(CustomChannelData.MediaUrl);
-            var authSecretChannelData = message.ChannelData.GetData(CustomChannelData.MediaUrl);
-            var authIdChannelData = message.ChannelData.GetData(CustomChannelData.MarkAddressed);
+            var authSecretChannelData = message.ChannelData.GetData(CustomChannelData.AuthSecret);
             var markAddressedChannelData = message.ChannelData.GetData(CustomChannelData.MarkAddressed);
             var statusCallbackChannelData = message.ChannelData.GetData(CustomChannelData.StatusCallback);
 
