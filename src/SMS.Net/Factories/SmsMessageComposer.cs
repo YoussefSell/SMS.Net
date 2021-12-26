@@ -72,7 +72,7 @@
             if (phoneNumber is null)
                 throw new ArgumentNullException(nameof(phoneNumber));
 
-            _to = new PhoneNumber(phoneNumber);
+            _to = phoneNumber;
             return this;
         }
 
