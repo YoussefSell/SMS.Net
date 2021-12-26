@@ -31,7 +31,6 @@
             });
         }
 
-
         [Fact]
         public void CreatePhoneNumberInstance()
         {
@@ -57,6 +56,21 @@
             // assert
             Assert.Equal(expected, phoneNumber.ToString());
         }
+
+        [Fact]
+        public void ImplicitilyConvertToString()
+        {
+            // arrange
+            var expected = "+212625415254";
+            var phoneNumber = new PhoneNumber(expected);
+
+            // act
+            string phoneNumberString = phoneNumber;
+
+            // assert
+            Assert.Equal(expected, phoneNumberString);
+        }
+
 
         [Fact]
         public void BeEqualIfHaveSameValue()
