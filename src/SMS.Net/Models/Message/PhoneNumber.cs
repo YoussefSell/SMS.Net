@@ -38,7 +38,7 @@
         /// </summary>
         /// <param name="number">Phone number</param>
         /// <returns></returns>
-        public static implicit operator string(PhoneNumber number) => number;
+        public static implicit operator string(PhoneNumber number) => number.ToString();
 
         /// <inheritdoc/>
         public override string ToString() => _number;
