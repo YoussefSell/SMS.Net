@@ -4,6 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Title>SMS.Net - Twilio channel</Title>
+    <PackageId>SMS.Net.Twilio</PackageId>
+    <PackageTags>SMS.Net; SMS; Twilio</PackageTags>
+    <Description>Twilio SMS delivery channel for SMS.Net.</Description>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Twilio" Version="5.69.0" />
   </ItemGroup>

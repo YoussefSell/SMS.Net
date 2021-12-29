@@ -4,6 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Title>SMS.Net - MessageBird channel</Title>
+    <PackageId>SMS.Net.Twilio</PackageId>
+    <PackageTags>SMS.Net; SMS; MessageBird</PackageTags>
+    <Description>MessageBird SMS delivery channel for SMS.Net.</Description>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MessageBird" Version="3.1.0" />
   </ItemGroup>
