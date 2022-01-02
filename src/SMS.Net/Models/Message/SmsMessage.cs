@@ -23,7 +23,7 @@
         /// <summary>
         /// the phone number of the sender.
         /// </summary>
-        public PhoneNumber From { get; internal set; }
+        public PhoneNumber From { get; set; }
 
         /// <summary>
         /// the phone numbers of recipients to send the SMS message to.
