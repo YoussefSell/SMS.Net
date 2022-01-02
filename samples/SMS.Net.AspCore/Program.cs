@@ -1,7 +1,23 @@
+using SMS.Net.Channel.RavenSMS;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddSMSNet(options =>
+{
+    options.PauseSending = false;
+    options.DefaultFrom = new SMS.Net.PhoneNumber("+21206060606");
+    options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
+})
+.UseAvochato(authId: "", authSecret: "")
+.UseTwilio(username: "", password: "")
+.UseMessageBird(accessKey: "")
+.UseRavenSMS(options =>
+{
+
+});
 
 var app = builder.Build();
 
