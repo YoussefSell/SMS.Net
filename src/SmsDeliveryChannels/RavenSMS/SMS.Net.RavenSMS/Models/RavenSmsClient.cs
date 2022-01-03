@@ -1,6 +1,7 @@
 ﻿namespace SMS.Net.Channel.RavenSMS
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// a class that defines a client that is used for sending SMS messages.
@@ -26,5 +27,10 @@
         /// Get or set the date
         /// </summary>
         public DateTimeOffset CreatedOn { get; set; }
+
+        /// <summary>
+        /// the phone numbers associated with this client
+        /// </summary>
+        public IEnumerable<string> PhoneNumbers { get; set; } = default!;
     }
 }
