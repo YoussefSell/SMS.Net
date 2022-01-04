@@ -1,5 +1,6 @@
 # SMS.NET
-
+[![](https://img.shields.io/github/license/YoussefSell/SMS.Net)](https://github.com/YoussefSell/SMS.Net/blob/master/LICENSE)
+[![](https://img.shields.io/nuget/v/SMS.Net)](https://www.nuget.org/packages/SMS.Net/)
 ![Build](https://github.com/YoussefSell/SMS.Net/actions/workflows/ci.yml/badge.svg)
 
 ***this library is still under development**
