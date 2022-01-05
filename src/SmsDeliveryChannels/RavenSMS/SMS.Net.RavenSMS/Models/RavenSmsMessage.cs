@@ -12,6 +12,7 @@ public class RavenSmsMessage
     {
         Id = Guid.NewGuid();
         CreateOn = DateTimeOffset.Now;
+        Status = RavenSmsMessageStatus.Created;
     }
 
     /// <summary>
@@ -43,4 +44,14 @@ public class RavenSmsMessage
     /// Get or set the phone number used to send the SMS message from it.
     /// </summary>
     public PhoneNumber From { get; set; } = default!;
+
+    /// <summary>
+    /// Get or set the id of the queue job associated with this message.
+    /// </summary>
+    public string? JobQueueId { get; internal set; }
+
+    /// <summary>
+    /// Get or set the status of the message
+    /// </summary>
+    public RavenSmsMessageStatus Status { get; internal set; }
 }
