@@ -1,5 +1,6 @@
 ﻿global using SMS.Net.RavenSMS.Pages;
 global using SMS.Net.Channel.RavenSMS;
+global using SMS.Net.Channel.RavenSMS.Enums;
 global using SMS.Net.Channel.RavenSMS.Models;
 global using SMS.Net.Channel.RavenSMS.Managers;
 global using SMS.Net.Channel.RavenSMS.Persistence;
