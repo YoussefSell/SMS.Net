@@ -5,6 +5,6 @@
     /// </summary>
     internal static class CustomChannelData
     {
-        
+        public const string Delay = "delay";
     }
 }
