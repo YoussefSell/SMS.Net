@@ -6,3 +6,4 @@ global using SMS.Net.Channel.RavenSMS.Persistence;
 global using SMS.Net.Exceptions;
 global using SMS.Net.Factories;
 global using SMS.Net.Channel;
+global using ResultNet;
