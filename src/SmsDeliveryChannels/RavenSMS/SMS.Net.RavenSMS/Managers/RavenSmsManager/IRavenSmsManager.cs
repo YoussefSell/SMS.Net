@@ -8,15 +8,15 @@ public interface IRavenSmsManager
     /// <summary>
     /// queue the message for processing
     /// </summary>
-    /// <param name="ravenSmsMessage">the message to queue</param>
+    /// <param name="message">the message to queue</param>
     /// <returns>a Task instance</returns>
-    Task QueueMessageAsync(RavenSmsMessage ravenSmsMessage);
+    Task QueueMessageAsync(RavenSmsMessage message);
 
     /// <summary>
     /// queue the message for processing
     /// </summary>
-    /// <param name="ravenSmsMessage">the message to queue.</param>
+    /// <param name="message">the message to queue.</param>
     /// <param name="delay">the delay to use before sending the message.</param>
     /// <returns>a Task instance</returns>
-    Task QueueMessageAsync(RavenSmsMessage ravenSmsMessage, TimeSpan delay);
+    Task QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
 }
