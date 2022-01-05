@@ -30,8 +30,22 @@
                 // create the raven SMS message
                 var ravenSmsMessage = CreateMessage(message);
 
-                // queue the message for delivery
-                await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage);
+                // get the delay data if any
+                var delayData = message.ChannelData.GetData(CustomChannelData.Delay);
+                if (delayData.IsEmpty())
+                {
+                    // queue the message for delivery without delay
+                    await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage);
+
+                    // all done return success result
+                    return SmsSendingResult.Success(Name);
+                }
+
+                // var get the delay value
+                var delay = delayData.GetValue<TimeSpan>();
+
+                // queue the message for delivery with a delay
+                await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage, delay);
 
                 // all done return success result
                 return SmsSendingResult.Success(Name);
