@@ -10,7 +10,7 @@ public interface IRavenSmsManager
     /// </summary>
     /// <param name="message">the message to queue</param>
     /// <returns>a Task instance</returns>
-    Task QueueMessageAsync(RavenSmsMessage message);
+    Task<Result> QueueMessageAsync(RavenSmsMessage message);
 
     /// <summary>
     /// queue the message for processing
@@ -18,5 +18,5 @@ public interface IRavenSmsManager
     /// <param name="message">the message to queue.</param>
     /// <param name="delay">the delay to use before sending the message.</param>
     /// <returns>a Task instance</returns>
-    Task QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
+    Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
 }

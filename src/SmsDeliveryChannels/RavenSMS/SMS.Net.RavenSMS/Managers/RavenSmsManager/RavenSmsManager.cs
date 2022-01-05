@@ -5,17 +5,44 @@
 /// </summary>
 public partial class RavenSmsManager : IRavenSmsManager
 {
-    public Task QueueMessageAsync(RavenSmsMessage ravenSmsMessage)
+    /// <inheritdoc/>
+    public async Task<Result> QueueMessageAsync(RavenSmsMessage message)
     {
+        // queue the message for future processing
+        message.JobQueueId = await _queueManager.QueueMessageAsync(message);
+        message.Status = RavenSmsMessageStatus.Queued;
 
+        // save the message
+        var saveResult = await _messagesRepository.SaveAsync(message);
+        if (saveResult.IsFailure())
+        {
+            return Result.Failure()
+                .WithMessage("failed to persist the message")
+                .WithErrors(saveResult.Errors.ToArray());
+        }
 
-
-        throw new NotImplementedException();
+        // all done
+        return Result.Success();
     }
 
-    public Task QueueMessageAsync(RavenSmsMessage ravenSmsMessage, TimeSpan delay)
+    /// <inheritdoc/>
+    public async Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay)
     {
-        throw new NotImplementedException();
+        // queue the message for future processing
+        message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay);
+        message.Status = RavenSmsMessageStatus.Queued;
+
+        // save the message
+        var saveResult = await _messagesRepository.SaveAsync(message);
+        if (saveResult.IsFailure())
+        {
+            return Result.Failure()
+                .WithMessage("failed to persist the message")
+                .WithErrors(saveResult.Errors.ToArray());
+        }
+
+        // all done
+        return Result.Success();
     }
 }
 
@@ -25,11 +52,13 @@ public partial class RavenSmsManager : IRavenSmsManager
 public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
+    private readonly IRavenSmsMessagesRepository _messagesRepository;
 
     public RavenSmsManager(
         IQueueManager queueManager,
         IRavenSmsMessagesRepository messagesRepository)
     {
         _queueManager = queueManager;
+        this._messagesRepository = messagesRepository;
     }
 }
