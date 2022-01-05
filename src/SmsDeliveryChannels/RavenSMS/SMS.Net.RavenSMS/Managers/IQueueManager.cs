@@ -1,9 +1,8 @@
-﻿namespace SMS.Net.RavenSMS.Managers
+﻿namespace SMS.Net.Channel.RavenSMS.Managers;
+
+/// <summary>
+/// the SMS Queue manager
+/// </summary>
+public interface IQueueManager
 {
-    /// <summary>
-    /// the SMS Queue manager
-    /// </summary>
-    public interface IQueueManager
-    {
-    }
 }

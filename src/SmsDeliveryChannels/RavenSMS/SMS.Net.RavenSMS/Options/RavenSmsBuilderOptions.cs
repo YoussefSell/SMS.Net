@@ -1,31 +1,28 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// the options for building the RavenSMS integration.
+/// </summary>
+public class RavenSmsBuilderOptions
 {
-    using SMS.Net.Channel.RavenSMS;
-    using System;
+    /// <summary>
+    /// create an instance of <see cref="RavenSmsBuilderOptions"/>
+    /// </summary>
+    /// <param name="builder"></param>
+    internal RavenSmsBuilderOptions(SmsNetBuilder builder) => Builder = builder;
 
     /// <summary>
-    /// the options for building the RavenSMS integration.
+    /// the SMS builder instance
     /// </summary>
-    public class RavenSmsBuilderOptions
+    public SmsNetBuilder Builder { get; }
+
+    /// <summary>
+    /// set the options values
+    /// </summary>
+    /// <param name="configuration">the options instance</param>
+    internal void InitOptions(RavenSmsDeliveryChannelOptions configuration)
     {
-        /// <summary>
-        /// create an instance of <see cref="RavenSmsBuilderOptions"/>
-        /// </summary>
-        /// <param name="builder"></param>
-        internal RavenSmsBuilderOptions(SmsNetBuilder builder) => Builder = builder;
-
-        /// <summary>
-        /// the SMS builder instance
-        /// </summary>
-        public SmsNetBuilder Builder { get; }
-
-        /// <summary>
-        /// set the options values
-        /// </summary>
-        /// <param name="configuration">the options instance</param>
-        internal void InitOptions(RavenSmsDeliveryChannelOptions configuration)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }
+
