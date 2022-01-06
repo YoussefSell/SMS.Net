@@ -12,4 +12,10 @@ public interface IRavenSmsClientsManager
     /// <returns>true if exist, false if not</returns>
     /// <exception cref="ArgumentNullException">if the <paramref name="from"/> value is null</exception>
     Task<bool> AnyAsync(PhoneNumber from);
+
+    /// <summary>
+    /// get the list of all registered clients.
+    /// </summary>
+    /// <returns>the list of clients.</returns>
+    Task<RavenSmsClient[]> GetAllAsync();
 }
