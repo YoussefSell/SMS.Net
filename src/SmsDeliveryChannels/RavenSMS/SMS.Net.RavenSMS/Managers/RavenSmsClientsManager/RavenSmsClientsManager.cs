@@ -5,10 +5,9 @@
 /// </summary>
 public partial class RavenSmsClientsManager : IRavenSmsClientsManager
 {
-    public Task<bool> AnyAsync(PhoneNumber from)
-    {
-        throw new NotImplementedException();
-    }
+    /// <inheritdoc/>
+    public Task<bool> AnyAsync(PhoneNumber from) 
+        => _clientsRepository.AnyAsync(from);
 }
 
 /// <summary>
@@ -16,5 +15,10 @@ public partial class RavenSmsClientsManager : IRavenSmsClientsManager
 /// </summary>
 public partial class RavenSmsClientsManager
 {
+    private readonly IRavenSmsClientsRepository _clientsRepository;
 
+    public RavenSmsClientsManager(IRavenSmsClientsRepository clientsRepository)
+    {
+        _clientsRepository = clientsRepository;
+    }
 }
