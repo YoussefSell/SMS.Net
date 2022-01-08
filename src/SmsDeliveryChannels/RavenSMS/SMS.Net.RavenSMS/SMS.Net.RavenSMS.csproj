@@ -5,6 +5,16 @@
     <Nullable>enable</Nullable>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\src\js\app.js" />
+    <None Remove="Assets\src\js\dashboard.page.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\src\js\dashboard.page.js" />
+    <Content Include="Assets\src\js\app.js" />
+  </ItemGroup>
   
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
