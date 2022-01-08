@@ -1,0 +1,29 @@
+{
+  "name": "ravebsms",
+  "version": "1.0.1-beta",
+  "description": "RavenSMS is a minimal server for sending SMS services",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp"
+  },
+  "author": "YoussefSell",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "4.3.0",
+    "gulp-concat": "2.6.1",
+    "gulp-download2": "1.1.0",
+    "gulp-sass": "5.0.0",
+    "gulp-sourcemaps": "3.0.0",
+    "gulp-uglify": "3.0.2",
+    "sass": "1.42.1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "5.15.4",
+    "@popperjs/core": "2.11.2",
+    "bootstrap": "5.1.3",
+    "moment": "^2.29.1",
+    "chartjs": "0.3.24"
+  }
+}
