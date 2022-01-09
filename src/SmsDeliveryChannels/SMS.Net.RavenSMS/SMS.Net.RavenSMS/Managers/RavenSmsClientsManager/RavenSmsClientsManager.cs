@@ -19,9 +19,9 @@ public partial class RavenSmsClientsManager : IRavenSmsClientsManager
 /// </summary>
 public partial class RavenSmsClientsManager
 {
-    private readonly IRavenSmsClientsRepository _clientsRepository;
+    private readonly IRavenSmsClientsStore _clientsRepository;
 
-    public RavenSmsClientsManager(IRavenSmsClientsRepository clientsRepository)
+    public RavenSmsClientsManager(IRavenSmsClientsStore clientsRepository)
     {
         _clientsRepository = clientsRepository;
     }

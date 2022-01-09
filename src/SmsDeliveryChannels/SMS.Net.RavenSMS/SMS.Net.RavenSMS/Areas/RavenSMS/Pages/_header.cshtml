@@ -1,0 +1,112 @@
+﻿<div class="app-header-inner">
+    <div class="container-fluid py-2">
+        <div class="app-header-content">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-auto">
+                    <a id="sidepanel-toggler" class="sidepanel-toggler d-inline-block d-xl-none" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img">
+                            <title>Menu</title>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="search-mobile-trigger d-sm-none col">
+                    <i class="search-mobile-trigger-icon fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="app-sidepanel" class="app-sidepanel">
+    <div id="sidepanel-drop" class="sidepanel-drop"></div>
+    <div class="sidepanel-inner d-flex flex-column">
+        <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
+        <div class="app-branding">
+            <a class="app-logo" href="index.html"><img class="logo-icon me-2" src="~/media/images/app-logo.svg" alt="logo" /><span class="logo-text">RavenSMS</span></a>
+        </div>
+        <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
+            <ul class="app-menu list-unstyled accordion" id="menu-accordion">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">
+                        <span class="nav-icon">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
+                                <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="orders.html">
+                        <span class="nav-icon">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                <path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z" />
+                                <circle cx="3.5" cy="5.5" r=".5" />
+                                <circle cx="3.5" cy="8" r=".5" />
+                                <circle cx="3.5" cy="10.5" r=".5" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-text">Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="orders.html">
+                        <span class="nav-icon">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60.01 60.01" xml:space="preserve" class="bi bi-code-square" fill="currentColor">
+                            <path d="M40.224,0H19.785c-3.584,0-6.5,2.893-6.5,6.449v47.113c0,3.554,2.916,6.448,6.5,6.448h20.438
+	  c3.584,0,6.501-2.894,6.501-6.448V6.449C46.725,2.893,43.808,0,40.224,0z M44.576,53.562c0,2.37-1.952,4.299-4.352,4.299H19.785
+	  c-2.399,0-4.351-1.929-4.351-4.299V6.449h0.001c0-2.371,1.952-4.299,4.351-4.299h20.438c2.399,0,4.352,1.928,4.352,4.299
+	  C44.577,6.449,44.577,53.562,44.576,53.562z M42.366,6.315h-24.72c-0.297,0-0.537,0.24-0.537,0.537v41.753
+	  c0,0.296,0.24,0.538,0.537,0.538h24.72c0.297,0,0.538-0.241,0.538-0.538V6.852C42.903,6.555,42.663,6.315,42.366,6.315z
+	   M41.829,48.067H18.182V7.389h23.646C41.828,7.389,41.828,48.067,41.829,48.067z M30.006,50.038c-1.811,0-3.285,1.473-3.285,3.284
+	  s1.474,3.284,3.285,3.284s3.283-1.474,3.283-3.284C33.289,51.511,31.817,50.038,30.006,50.038z M30.006,55.531
+	  c-1.219,0-2.21-0.991-2.21-2.209s0.991-2.21,2.21-2.21c1.218,0,2.209,0.992,2.209,2.21C32.215,54.54,31.224,55.531,30.006,55.531z
+	   M26.451,4.204c0-0.219,0.214-0.396,0.478-0.396h6.151c0.264,0,0.477,0.177,0.477,0.396S33.345,4.6,33.081,4.6H26.93
+	  C26.667,4.6,26.452,4.423,26.451,4.204z" />
+                    </svg>
+                        </span>
+                        <span class="nav-link-text">Clients</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="orders.html">
+                        <span class="nav-icon">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
+                                <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-text">Preferences</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="help.html">
+                        <span class="nav-icon">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-question-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-text">Help</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="app-sidepanel-footer">
+            <nav class="app-nav app-nav-footer">
+                <ul class="app-menu footer-menu list-unstyled">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://buymeacoffee.com/youssefsell" target="_blank">
+                            <i class="fas fa-heart" style="color: #af3957; margin-left: 15px; margin-right: 5px"></i>
+                            <span class="nav-link-text">Support us</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

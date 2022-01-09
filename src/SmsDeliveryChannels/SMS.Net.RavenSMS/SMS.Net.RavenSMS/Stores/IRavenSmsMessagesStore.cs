@@ -3,7 +3,7 @@
 /// <summary>
 /// the repository for managing SMS messages data
 /// </summary>
-public interface IRavenSmsMessagesRepository
+public interface IRavenSmsMessagesStore
 {
     /// <summary>
     /// find the message with the given id.

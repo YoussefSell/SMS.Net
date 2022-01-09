@@ -11,12 +11,13 @@ builder.Services.AddSMSNet(options =>
     options.DefaultFrom = new SMS.Net.PhoneNumber("+21206060606");
     options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
 })
-.UseAvochato(authId: "", authSecret: "")
-.UseTwilio(username: "", password: "")
-.UseMessageBird(accessKey: "")
+.UseAvochato(authId: "Key-1", authSecret: "Key-1")
+.UseTwilio(username: "Key-1", password: "Key-1")
+.UseMessageBird(accessKey: "Key-1")
 .UseRavenSMS(options =>
 {
-
+    options.UseHangfireQueue();
+    options.UseEntityFrameworkStores();
 });
 
 var app = builder.Build();

@@ -3,7 +3,7 @@
 /// <summary>
 /// the repository for managing clients apps.
 /// </summary>
-public interface IRavenSmsClientsRepository
+public interface IRavenSmsClientsStore
 {
     /// <summary>
     /// check if there is any client with the given phone number.

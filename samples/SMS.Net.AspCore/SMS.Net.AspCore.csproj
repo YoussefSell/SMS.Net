@@ -10,7 +10,8 @@
     <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.Avochato.DependencyInjection\SMS.Net.Avochato.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.MessageBird.DependencyInjection\SMS.Net.MessageBird.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.Twilio.DependencyInjection\SMS.Net.Twilio.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj" />
+    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.EntityFramework\SMS.Net.RavenSMS.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj" />
   </ItemGroup>
 
 </Project>

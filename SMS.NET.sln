@@ -47,9 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.AspCore", "samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RavenSMS", "RavenSMS", "{132547C0-9894-4A8C-94A2-21E39666C7CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS", "src\SmsDeliveryChannels\RavenSMS\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj", "{944C5327-6A8B-491D-81A5-964F51FC7644}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj", "{944C5327-6A8B-491D-81A5-964F51FC7644}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Hangfire", "src\SmsDeliveryChannels\RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj", "{9F167F99-34EE-4710-8E57-96D5160BCE69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Hangfire", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj", "{9F167F99-34EE-4710-8E57-96D5160BCE69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS.Net.RavenSMS.EntityFramework", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.EntityFramework\SMS.Net.RavenSMS.EntityFramework.csproj", "{E466B617-2C66-4341-A1E4-E2634AFE6977}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{9F167F99-34EE-4710-8E57-96D5160BCE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F167F99-34EE-4710-8E57-96D5160BCE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F167F99-34EE-4710-8E57-96D5160BCE69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{132547C0-9894-4A8C-94A2-21E39666C7CB} = {D1313045-171F-4139-BAD6-E0FAEED68FAD}
 		{944C5327-6A8B-491D-81A5-964F51FC7644} = {132547C0-9894-4A8C-94A2-21E39666C7CB}
 		{9F167F99-34EE-4710-8E57-96D5160BCE69} = {132547C0-9894-4A8C-94A2-21E39666C7CB}
+		{E466B617-2C66-4341-A1E4-E2634AFE6977} = {132547C0-9894-4A8C-94A2-21E39666C7CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A9E6973-ECDE-4895-8435-8CA0F49DF342}

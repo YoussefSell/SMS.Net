@@ -52,11 +52,11 @@ public partial class RavenSmsManager : IRavenSmsManager
 public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
-    private readonly IRavenSmsMessagesRepository _messagesRepository;
+    private readonly IRavenSmsMessagesStore _messagesRepository;
 
     public RavenSmsManager(
         IQueueManager queueManager,
-        IRavenSmsMessagesRepository messagesRepository)
+        IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;
         this._messagesRepository = messagesRepository;
