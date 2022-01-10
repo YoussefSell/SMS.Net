@@ -10,15 +10,14 @@
         <hr class="mb-4">
         <div class="row g-4 settings-section">
             <div class="app-card app-card-settings shadow-sm p-4">
-
                 <div class="app-card-body">
                     <form class="settings-form">
                         <!-- client app -->
                         <div class="mb-3">
                             <label for="Client" class="form-label">
                                 Client
-                                <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top"
-                                      data-content="Select the client used to send the SMS message.">
+                                <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
+                                      data-bs-content="Select the client used to send the SMS message.">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                         <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
@@ -36,8 +35,8 @@
                         <div class="mb-3">
                             <label for="for" class="form-label">
                                 From
-                                <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top"
-                                      data-content="Select the phone number used as the sender of SMS message.">
+                                <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
+                                      data-bs-content="Select the phone number used as the sender of SMS message.">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                         <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
@@ -58,6 +57,16 @@
                             </label>
                             <input type="tel" class="form-control" id="to" value="+212606063562" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="Priority" class="form-label">
+                                Priority
+                            </label>
+                            <select id="Priority" class="form-select" aria-label="select message priority">
+                                <option value="0">Low</option>
+                                <option value="1" selected>Normal</option>
+                                <option value="2">High</option>
+                            </select>
+                        </div>
                         <!-- Message body -->
                         <div class="mb-3">
                             <label for="messageBody" class="form-label">
@@ -77,9 +86,6 @@
 
 @section scripts {
 <script>
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new bootstrap.Popover(popoverTriggerEl)
-    })
+    
 </script>
 }
