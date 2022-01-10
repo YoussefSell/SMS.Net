@@ -21,6 +21,7 @@
     <EmbeddedResource Include="Assets\css\**\*" />
     <EmbeddedResource Include="Assets\js\**\*" />
     <EmbeddedResource Include="Assets\media\**\*" />
+    <EmbeddedResource Include="Assets\webfonts\**\*" />
   </ItemGroup>
 
   <ItemGroup>
