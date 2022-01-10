@@ -95,7 +95,7 @@ var lineChartConfig = {
 			intersect: true
 		},
 		scales: {
-			xAxes: [{
+			x: {
 				display: true,
 				gridLines: {
 					drawBorder: false,
@@ -105,8 +105,8 @@ var lineChartConfig = {
 					display: false,
 
 				}
-			}],
-			yAxes: [{
+			},
+			y: {
 				display: true,
 				gridLines: {
 					drawBorder: false,
@@ -121,7 +121,7 @@ var lineChartConfig = {
 						return '$' + value.toLocaleString();   //Ref: https://stackoverflow.com/questions/38800226/chart-js-add-commas-to-tooltip-and-y-axis
 					}
 				},
-			}]
+			}
 		}
 	}
 };
@@ -176,23 +176,20 @@ var barChartConfig = {
 
 		},
 		scales: {
-			xAxes: [{
+			x: {
 				display: true,
 				gridLines: {
 					drawBorder: false,
 					color: window.chartColors.border,
 				},
-
-			}],
-			yAxes: [{
+			},
+			y: {
 				display: true,
 				gridLines: {
 					drawBorder: false,
 					color: window.chartColors.borders,
 				},
-
-
-			}]
+			}
 		}
 
 	}
