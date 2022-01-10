@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/app.min.css" />
 
     <!-- scripts section -->
-    @RenderSection("Styles", required: false)
+    @RenderSection("styles", required: false)
 </head>
 
 <body class="app">
@@ -40,6 +40,6 @@
     <script src="~/js/app.min.js"></script>
 
     <!-- add scripts section -->
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("scripts", required: false)
 </body>
 </html>
