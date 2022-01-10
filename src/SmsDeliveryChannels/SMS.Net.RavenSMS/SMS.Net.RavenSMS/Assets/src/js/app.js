@@ -1,10 +1,10 @@
 ﻿'use strict';
 
 /* ===== Enable Bootstrap Popover (on element  ====== */
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-	return new bootstrap.Popover(popoverTriggerEl)
-})
+var popoverList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+	.map(function (popoverTriggerEl) {
+		return new bootstrap.Popover(popoverTriggerEl);
+	});
 
 /* ==== Enable Bootstrap Alert ====== */
 document.querySelectorAll('.alert')
