@@ -61,7 +61,7 @@ gulp.task('js-app', function(){
 
 gulp.task('js-app-pages-dashboard', function () {
 	return gulp.src([
-		'node_modules/chartjs/chart.js',
+		'node_modules/chart.js/dist/chart.min.js',
 		'Assets/src/js/dashboard.page.js',
 	])
 	.pipe(sourcemaps.init())
@@ -73,7 +73,7 @@ gulp.task('js-app-pages-dashboard', function () {
 // runner
 gulp.task('default', gulp.series(gulp.parallel([
 	// default
-	'images',
+	'images', 'fonts',
 
 	// css tasks
 	'css-vendor',
