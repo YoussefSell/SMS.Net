@@ -69,15 +69,18 @@
                         </div>
                         <!-- Message body -->
                         <div class="mb-3">
-                            <label for="messageBody" class="form-label">
-                                Message body
-                            </label>
+                            <label for="messageBody" class="form-label">Message body</label>
                             <textarea id="messageBody" class="form-control" placeholder="you message" style="height: 100px"></textarea>
                         </div>
                         <!-- Queue for future delivery -->
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" id="schedule">
                             <label class="form-check-label" for="schedule">Schedule for future delivery</label>
+                        </div>
+                        <!-- Queue for future delivery -->
+                        <div class="mb-3">
+                            <label class="form-label" for="deliveryDate">delivery date</label>
+                            <input class="form-control" type="datetime" id="deliveryDate">
                         </div>
                         <!-- Send action -->
                         <button type="submit" class="btn app-btn-primary">Send</button>
