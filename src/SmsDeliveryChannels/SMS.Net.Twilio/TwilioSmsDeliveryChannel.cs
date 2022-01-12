@@ -70,7 +70,7 @@
         public const string Name = "twilio";
 
         /// <inheritdoc/>
-        string ISmsChannel.Name => Name;
+        string ISmsDeliveryChannel.Name => Name;
 
         private readonly TwilioSmsDeliveryChannelOptions _options;
 

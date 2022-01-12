@@ -3,4 +3,4 @@
 /// <summary>
 /// the RavenSMS SMS delivery channel
 /// </summary>
-public interface IRavenSmsDeliveryChannel : ISmsChannel { }
+public interface IRavenSmsDeliveryChannel : ISmsDeliveryChannel { }

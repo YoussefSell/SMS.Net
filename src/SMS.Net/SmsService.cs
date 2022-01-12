@@ -28,7 +28,7 @@
                 throw new ArgumentNullException(nameof(edp_name));
 
             // check if the provider exist
-            if (!_providers.TryGetValue(edp_name, out ISmsChannel provider))
+            if (!_providers.TryGetValue(edp_name, out ISmsDeliveryChannel provider))
                 throw new SmsDeliveryChannelNotFoundException(edp_name);
 
             // send the email message
@@ -43,7 +43,7 @@
                 throw new ArgumentNullException(nameof(edp_name));
 
             // check if the provider exist
-            if (!_providers.TryGetValue(edp_name, out ISmsChannel provider))
+            if (!_providers.TryGetValue(edp_name, out ISmsDeliveryChannel provider))
                 throw new SmsDeliveryChannelNotFoundException(edp_name);
 
             // send the email message
@@ -51,7 +51,7 @@
         }
 
         /// <inheritdoc/>
-        public SmsSendingResult Send(SmsMessage message, ISmsChannel edp)
+        public SmsSendingResult Send(SmsMessage message, ISmsDeliveryChannel edp)
         {
             // check if given params are not null.
             if (message is null)
@@ -75,7 +75,7 @@
         }
 
         /// <inheritdoc/>
-        public Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsChannel edp)
+        public Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsDeliveryChannel edp)
         {
             // check if given params are not null.
             if (message is null)
@@ -104,8 +104,8 @@
     /// </summary>
     public partial class SmsService : ISmsService
     {
-        private readonly IDictionary<string, ISmsChannel> _providers;
-        private readonly ISmsChannel _defaultProvider;
+        private readonly IDictionary<string, ISmsDeliveryChannel> _providers;
+        private readonly ISmsDeliveryChannel _defaultProvider;
 
         /// <summary>
         /// create an instance of <see cref="SmsService"/>.
@@ -115,7 +115,7 @@
         /// <exception cref="ArgumentNullException">if emailDeliveryProviders or options are null.</exception>
         /// <exception cref="ArgumentException">if emailDeliveryProviders list is empty.</exception>
         /// <exception cref="EmailDeliveryProviderNotFoundException">if the default email delivery provider cannot be found.</exception>
-        public SmsService(IEnumerable<ISmsChannel> emailDeliveryProviders, SmsServiceOptions options)
+        public SmsService(IEnumerable<ISmsDeliveryChannel> emailDeliveryProviders, SmsServiceOptions options)
         {
             if (emailDeliveryProviders is null)
                 throw new ArgumentNullException(nameof(emailDeliveryProviders));
@@ -150,12 +150,12 @@
         /// <summary>
         /// Get the list of email delivery providers attached to this email service.
         /// </summary>
-        public IEnumerable<ISmsChannel> Channels => _providers.Values;
+        public IEnumerable<ISmsDeliveryChannel> Channels => _providers.Values;
 
         /// <summary>
         /// Get the default email delivery provider attached to this email service.
         /// </summary>
-        public ISmsChannel DefaultChannel => _defaultProvider;
+        public ISmsDeliveryChannel DefaultChannel => _defaultProvider;
 
         /// <summary>
         /// check if the message from value is supplied

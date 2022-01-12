@@ -10,11 +10,11 @@
     public class SmsServiceFactoryShould
     {
         private const string _channel_name = "channel";
-        private readonly ISmsChannel _channel;
+        private readonly ISmsDeliveryChannel _channel;
 
         public SmsServiceFactoryShould()
         {
-            var channelMock = new Mock<ISmsChannel>();
+            var channelMock = new Mock<ISmsDeliveryChannel>();
             channelMock.Setup(e => e.Name).Returns(_channel_name);
             channelMock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name));
             _channel = channelMock.Object;

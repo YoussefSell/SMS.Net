@@ -50,7 +50,7 @@
         public const string Name = "MessageBird";
 
         /// <inheritdoc/>
-        string ISmsChannel.Name => Name;
+        string ISmsDeliveryChannel.Name => Name;
 
         private readonly MessageBirdSmsDeliveryChannelOptions _options;
 

@@ -58,7 +58,7 @@
         private readonly AvochatoSmsDeliveryChannelOptions _options;
 
         /// <inheritdoc/>
-        string ISmsChannel.Name => Name;
+        string ISmsDeliveryChannel.Name => Name;
 
         /// <summary>
         /// the name of the SMS delivery channel

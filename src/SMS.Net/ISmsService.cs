@@ -11,7 +11,7 @@
     public interface ISmsService
     {
         /// <summary>
-        /// Sends the specified SMS message using the default <see cref="ISmsChannel"/>.
+        /// Sends the specified SMS message using the default <see cref="ISmsDeliveryChannel"/>.
         /// </summary>
         /// <param name="message">the SMS message to be send.</param>
         /// <remarks>
@@ -26,7 +26,7 @@
         SmsSendingResult Send(SmsMessage message);
 
         /// <summary>
-        /// Sends the specified SMS message using the default <see cref="ISmsChannel"/>.
+        /// Sends the specified SMS message using the default <see cref="ISmsDeliveryChannel"/>.
         /// </summary>
         /// <param name="message">the SMS message to be send</param>
         /// <remarks>
@@ -76,7 +76,7 @@
         /// the given message doesn't contain a 'From' (sender) phone number, 
         /// and no default 'From' (sender) phone number is set in the <see cref="SmsServiceOptions.DefaultFrom"/> option supplied to the SmsService instance.
         /// </exception>
-        SmsSendingResult Send(SmsMessage message, ISmsChannel edp);
+        SmsSendingResult Send(SmsMessage message, ISmsDeliveryChannel edp);
 
         /// <summary>
         /// Sends the specified SMS message using the given SMS delivery channel.
@@ -88,6 +88,6 @@
         /// the given message doesn't contain a 'From' (sender) phone number, 
         /// and no default 'From' (sender) phone number is set in the <see cref="SmsServiceOptions.DefaultFrom"/> option supplied to the SmsService instance.
         /// </exception>
-        Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsChannel edp);
+        Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsDeliveryChannel edp);
     }
 }

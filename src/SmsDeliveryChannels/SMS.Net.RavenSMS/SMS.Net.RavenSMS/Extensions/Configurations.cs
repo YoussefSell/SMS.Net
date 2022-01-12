@@ -28,7 +28,7 @@ public static class Configurations
         options.Validate();
 
         builder.ServiceCollection.AddSingleton((s) => options);
-        builder.ServiceCollection.AddScoped<ISmsChannel, RavenSmsDeliveryChannel>();
+        builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
         builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
 
         builder.ServiceCollection.AddScoped<IRavenSmsClientsManager, RavenSmsClientsManager>();

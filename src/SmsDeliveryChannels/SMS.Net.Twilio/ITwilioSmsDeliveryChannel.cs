@@ -3,5 +3,5 @@
     /// <summary>
     /// the Twilio SMS delivery channel
     /// </summary>
-    public interface ITwilioSmsDeliveryChannel : ISmsChannel { }
+    public interface ITwilioSmsDeliveryChannel : ISmsDeliveryChannel { }
 }

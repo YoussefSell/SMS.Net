@@ -35,7 +35,7 @@
             configuration.Validate();
 
             builder.ServiceCollection.AddSingleton((s) => configuration);
-            builder.ServiceCollection.AddScoped<ISmsChannel, MessageBirdSmsDeliveryChannel>();
+            builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, MessageBirdSmsDeliveryChannel>();
             builder.ServiceCollection.AddScoped<IMessageBirdSmsDeliveryChannel, MessageBirdSmsDeliveryChannel>();
 
             return builder;

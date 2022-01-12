@@ -5,7 +5,7 @@
     /// <summary>
     /// defines the SMS delivery channel for sending the SMS messages.
     /// </summary>
-    public interface ISmsChannel
+    public interface ISmsDeliveryChannel
     {
         /// <summary>
         /// a unique name of the SMS delivery channel.

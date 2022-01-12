@@ -10,17 +10,17 @@
     {
         private const string _channel_name_1 = "mock1_channel";
         private const string _channel_name_2 = "mock2_channel";
-        private readonly ISmsChannel _channel1;
-        private readonly ISmsChannel _channel2;
+        private readonly ISmsDeliveryChannel _channel1;
+        private readonly ISmsDeliveryChannel _channel2;
 
         public SmsServiceShould()
         {
-            var channel1_mock = new Mock<ISmsChannel>();
+            var channel1_mock = new Mock<ISmsDeliveryChannel>();
             channel1_mock.Setup(e => e.Name).Returns(_channel_name_1);
             channel1_mock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name_1));
             _channel1 = channel1_mock.Object;
 
-            var channel2_mock = new Mock<ISmsChannel>();
+            var channel2_mock = new Mock<ISmsDeliveryChannel>();
             channel2_mock.Setup(e => e.Name).Returns(_channel_name_2);
             channel2_mock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name_2));
             _channel2 = channel2_mock.Object;
@@ -46,7 +46,7 @@
         {
             // arrange
             var options = new SmsServiceOptions();
-            var edps = Array.Empty<ISmsChannel>();
+            var edps = Array.Empty<ISmsDeliveryChannel>();
 
             // act
 

@@ -65,7 +65,7 @@ public partial class RavenSmsDeliveryChannel
     public const string Name = "ravensms";
 
     /// <inheritdoc/>
-    string ISmsChannel.Name => Name;
+    string ISmsDeliveryChannel.Name => Name;
 
     private readonly IRavenSmsManager _ravenSmsManager;
     private readonly IRavenSmsClientsManager _clientsManager;

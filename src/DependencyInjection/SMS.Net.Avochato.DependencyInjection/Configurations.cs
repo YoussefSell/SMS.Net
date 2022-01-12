@@ -36,7 +36,7 @@
             configuration.Validate();
 
             builder.ServiceCollection.AddSingleton((s) => configuration);
-            builder.ServiceCollection.AddHttpClient<ISmsChannel, AvochatoSmsDeliveryChannel>();
+            builder.ServiceCollection.AddHttpClient<ISmsDeliveryChannel, AvochatoSmsDeliveryChannel>();
             builder.ServiceCollection.AddHttpClient<IAvochatoSmsDeliveryChannel, AvochatoSmsDeliveryChannel>();
 
             return builder;
