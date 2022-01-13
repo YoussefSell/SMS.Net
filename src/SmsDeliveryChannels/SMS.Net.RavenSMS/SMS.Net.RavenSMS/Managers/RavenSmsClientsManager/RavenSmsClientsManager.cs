@@ -12,6 +12,14 @@ public partial class RavenSmsClientsManager : IRavenSmsClientsManager
     /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber from) 
         => _clientsRepository.AnyAsync(from);
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient> FindByIdAsync(Guid clientId)
+        => _clientsRepository.FindByIdAsync(clientId);
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient> FindByPhoneNumberAsync(PhoneNumber phoneNumber)
+        => _clientsRepository.FindByPhoneNumberAsync(phoneNumber);
 }
 
 /// <summary>
