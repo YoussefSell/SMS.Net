@@ -6,6 +6,13 @@
 public interface IRavenSmsManager
 {
     /// <summary>
+    /// Process the sending of the message.
+    /// </summary>
+    /// <param name="messageId">the id of the message to process.</param>
+    /// <returns>a Task instance</returns>
+    Task ProcessAsync(Guid messageId);
+
+    /// <summary>
     /// queue the message for processing
     /// </summary>
     /// <param name="message">the message to queue</param>

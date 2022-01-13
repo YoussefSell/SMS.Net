@@ -6,6 +6,19 @@
 public partial class RavenSmsManager : IRavenSmsManager
 {
     /// <inheritdoc/>
+    public async Task ProcessAsync(Guid messageId)
+    {
+        var message = await _messagesStore.FindByIdAsync(messageId);
+        if (message is null)
+            throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
+
+        // get the client associated with the given from number
+        var client = await _clientsManager.FindByPhoneNumberAsync(message.From);
+
+        // ToDo: add the logic for sending the message with the client
+    }
+
+    /// <inheritdoc/>
     public async Task<Result> QueueMessageAsync(RavenSmsMessage message)
     {
         // queue the message for future processing
@@ -13,7 +26,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
-        var saveResult = await _messagesRepository.SaveAsync(message);
+        var saveResult = await _messagesStore.SaveAsync(message);
         if (saveResult.IsFailure())
         {
             return Result.Failure()
@@ -33,7 +46,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
-        var saveResult = await _messagesRepository.SaveAsync(message);
+        var saveResult = await _messagesStore.SaveAsync(message);
         if (saveResult.IsFailure())
         {
             return Result.Failure()
@@ -52,13 +65,16 @@ public partial class RavenSmsManager : IRavenSmsManager
 public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
-    private readonly IRavenSmsMessagesStore _messagesRepository;
+    private readonly IRavenSmsMessagesStore _messagesStore;
+    private readonly IRavenSmsClientsManager _clientsManager;
 
     public RavenSmsManager(
         IQueueManager queueManager,
+        IRavenSmsClientsManager clientsManager,
         IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;
-        this._messagesRepository = messagesRepository;
+        _clientsManager = clientsManager;
+        _messagesStore = messagesRepository;
     }
 }
