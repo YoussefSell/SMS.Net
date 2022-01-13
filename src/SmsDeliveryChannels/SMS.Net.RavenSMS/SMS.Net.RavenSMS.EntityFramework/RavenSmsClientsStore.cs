@@ -12,6 +12,18 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     }
 
     /// <inheritdoc/>
+    public Task<RavenSmsClient> FindByIdAsync(Guid clientId)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient> FindByPhoneNumberAsync(PhoneNumber phoneNumber)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllAsync()
     {
         throw new NotImplementedException();
