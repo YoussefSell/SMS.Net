@@ -5,15 +5,13 @@
 /// </summary>
 public partial class HangfireQueueManager : IQueueManager
 {
-    public Task<string> QueueMessageAsync(RavenSmsMessage message)
-    {
-        return Task.FromResult(Guid.NewGuid().ToString());
-    }
+    /// <inheritdoc/>
+    public Task<string> QueueMessageAsync(RavenSmsMessage message) 
+        => Task.FromResult(BackgroundJob.Enqueue<IRavenSmsManager>(manager => manager.ProcessAsync(message.Id)));
 
+    /// <inheritdoc/>
     public Task<string> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay)
-    {
-        return Task.FromResult(Guid.NewGuid().ToString());
-    }
+        => Task.FromResult(BackgroundJob.Schedule<IRavenSmsManager>(manager => manager.ProcessAsync(message.Id), delay));
 }
 
 /// <summary>
