@@ -1,5 +1,3 @@
-using SMS.Net.Channel.RavenSMS;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,7 +15,7 @@ builder.Services.AddSMSNet(options =>
 .UseRavenSMS(options =>
 {
     options.UseHangfireQueue();
-    options.UseEntityFrameworkStores();
+    options.UseEntityFrameworkStores<ApplicationDbContext>();
 });
 
 var app = builder.Build();
