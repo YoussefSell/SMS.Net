@@ -13,8 +13,10 @@ public static class Configurations
     /// <remarks>
     /// we assume that you already configured EF core in your project, this package only provide an implementation of stores that uses EF core to store the data.
     /// </remarks>
-    public static RavenSmsBuilder UseEntityFrameworkStores(this RavenSmsBuilder builder)
+    public static RavenSmsBuilder UseEntityFrameworkStores<TContext>(this RavenSmsBuilder builder) 
+        where TContext : DbContext, IRavenSmsDbContext
     {
+        builder.ServiceCollection.AddScoped<IRavenSmsDbContext, TContext>();
         builder.ServiceCollection.AddScoped<IRavenSmsClientsStore, RavenSmsClientsStore>();
         builder.ServiceCollection.AddScoped<IRavenSmsMessagesStore, RavenSmsMessagesStore>();
 
