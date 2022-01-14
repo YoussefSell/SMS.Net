@@ -17,12 +17,12 @@ public interface IRavenSmsMessagesStore
     /// </summary>
     /// <param name="message">the message to be saved</param>
     /// <returns>the operation result</returns>
-    Task<Result> SaveAsync(RavenSmsMessage message);
+    Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message);
 
     /// <summary>
     /// update the given message.
     /// </summary>
     /// <param name="message">the message to be updated</param>
     /// <returns>the operation result</returns>
-    Task<Result> UpdateAsync(RavenSmsMessage message);
+    Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message);
 }

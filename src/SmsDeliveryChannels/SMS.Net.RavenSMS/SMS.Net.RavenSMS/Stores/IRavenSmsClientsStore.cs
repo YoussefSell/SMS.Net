@@ -18,14 +18,14 @@ public interface IRavenSmsClientsStore
     /// </summary>
     /// <param name="clientId">the id of the client to find.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
-    Task<RavenSmsClient> FindByIdAsync(Guid clientId);
+    Task<RavenSmsClient?> FindByIdAsync(Guid clientId);
 
     /// <summary>
     /// find the client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number associated with the client to find.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
-    Task<RavenSmsClient> FindByPhoneNumberAsync(PhoneNumber phoneNumber);
+    Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber);
 
     /// <summary>
     /// get the list of all registered clients.
