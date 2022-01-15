@@ -6,6 +6,19 @@
 public interface IRavenSmsMessagesStore
 {
     /// <summary>
+    /// get the list of all messages
+    /// </summary>
+    /// <returns>list of all messages</returns>
+    Task<RavenSmsMessage[]> GetAllAsync();
+
+    /// <summary>
+    /// get the list of all messages that match the given filter.
+    /// </summary>
+    /// <param name="filter">the ravenSMS message filter</param>
+    /// <returns>the list of messages</returns>
+    Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter);
+
+    /// <summary>
     /// find the message with the given id.
     /// </summary>
     /// <param name="messageId">the id of the message</param>
