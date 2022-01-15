@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Models;
+﻿namespace SMS.Net.Channel.RavenSMS.Entities;
 
 /// <summary>
 /// a class that defines the RavenSMS Message
@@ -48,10 +48,20 @@ public class RavenSmsMessage
     /// <summary>
     /// Get or set the id of the queue job associated with this message.
     /// </summary>
-    public string? JobQueueId { get; internal set; }
+    public string? JobQueueId { get; set; }
 
     /// <summary>
     /// Get or set the status of the message
     /// </summary>
-    public RavenSmsMessageStatus Status { get; internal set; }
+    public RavenSmsMessageStatus Status { get; set; }
+
+    /// <summary>
+    /// Get or set the id of the client used to send this message.
+    /// </summary>
+    public Guid? ClientId { get; set; }
+
+    /// <summary>
+    /// Get or set the Client used to send this message.
+    /// </summary>
+    public RavenSmsClient? Client { get; set; }
 }

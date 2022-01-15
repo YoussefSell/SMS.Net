@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Models;
+﻿namespace SMS.Net.Channel.RavenSMS.Entities;
 
 /// <summary>
 /// a class that defines a client that is used for sending SMS messages.
