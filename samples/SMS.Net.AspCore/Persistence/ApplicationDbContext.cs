@@ -17,4 +17,7 @@ public class ApplicationDbContext : DbContext, IRavenSmsDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite($"Data Source={DatabasePath}");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        => modelBuilder.ApplyRavenSmsEntityConfiguration();
 }
