@@ -1,4 +1,9 @@
-﻿global using SMS.Net.RavenSMS.Pages;
+﻿global using Microsoft.AspNetCore.Mvc.RazorPages;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;
+
+global using SMS.Net.RavenSMS.Pages;
 global using SMS.Net.Channel.RavenSMS;
 global using SMS.Net.Channel.RavenSMS.Enums;
 global using SMS.Net.Channel.RavenSMS.Entities;
