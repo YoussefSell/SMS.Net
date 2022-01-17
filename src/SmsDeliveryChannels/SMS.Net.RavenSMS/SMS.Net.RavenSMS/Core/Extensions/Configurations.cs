@@ -30,8 +30,6 @@ public static class Configurations
         builder.ServiceCollection.AddSingleton((s) => options);
         builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
         builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
-
-        builder.ServiceCollection.AddScoped<IRavenSmsClientsManager, RavenSmsClientsManager>();
         builder.ServiceCollection.AddScoped<IRavenSmsManager, RavenSmsManager>();
 
         builder.ServiceCollection.ConfigureOptions(typeof(RavenSmsUIConfigureOptions));

@@ -13,9 +13,9 @@ public partial class RavenSmsManager : IRavenSmsManager
             throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
 
         // get the client associated with the given from number
-        var client = await _clientsManager.FindByPhoneNumberAsync(message.From);
+        _ = await FindClientByPhoneNumberAsync(message.From);
 
-        // ToDo: add the logic for sending the message with the client
+        // add the logic for sending the message with the client
     }
 
     /// <inheritdoc/>
@@ -57,6 +57,22 @@ public partial class RavenSmsManager : IRavenSmsManager
         // all done
         return Result.Success();
     }
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient[]> GetAllClientsAsync()
+        => _clientsRepository.GetAllAsync();
+
+    /// <inheritdoc/>
+    public Task<bool> AnyClientAsync(PhoneNumber from)
+        => _clientsRepository.AnyAsync(from);
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient?> FindClientByIdAsync(Guid clientId)
+        => _clientsRepository.FindByIdAsync(clientId);
+
+    /// <inheritdoc/>
+    public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber)
+        => _clientsRepository.FindByPhoneNumberAsync(phoneNumber);
 }
 
 /// <summary>
@@ -66,15 +82,15 @@ public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
     private readonly IRavenSmsMessagesStore _messagesStore;
-    private readonly IRavenSmsClientsManager _clientsManager;
+    private readonly IRavenSmsClientsStore _clientsRepository;
 
     public RavenSmsManager(
         IQueueManager queueManager,
-        IRavenSmsClientsManager clientsManager,
+        IRavenSmsClientsStore clientsStore,
         IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;
-        _clientsManager = clientsManager;
+        _clientsRepository = clientsStore;
         _messagesStore = messagesRepository;
     }
 }

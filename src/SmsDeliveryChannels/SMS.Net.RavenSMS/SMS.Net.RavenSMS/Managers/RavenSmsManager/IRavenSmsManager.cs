@@ -26,4 +26,24 @@ public interface IRavenSmsManager
     /// <param name="delay">the delay to use before sending the message.</param>
     /// <returns>a Task instance</returns>
     Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
+
+    /// <summary>
+    /// find the client with the given Id.
+    /// </summary>
+    /// <param name="clientId">the id of the client to find.</param>
+    /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
+    Task<RavenSmsClient?> FindClientByIdAsync(Guid clientId);
+
+    /// <summary>
+    /// find the client with the given phone number.
+    /// </summary>
+    /// <param name="phoneNumber">the phone number associated with the client to find.</param>
+    /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
+    Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber);
+
+    /// <summary>
+    /// get the list of all registered clients.
+    /// </summary>
+    /// <returns>the list of clients.</returns>
+    Task<RavenSmsClient[]> GetAllClientsAsync();
 }
