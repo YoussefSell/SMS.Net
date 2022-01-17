@@ -8,12 +8,12 @@ public interface IRavenSmsDbContext
     /// <summary>
     /// Get access to ravenSMS clients
     /// </summary>
-    DbSet<RavenSmsClient> Clients { get; }
+    DbSet<RavenSmsClient> RavenSmsClients { get; }
 
     /// <summary>
     /// Get access to ravenSMS messages.
     /// </summary>
-    DbSet<RavenSmsMessage> Messages { get; }
+    DbSet<RavenSmsMessage> RavenSmsMessages { get; }
 
     /// <summary>
     /// Saves all changes made in this context to the database.

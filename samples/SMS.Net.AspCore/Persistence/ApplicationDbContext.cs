@@ -2,9 +2,9 @@
 
 public class ApplicationDbContext : DbContext, IRavenSmsDbContext
 {
-    public DbSet<RavenSmsClient> Clients { get; set; } = default!;
+    public DbSet<RavenSmsClient> RavenSmsClients { get; set; } = default!;
 
-    public DbSet<RavenSmsMessage> Messages { get; set; } = default!;
+    public DbSet<RavenSmsMessage> RavenSmsMessages { get; set; } = default!;
 
     public string DatabasePath { get; }
 

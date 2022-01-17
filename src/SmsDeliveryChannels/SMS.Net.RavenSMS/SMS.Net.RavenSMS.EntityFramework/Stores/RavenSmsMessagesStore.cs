@@ -7,16 +7,16 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 {
     /// <inheritdoc/>
     public Task<RavenSmsMessage?> FindByIdAsync(Guid messageId)
-        => _context.Messages.FirstOrDefaultAsync(message => message.Id == messageId);
+        => _context.RavenSmsMessages.FirstOrDefaultAsync(message => message.Id == messageId);
 
     /// <inheritdoc/>
     public Task<RavenSmsMessage[]> GetAllAsync()
-        => _context.Messages.ToArrayAsync();
+        => _context.RavenSmsMessages.ToArrayAsync();
 
     /// <inheritdoc/>
     public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter)
     {
-        var query = _context.Messages.AsQueryable();
+        var query = _context.RavenSmsMessages.AsQueryable();
 
         // apply the filter & the orderBy
         query = SetFilter(query, filter);
@@ -48,7 +48,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     {
         try
         {
-            var entity = _context.Messages.Add(message);
+            var entity = _context.RavenSmsMessages.Add(message);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
@@ -65,7 +65,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     {
         try
         {
-            var entity = _context.Messages.Update(message);
+            var entity = _context.RavenSmsMessages.Update(message);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
