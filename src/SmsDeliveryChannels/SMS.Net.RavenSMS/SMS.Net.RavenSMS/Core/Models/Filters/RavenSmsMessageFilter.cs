@@ -9,7 +9,7 @@
         {
             To = new HashSet<string>();
             From = new HashSet<string>();
-            Clients = new HashSet<Guid>();
+            Clients = new HashSet<Guid?>();
             Status = new HashSet<RavenSmsMessageStatus>();
         }
 
