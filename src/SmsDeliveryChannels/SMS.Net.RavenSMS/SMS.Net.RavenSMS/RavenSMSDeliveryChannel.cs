@@ -15,7 +15,8 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
         try
         {
             // check if there is any client registered with the given "FROM" phone number
-            if (!await _clientsManager.AnyAsync(message.From))
+            var client = await _ravenSmsManager.FindClientByPhoneNumberAsync(message.From);
+            if (client is not null)
             {
                 return SmsSendingResult.Failure(Name)
                     .AddError(new SmsSendingError(
@@ -68,7 +69,6 @@ public partial class RavenSmsDeliveryChannel
     string ISmsDeliveryChannel.Name => Name;
 
     private readonly IRavenSmsManager _ravenSmsManager;
-    private readonly IRavenSmsClientsManager _clientsManager;
     private readonly RavenSmsDeliveryChannelOptions _options;
 
     /// <summary>
@@ -78,7 +78,6 @@ public partial class RavenSmsDeliveryChannel
     /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
     public RavenSmsDeliveryChannel(
         IRavenSmsManager ravenSmsManager,
-        IRavenSmsClientsManager clientsManager,
         RavenSmsDeliveryChannelOptions options)
     {
         if (options is null)
@@ -88,7 +87,6 @@ public partial class RavenSmsDeliveryChannel
         options.Validate();
         _options = options;
         _ravenSmsManager = ravenSmsManager;
-        _clientsManager = clientsManager;
     }
 
     /// <summary>
