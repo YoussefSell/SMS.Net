@@ -18,6 +18,8 @@ builder.Services.AddSMSNet(options =>
     options.UseEntityFrameworkStores<ApplicationDbContext>();
 });
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
