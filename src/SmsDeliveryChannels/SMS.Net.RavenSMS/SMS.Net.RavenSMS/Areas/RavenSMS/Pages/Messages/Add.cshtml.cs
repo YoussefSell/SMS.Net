@@ -16,7 +16,35 @@ public partial class MessagesAddPageModel : BasePageModel
     /// </summary>
     public class MessagesAddPageModelInput
     {
+        /// <summary>
+        /// Gets or sets the priority of this e-mail message.
+        /// </summary>
+        public Priority Priority { get; set; }
 
+        /// <summary>
+        /// Get or set the message body.
+        /// </summary>
+        public string Body { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set the phone numbers of recipients to send the SMS message to.
+        /// </summary>
+        public string To { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set the phone number used to send the SMS message from it.
+        /// </summary>
+        public string From { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set the id of the client used to send this message.
+        /// </summary>
+        public Guid ClientId { get; set; }
+
+        /// <summary>
+        /// the delivery date
+        /// </summary>
+        public DateTime DeliveryDate { get; set; }
     }
 }
 

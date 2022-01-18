@@ -33,7 +33,7 @@
                         </div>
                         <!-- From -->
                         <div class="mb-3">
-                            <label for="for" class="form-label">
+                            <label asp-for="Input.From" class="form-label">
                                 From
                                 <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
                                       data-bs-content="Select the phone number used as the sender of SMS message.">
@@ -44,7 +44,7 @@
                                     </svg>
                                 </span>
                             </label>
-                            <select id="for" class="form-select" aria-label="Default select example">
+                            <select asp-for="Input.From" class="form-select" aria-label="Default select example">
                                 <option selected>select a phone number</option>
                                 <option value="1">+2120606060606</option>
                                 <option value="1">+2120606060606</option>
@@ -52,16 +52,12 @@
                         </div>
                         <!-- To -->
                         <div class="mb-3">
-                            <label for="to" class="form-label">
-                                To
-                            </label>
-                            <input type="tel" class="form-control" id="to" value="+212606063562" required>
+                            <label asp-for="Input.To" class="form-label">To</label>
+                            <input asp-for="Input.To" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="Priority" class="form-label">
-                                Priority
-                            </label>
-                            <select id="Priority" class="form-select" aria-label="select message priority">
+                            <label asp-for="Input.Priority" class="form-label">Priority</label>
+                            <select asp-for="Input.Priority" class="form-select" aria-label="select message priority">
                                 <option value="0">Low</option>
                                 <option value="1" selected>Normal</option>
                                 <option value="2">High</option>
@@ -69,8 +65,8 @@
                         </div>
                         <!-- Message body -->
                         <div class="mb-3">
-                            <label for="messageBody" class="form-label">Message body</label>
-                            <textarea id="messageBody" class="form-control" placeholder="you message" style="height: 100px"></textarea>
+                            <label asp-for="Input.Body" class="form-label">Message body</label>
+                            <textarea asp-for="Input.Body" class="form-control" placeholder="you message" style="height: 100px"></textarea>
                         </div>
                         <!-- Queue for future delivery -->
                         <div class="form-check form-switch mb-3">
@@ -79,8 +75,8 @@
                         </div>
                         <!-- Queue for future delivery -->
                         <div class="mb-3">
-                            <label class="form-label" for="deliveryDate">delivery date</label>
-                            <input class="form-control" type="datetime" id="deliveryDate">
+                            <label asp-for="Input.DeliveryDate" class="form-label">delivery date</label>
+                            <input asp-for="Input.DeliveryDate" class="form-control">
                         </div>
                         <!-- Send action -->
                         <button type="submit" class="btn app-btn-primary">Send</button>
