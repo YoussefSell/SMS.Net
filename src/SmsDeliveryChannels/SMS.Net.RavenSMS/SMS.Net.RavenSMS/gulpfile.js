@@ -41,6 +41,7 @@ gulp.task('css-app', function () {
 // js
 gulp.task('js-vendor', function(){
 	return gulp.src([
+		'node_modules/jquery/dist/jquery.min.js',
 		'node_modules/@popperjs/core/dist/umd/popper.min.js',
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
 		'node_modules/@fortawesome/fontawesome-free/js/all.min.js',
@@ -70,6 +71,20 @@ gulp.task('js-app-pages-dashboard', function () {
 	.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-messages-add', function () {
+	return gulp.src([
+		'node_modules/moment/min/moment.min.js',
+		'node_modules/jquery-validation/dist/jquery.validate.min.js',
+		'node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js',
+		'node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js',
+		'Assets/src/js/messages.add.page.js',
+	])
+	.pipe(sourcemaps.init())
+	.pipe(concat('messages.add.page.min.js'))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest('Assets/js'));
+});
+
 // runner
 gulp.task('default', gulp.series(gulp.parallel([
 	// default
@@ -84,5 +99,6 @@ gulp.task('default', gulp.series(gulp.parallel([
 	'js-app',
 
 	// pages scripts
-	'js-app-pages-dashboard'
+	'js-app-pages-dashboard',
+	'js-app-pages-messages-add'
 ])));
