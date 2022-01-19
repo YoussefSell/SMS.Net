@@ -11,10 +11,11 @@
         <div class="row g-4 settings-section">
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
-                    <form class="settings-form">
+                    <form id="add-message-form" class="settings-form" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <!-- client app -->
                         <div class="mb-3">
-                            <label for="Client" class="form-label">
+                            <label asp-for="Input.ClientId" class="form-label">
                                 Client
                                 <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
                                       data-bs-content="Select the client used to send the SMS message.">
@@ -25,11 +26,12 @@
                                     </svg>
                                 </span>
                             </label>
-                            <select id="Client" class="form-select" aria-label="Default select example">
+                            <select asp-for="Input.ClientId" class="form-select" aria-label="Default select example">
                                 <option selected>select a client app</option>
                                 <option value="1">Client App 1</option>
                                 <option value="1">Client App 2</option>
                             </select>
+                            <span asp-validation-for="Input.ClientId" class="invalid-feedback"></span>
                         </div>
                         <!-- From -->
                         <div class="mb-3">
@@ -49,11 +51,13 @@
                                 <option value="1">+2120606060606</option>
                                 <option value="1">+2120606060606</option>
                             </select>
+                            <span asp-validation-for="Input.From" class="invalid-feedback"></span>
                         </div>
                         <!-- To -->
                         <div class="mb-3">
                             <label asp-for="Input.To" class="form-label">To</label>
                             <input asp-for="Input.To" class="form-control">
+                            <span asp-validation-for="Input.To" class="invalid-feedback"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Input.Priority" class="form-label">Priority</label>
@@ -62,19 +66,21 @@
                                 <option value="1" selected>Normal</option>
                                 <option value="2">High</option>
                             </select>
+                            <span asp-validation-for="Input.Priority" class="invalid-feedback"></span>
                         </div>
                         <!-- Message body -->
                         <div class="mb-3">
                             <label asp-for="Input.Body" class="form-label">Message body</label>
                             <textarea asp-for="Input.Body" class="form-control" placeholder="you message" style="height: 100px"></textarea>
+                            <span asp-validation-for="Input.Body" class="invalid-feedback"></span>
                         </div>
                         <!-- Queue for future delivery -->
                         <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="schedule">
+                            <input class="form-check-input" type="checkbox" id="schedule" onchange="onEnableSheduling(this.checked)">
                             <label class="form-check-label" for="schedule">Schedule for future delivery</label>
                         </div>
                         <!-- Queue for future delivery -->
-                        <div class="mb-3">
+                        <div id="delivery-date-container" class="mb-3" hidden>
                             <label asp-for="Input.DeliveryDate" class="form-label">delivery date</label>
                             <input asp-for="Input.DeliveryDate" class="form-control">
                         </div>
@@ -90,6 +96,15 @@
 
 @section scripts {
 <script>
+    function onEnableSheduling(enabled) {
+        var deliveryDateContainer = document.getElementById("delivery-date-container");
 
+        if (enabled){
+            deliveryDateContainer.style.display = "block";
+        }
+        else {
+            deliveryDateContainer.style.display = "none";
+        }
+    }
 </script>
 }
