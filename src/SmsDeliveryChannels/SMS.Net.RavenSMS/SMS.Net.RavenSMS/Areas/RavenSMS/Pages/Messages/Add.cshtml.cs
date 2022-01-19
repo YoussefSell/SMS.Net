@@ -53,7 +53,17 @@ public partial class MessagesAddPageModel : BasePageModel
 /// </summary>
 public partial class MessagesAddPageModel
 {
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (ModelState.IsValid)
+        {
 
+
+            return RedirectToPage("/Messages", new { area = "RavenSMS" });
+        }
+
+        return Page();
+    }
 }
 
 
