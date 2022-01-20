@@ -12,7 +12,7 @@
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
                     <form id="add-message-form" class="settings-form" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <!-- client app -->
                         <div class="mb-3">
                             <label asp-for="Input.ClientId" class="form-label">
@@ -26,10 +26,8 @@
                                     </svg>
                                 </span>
                             </label>
-                            <select asp-for="Input.ClientId" class="form-select" aria-label="Default select example">
-                                <option selected>select a client app</option>
-                                <option value="1">Client App 1</option>
-                                <option value="1">Client App 2</option>
+                            <select asp-for="Input.ClientId" class="form-select" aria-label="Default select example" onchange="onClientSelectionChanged(this)">
+                                <option value="-1" selected>select a client app</option>
                             </select>
                             <span asp-validation-for="Input.ClientId" class="invalid-feedback"></span>
                         </div>
@@ -47,9 +45,7 @@
                                 </span>
                             </label>
                             <select asp-for="Input.From" class="form-select" aria-label="Default select example">
-                                <option selected>select a phone number</option>
-                                <option value="1">+2120606060606</option>
-                                <option value="1">+2120606060606</option>
+                                <option value="-1" selected>select a phone number</option>
                             </select>
                             <span asp-validation-for="Input.From" class="invalid-feedback"></span>
                         </div>
@@ -97,6 +93,29 @@
 @section scripts {
 <script src="~/js/messages.add.page.min.js"></script>
 <script>
+    function onClientSelectionChanged(clientSelect) {
+        var clientId = clientSelect.value;
+
+        // find the client by id
+        var client = clients.find(e => e.id == clientId);
+        
+        // get the "from" select
+        var $fromSelect = $("#Input_From");
+
+        // clear the select
+        $fromSelect.each(function() {
+            if ($(this).val() != '-1' ) {
+            console.log("on remove", $(this).val() );
+                $(this).remove();
+            }
+        });
+
+        // populate the "from" select
+        $.each(client.phoneNumbers, function() {
+            $fromSelect.append($("<option />").val(this).text(this));
+        });
+    }
+
     function onEnableSheduling(enabled) {
         if (enabled){
             $("#delivery-date-container").show();
@@ -105,5 +124,35 @@
             $("#delivery-date-container").hide();
         }
     }
+
+    // init the list of clients
+    var clients = [];
+
+    // send an ajax request to load the list of clients
+    $.ajax({
+        url: '/ravenSMS/messages/add/?handler=Clients',
+    })
+    .done(function(result) {
+        // get the client select
+        var $clientsSelect = $("#Input_ClientId");
+
+        // populate the select
+        $.each(result, function() {
+            $clientsSelect.append($("<option />").val(this.id).text(this.name));
+        });
+
+        // save the clients list result
+        clients = result;
+    });
+
+    $(function () {
+        // get the form settings
+        var validatorSettings = $.data($('#add-message-form')[0], 'validator').settings;
+
+        // override the settings
+        validatorSettings.onkeyup = false;
+        validatorSettings.errorElement = "div";
+        validatorSettings.errorClass = "is-invalid";
+    });
 </script>
 }
