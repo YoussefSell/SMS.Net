@@ -80,7 +80,7 @@
                             <label class="form-check-label" for="schedule">Schedule for future delivery</label>
                         </div>
                         <!-- Queue for future delivery -->
-                        <div id="delivery-date-container" class="mb-3" hidden>
+                        <div id="delivery-date-container" class="mb-3">
                             <label asp-for="Input.DeliveryDate" class="form-label">delivery date</label>
                             <input asp-for="Input.DeliveryDate" class="form-control">
                         </div>
@@ -95,15 +95,14 @@
 </div>
 
 @section scripts {
+<script src="~/js/messages.add.page.min.js"></script>
 <script>
     function onEnableSheduling(enabled) {
-        var deliveryDateContainer = document.getElementById("delivery-date-container");
-
         if (enabled){
-            deliveryDateContainer.style.display = "block";
+            $("#delivery-date-container").hide();
         }
         else {
-            deliveryDateContainer.style.display = "none";
+            $("#delivery-date-container").show();
         }
     }
 </script>
