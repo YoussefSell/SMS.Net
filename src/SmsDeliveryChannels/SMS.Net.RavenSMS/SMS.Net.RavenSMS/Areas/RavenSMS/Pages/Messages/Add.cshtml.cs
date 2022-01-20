@@ -44,7 +44,7 @@ public partial class MessagesAddPageModel : BasePageModel
         /// <summary>
         /// the delivery date
         /// </summary>
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
     }
 }
 
@@ -57,12 +57,27 @@ public partial class MessagesAddPageModel
     {
         if (ModelState.IsValid)
         {
-
-
             return RedirectToPage("/Messages", new { area = "RavenSMS" });
         }
 
         return Page();
+    }
+
+    public async Task<JsonResult> OnGetClientsAsync()
+    {
+        // get the list of all clients
+        var clients = await _manager.GetAllClientsAsync();
+
+        // convert the clients to models
+        var clientsModels = clients.Select(client => new
+        {
+            client.Id,
+            client.Name,
+            client.PhoneNumbers,
+        });
+
+        // return json result instance
+        return new JsonResult(clientsModels);
     }
 }
 
