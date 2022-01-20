@@ -20,6 +20,40 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllAsync()
         => _context.RavenSmsClients.ToArrayAsync();
+
+    /// <inheritdoc/>
+    public async Task<Result<RavenSmsClient>> SaveAsync(RavenSmsClient client)
+    {
+        try
+        {
+            var entity = _context.RavenSmsClients.Add(client);
+            await _context.SaveChangesAsync();
+            return entity.Entity;
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure<RavenSmsClient>()
+                .WithMessage("Failed to save the client, an exception has been accrued")
+                .WithErrors(ex);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<Result<RavenSmsClient>> UpdateAsync(RavenSmsClient client)
+    {
+        try
+        {
+            var entity = _context.RavenSmsClients.Update(client);
+            await _context.SaveChangesAsync();
+            return entity.Entity;
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure<RavenSmsClient>()
+                .WithMessage("Failed to update the client, an exception has been accrued")
+                .WithErrors(ex);
+        }
+    }
 }
 
 /// <summary>

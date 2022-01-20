@@ -32,4 +32,18 @@ public interface IRavenSmsClientsStore
     /// </summary>
     /// <returns>the list of clients.</returns>
     Task<RavenSmsClient[]> GetAllAsync();
+
+    /// <summary>
+    /// save the given client.
+    /// </summary>
+    /// <param name="client">the client to be saved</param>
+    /// <returns>the operation result</returns>
+    Task<Result<RavenSmsClient>> SaveAsync(RavenSmsClient client);
+
+    /// <summary>
+    /// update the given client.
+    /// </summary>
+    /// <param name="client">the client to be updated</param>
+    /// <returns>the operation result</returns>
+    Task<Result<RavenSmsClient>> UpdateAsync(RavenSmsClient client);
 }

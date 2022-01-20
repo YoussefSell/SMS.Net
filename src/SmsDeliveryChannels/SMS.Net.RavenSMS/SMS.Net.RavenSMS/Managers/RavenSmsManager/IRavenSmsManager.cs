@@ -28,6 +28,13 @@ public interface IRavenSmsManager
     Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
 
     /// <summary>
+    /// create a new ravenSMS client.
+    /// </summary>
+    /// <param name="model">the model used to create the client</param>
+    /// <returns>the operation result</returns>
+    Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model);
+
+    /// <summary>
     /// find the client with the given Id.
     /// </summary>
     /// <param name="clientId">the id of the client to find.</param>
@@ -40,7 +47,7 @@ public interface IRavenSmsManager
     /// <param name="phoneNumber">the phone number associated with the client to find.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
     Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber);
-
+    
     /// <summary>
     /// get the list of all registered clients.
     /// </summary>

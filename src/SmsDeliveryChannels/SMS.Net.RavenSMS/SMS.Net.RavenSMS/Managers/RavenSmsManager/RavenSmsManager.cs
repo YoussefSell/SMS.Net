@@ -73,6 +73,10 @@ public partial class RavenSmsManager : IRavenSmsManager
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber)
         => _clientsRepository.FindByPhoneNumberAsync(phoneNumber);
+
+    /// <inheritdoc/>
+    public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model) 
+        => _clientsRepository.SaveAsync(model);
 }
 
 /// <summary>
