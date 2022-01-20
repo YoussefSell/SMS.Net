@@ -6,6 +6,16 @@
 public class RavenSmsClient
 {
     /// <summary>
+    /// create and instance of <see cref="RavenSmsClient"/>
+    /// </summary>
+    public RavenSmsClient()
+    {
+        Id = Guid.NewGuid();
+        CreatedOn = DateTimeOffset.Now;
+        PhoneNumbers = new HashSet<string>();
+    }
+
+    /// <summary>
     /// Get or set the id of the client.
     /// </summary>
     public Guid Id { get; set; }
