@@ -102,13 +102,9 @@
         // get the "from" select
         var $fromSelect = $("#Input_From");
 
-        // clear the select
-        $fromSelect.each(function() {
-            if ($(this).val() != '-1' ) {
-            console.log("on remove", $(this).val() );
-                $(this).remove();
-            }
-        });
+        // empty the options & add the default option
+        $fromSelect.empty()
+            .append('<option value="-1" selected>select a client app</option>');
 
         // populate the "from" select
         $.each(client.phoneNumbers, function() {
