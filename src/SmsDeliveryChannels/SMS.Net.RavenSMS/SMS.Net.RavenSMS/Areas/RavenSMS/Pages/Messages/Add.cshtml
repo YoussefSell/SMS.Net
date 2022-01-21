@@ -104,7 +104,7 @@
 
         // empty the options & add the default option
         $fromSelect.empty()
-            .append('<option value="-1" selected>select a client app</option>');
+            .append('<option value="" disabled hidden selected>select a client app</option>');
 
         // populate the "from" select
         $.each(client.phoneNumbers, function() {
