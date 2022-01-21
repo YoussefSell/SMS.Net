@@ -39,7 +39,7 @@ public partial class MessagesAddPageModel : BasePageModel
         /// <summary>
         /// Get or set the id of the client used to send this message.
         /// </summary>
-        public Guid ClientId { get; set; }
+        public Guid Client { get; set; }
 
         /// <summary>
         /// the delivery date

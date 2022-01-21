@@ -15,7 +15,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <!-- client app -->
                         <div class="mb-3">
-                            <label asp-for="Input.ClientId" class="form-label">
+                            <label asp-for="Input.Client" class="form-label">
                                 Client
                                 <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
                                       data-bs-content="Select the client used to send the SMS message.">
@@ -26,10 +26,10 @@
                                     </svg>
                                 </span>
                             </label>
-                            <select asp-for="Input.ClientId" class="form-select" aria-label="Default select example" onchange="onClientSelectionChanged(this)">
+                            <select asp-for="Input.Client" class="form-select" aria-label="Default select example" onchange="onClientSelectionChanged(this)">
                                 <option value="" disabled hidden selected>select a client app</option>
                             </select>
-                            <span asp-validation-for="Input.ClientId" class="invalid-feedback"></span>
+                            <span asp-validation-for="Input.Client" class="invalid-feedback"></span>
                         </div>
                         <!-- From -->
                         <div class="mb-3">
