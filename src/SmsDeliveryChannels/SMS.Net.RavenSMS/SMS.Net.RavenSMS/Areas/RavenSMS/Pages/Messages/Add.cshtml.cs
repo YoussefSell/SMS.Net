@@ -57,7 +57,7 @@ public partial class MessagesAddPageModel
     {
         if (ModelState.IsValid)
         {
-            return RedirectToPage("/Messages", new { area = "RavenSMS" });
+            return RedirectToPage("/Messages/index", new { area = "RavenSMS" });
         }
 
         return Page();
