@@ -12,7 +12,7 @@
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
                     <form id="add-message-form" class="settings-form" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <!-- client app -->
                         <div class="mb-3">
                             <label asp-for="Input.ClientId" class="form-label">
@@ -27,7 +27,7 @@
                                 </span>
                             </label>
                             <select asp-for="Input.ClientId" class="form-select" aria-label="Default select example" onchange="onClientSelectionChanged(this)">
-                                <option value="-1" selected>select a client app</option>
+                                <option value="" disabled hidden selected>select a client app</option>
                             </select>
                             <span asp-validation-for="Input.ClientId" class="invalid-feedback"></span>
                         </div>
@@ -45,7 +45,7 @@
                                 </span>
                             </label>
                             <select asp-for="Input.From" class="form-select" aria-label="Default select example">
-                                <option value="-1" selected>select a phone number</option>
+                                <option value="" disabled hidden selected>select a phone number</option>
                             </select>
                             <span asp-validation-for="Input.From" class="invalid-feedback"></span>
                         </div>
