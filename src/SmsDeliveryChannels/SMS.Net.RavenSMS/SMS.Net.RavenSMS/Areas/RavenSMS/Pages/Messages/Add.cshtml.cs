@@ -57,6 +57,30 @@ public partial class MessagesAddPageModel
     {
         if (ModelState.IsValid)
         {
+            // create message instance
+            var message = new RavenSmsMessage
+            {
+                To = Input.To,
+                Body = Input.Body,
+                From = Input.From,
+                ClientId = Input.Client,
+                Priority = Input.Priority,
+                Status = RavenSmsMessageStatus.Created,
+            };
+
+            // if delivery date is specified queue without a delay
+            if (Input.DeliveryDate is null)
+                await _manager.QueueMessageAsync(message);
+
+            else
+            {
+                // calculate the delay
+                var delay = Input.DeliveryDate.Value - DateTime.UtcNow;
+
+                // queue the message with the delay
+                await _manager.QueueMessageAsync(message, delay);
+            }
+
             return RedirectToPage("/Messages/index", new { area = "RavenSMS" });
         }
 
@@ -91,8 +115,8 @@ public partial class MessagesAddPageModel
 
     public MessagesAddPageModel(
         IRavenSmsManager ravenSmsManager,
-        IStringLocalizer<MessagesAddPageModel> localizer, 
-        ILogger<MessagesAddPageModel> logger) 
+        IStringLocalizer<MessagesAddPageModel> localizer,
+        ILogger<MessagesAddPageModel> logger)
         : base(localizer, logger)
     {
         _manager = ravenSmsManager;
