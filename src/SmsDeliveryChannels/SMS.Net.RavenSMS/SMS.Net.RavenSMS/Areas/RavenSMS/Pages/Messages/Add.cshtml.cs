@@ -105,7 +105,6 @@ public partial class MessagesAddPageModel
     }
 }
 
-
 /// <summary>
 /// partial part for <see cref="MessagesAddPageModel"/>
 /// </summary>
