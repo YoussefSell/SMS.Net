@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// add SMS.Net services
 builder.Services.AddSMSNet(options =>
 {
     options.PauseSending = false;
