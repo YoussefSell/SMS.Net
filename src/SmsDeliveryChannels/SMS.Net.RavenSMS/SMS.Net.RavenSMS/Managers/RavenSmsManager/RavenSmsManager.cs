@@ -58,25 +58,37 @@ public partial class RavenSmsManager : IRavenSmsManager
         return Result.Success();
     }
 
+    #region Clients management
+
     /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllClientsAsync()
-        => _clientsRepository.GetAllAsync();
+        => _clientsStore.GetAllAsync();
 
     /// <inheritdoc/>
     public Task<bool> AnyClientAsync(PhoneNumber from)
-        => _clientsRepository.AnyAsync(from);
+        => _clientsStore.AnyAsync(from);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindClientByIdAsync(Guid clientId)
-        => _clientsRepository.FindByIdAsync(clientId);
+        => _clientsStore.FindByIdAsync(clientId);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber)
-        => _clientsRepository.FindByPhoneNumberAsync(phoneNumber);
+        => _clientsStore.FindByPhoneNumberAsync(phoneNumber);
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model) 
-        => _clientsRepository.SaveAsync(model);
+    public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model)
+        => _clientsStore.SaveAsync(model);
+
+    #endregion
+
+    #region Messages management
+
+    /// <inheritdoc/>
+    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync() 
+        => _messagesStore.GetAllMessagesAsync();
+
+    #endregion
 }
 
 /// <summary>
@@ -85,8 +97,8 @@ public partial class RavenSmsManager : IRavenSmsManager
 public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
+    private readonly IRavenSmsClientsStore _clientsStore;
     private readonly IRavenSmsMessagesStore _messagesStore;
-    private readonly IRavenSmsClientsStore _clientsRepository;
 
     public RavenSmsManager(
         IQueueManager queueManager,
@@ -94,7 +106,7 @@ public partial class RavenSmsManager
         IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;
-        _clientsRepository = clientsStore;
+        _clientsStore = clientsStore;
         _messagesStore = messagesRepository;
     }
 }

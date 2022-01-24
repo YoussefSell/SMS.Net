@@ -28,6 +28,12 @@ public interface IRavenSmsManager
     Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay);
 
     /// <summary>
+    /// get the list of all messages
+    /// </summary>
+    /// <returns>the list of messages and total count of rows</returns>
+    Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync();
+
+    /// <summary>
     /// create a new ravenSMS client.
     /// </summary>
     /// <param name="model">the model used to create the client</param>
