@@ -46,7 +46,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     /// <inheritdoc/>
     public async Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync()
     {
-        var messages = await _context.RavenSmsMessages.ToArrayAsync();
+        var messages = await _context.RavenSmsMessages.Include(e => e.Client).ToArrayAsync();
         var count = await _context.RavenSmsMessages.CountAsync();
 
         return (messages, count);
