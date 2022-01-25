@@ -22,7 +22,7 @@ public partial class RavenSmsManager : IRavenSmsManager
     public async Task<Result> QueueMessageAsync(RavenSmsMessage message)
     {
         // queue the message for future processing
-        message.JobQueueId = await _queueManager.QueueMessageAsync(message);
+        // message.JobQueueId = await _queueManager.QueueMessageAsync(message);
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
@@ -42,7 +42,7 @@ public partial class RavenSmsManager : IRavenSmsManager
     public async Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay)
     {
         // queue the message for future processing
-        message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay);
+        // message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay);
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
