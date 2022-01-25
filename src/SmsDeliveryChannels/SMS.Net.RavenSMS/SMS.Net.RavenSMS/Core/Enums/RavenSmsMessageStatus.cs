@@ -8,20 +8,20 @@ public enum RavenSmsMessageStatus
     /// <summary>
     /// the message has been created.
     /// </summary>
-    Created,
+    Created = 0,
 
     /// <summary>
     /// the message has been Queued.
     /// </summary>
-    Queued,
+    Queued = 1,
 
     /// <summary>
     /// failed to send the message.
     /// </summary>
-    Failed,
+    Failed = 2,
 
     /// <summary>
     /// the message has been sent successfully.
     /// </summary>
-    Sent,
+    Sent = 3,
 }
