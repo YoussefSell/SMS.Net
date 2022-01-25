@@ -85,6 +85,18 @@ gulp.task('js-app-pages-messages-add', function () {
 	.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-messages-index', function () {
+	return gulp.src([
+		'node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
+		'node_modules/moment/min/moment.min.js',
+		'Assets/src/js/messages.index.page.js',
+	])
+		.pipe(sourcemaps.init())
+		.pipe(concat('messages.index.page.min.js'))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('Assets/js'));
+});
+
 // runner
 gulp.task('default', gulp.series(gulp.parallel([
 	// default
@@ -100,5 +112,6 @@ gulp.task('default', gulp.series(gulp.parallel([
 
 	// pages scripts
 	'js-app-pages-dashboard',
-	'js-app-pages-messages-add'
+	'js-app-pages-messages-add',
+	'js-app-pages-messages-index'
 ])));
