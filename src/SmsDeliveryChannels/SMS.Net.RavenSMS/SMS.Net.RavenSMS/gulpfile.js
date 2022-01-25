@@ -87,7 +87,6 @@ gulp.task('js-app-pages-messages-add', function () {
 
 gulp.task('js-app-pages-messages-index', function () {
 	return gulp.src([
-		'node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
 		'node_modules/moment/min/moment.min.js',
 		'Assets/src/js/messages.index.page.js',
 	])
