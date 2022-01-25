@@ -16,14 +16,16 @@ public partial class MessagesIndexPageModel
     {
         var (messages, rowsCount) = await _manager.GetAllMessagesAsync();
 
-        return new JsonResult(new {
+        return new JsonResult(new
+        {
             rowsCount,
             data = messages.Select(message => new
             {
                 message.Id,
-                message.From,
-                message.To,
+                to = message.To.ToString(),
+                from = message.From.ToString(),
                 message.Status,
+                date = message.CreateOn,
                 client = new
                 {
                     message.Client?.Id,
