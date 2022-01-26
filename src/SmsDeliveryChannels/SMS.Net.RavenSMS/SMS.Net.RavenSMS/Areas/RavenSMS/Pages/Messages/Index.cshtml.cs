@@ -5,16 +5,9 @@
 /// </summary>
 public partial class MessagesIndexPageModel
 {
-}
-
-/// <summary>
-/// partial part for <see cref="MessagesIndexPageModel"/>
-/// </summary>
-public partial class MessagesIndexPageModel
-{
-    public async Task<JsonResult> OnGetMessagesAsync()
+    public async Task<JsonResult> OnGetMessagesAsync([FromQuery] RavenSmsMessageFilter filter)
     {
-        var (messages, rowsCount) = await _manager.GetAllMessagesAsync();
+        var (messages, rowsCount) = await _manager.GetAllMessagesAsync(filter);
 
         return new JsonResult(new
         {
