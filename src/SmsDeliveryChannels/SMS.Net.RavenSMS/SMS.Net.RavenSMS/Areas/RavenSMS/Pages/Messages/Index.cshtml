@@ -88,33 +88,37 @@
     let messages = [];
 
     // load the initial data
-    $.ajax({
-        url: '/ravenSMS/messages/index/?handler=Messages',
-        data: {
-            pageIndex: 1,
-            pageSize: 5,
-        },
-        success: function (result)
-        {
-            // save the result
-            messages = result.data;
+    loadData();
 
-            // select table element
-            const $table = $("#messages_table");
+    function loadData() {
+        $.ajax({
+            url: '/ravenSMS/messages/index/?handler=Messages',
+            data: {
+                pageIndex: 1,
+                pageSize: 5,
+            },
+            success: function (result)
+            {
+                // save the result
+                messages = result.data;
 
-            // add the data to the table
-            $.each(messages, function() {
-                $table.append(buildTableRow(this));
-            });
+                // select table element
+                const $table = $("#messages_table");
 
-            // set the pagination details
-            SetPagination(
-                result.pagination.rowsCount,
-                result.pagination.pageIndex,
-                result.pagination.pageSize,
-            );
-        }
-    });
+                // add the data to the table
+                $.each(messages, function() {
+                    $table.append(buildTableRow(this));
+                });
+
+                // set the pagination details
+                SetPagination(
+                    result.pagination.rowsCount,
+                    result.pagination.pageIndex,
+                    result.pagination.pageSize,
+                );
+            }
+        });
+    }
 
     function buildTableRow(message) {
         const messageDate = moment(message.date);
