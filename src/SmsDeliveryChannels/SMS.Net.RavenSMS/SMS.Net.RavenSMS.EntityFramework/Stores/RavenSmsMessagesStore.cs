@@ -16,7 +16,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     /// <inheritdoc/>
     public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter)
     {
-        var query = _context.RavenSmsMessages.AsQueryable();
+        var query = _context.RavenSmsMessages.Include(e => e.Client).AsQueryable();
 
         // apply the filter & the orderBy
         query = SetFilter(query, filter);
@@ -41,15 +41,6 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
             : rowsCount;
 
         return (data, rowsCount);
-    }
-
-    /// <inheritdoc/>
-    public async Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync()
-    {
-        var messages = await _context.RavenSmsMessages.Include(e => e.Client).ToArrayAsync();
-        var count = await _context.RavenSmsMessages.CountAsync();
-
-        return (messages, count);
     }
 
     /// <inheritdoc/>

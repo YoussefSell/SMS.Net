@@ -85,8 +85,8 @@ public partial class RavenSmsManager : IRavenSmsManager
     #region Messages management
 
     /// <inheritdoc/>
-    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync() 
-        => _messagesStore.GetAllMessagesAsync();
+    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter) 
+        => _messagesStore.GetAllAsync(filter);
 
     #endregion
 }

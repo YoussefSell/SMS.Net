@@ -38,10 +38,4 @@ public interface IRavenSmsMessagesStore
     /// <param name="message">the message to be updated</param>
     /// <returns>the operation result</returns>
     Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message);
-
-    /// <summary>
-    /// get the list of all messages
-    /// </summary>
-    /// <returns>the list of messages and total count of rows</returns>
-    Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync();
 }

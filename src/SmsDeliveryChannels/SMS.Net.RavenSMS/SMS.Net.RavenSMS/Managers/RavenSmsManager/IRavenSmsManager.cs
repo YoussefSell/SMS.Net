@@ -30,8 +30,9 @@ public interface IRavenSmsManager
     /// <summary>
     /// get the list of all messages
     /// </summary>
+    /// <param name="filter">the filter used to retrieve the messages.</param>
     /// <returns>the list of messages and total count of rows</returns>
-    Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync();
+    Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter);
 
     /// <summary>
     /// create a new ravenSMS client.
