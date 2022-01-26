@@ -11,7 +11,12 @@ public partial class MessagesIndexPageModel
 
         return new JsonResult(new
         {
-            rowsCount,
+            pagination = new
+            {
+                rowsCount,
+                pageSize = filter.PageSize,
+                pageIndex = filter.PageIndex,
+            },
             data = messages.Select(message => new
             {
                 message.Id,

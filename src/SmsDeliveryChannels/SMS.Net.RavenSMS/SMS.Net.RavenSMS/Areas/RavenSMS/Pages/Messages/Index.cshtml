@@ -108,8 +108,12 @@
             });
 
             // set the pagination details
-            SetPagination(1, 20);
-        } 
+            SetPagination(
+                result.pagination.rowsCount,
+                result.pagination.pageIndex,
+                result.pagination.pageSize,
+            );
+        }
     });
 
     function buildTableRow(message) {
@@ -129,7 +133,7 @@
         </tr>`
     }
 
-    function SetPagination(currentIndex, pagesCount) {
+    function SetPagination(rowsCount, pageIndex, pageSize) {
         // select the paginator
         const $paginator = $("#paginator");
 
@@ -143,10 +147,13 @@
             </li>
         `);
 
+        // get the pagination logic
+        const pagination = paginate(rowsCount, pageIndex, pageSize);
+
         // append pages
-        for (i = 1; i <= pagesCount; i++) {
-            $paginator.append(`<li class="page-item ${i == currentIndex ? 'active': ''}"><a class="page-link" href="#">${i}</a></li>`);
-        }
+        $.each(pagination.pages, function() {
+            $paginator.append(`<li class="page-item ${this == pagination.currentPage ? 'active': ''}"><a class="page-link" href="#">${this}</a></li>`);
+        })
 
         // append the Next button
         $paginator.append(`
