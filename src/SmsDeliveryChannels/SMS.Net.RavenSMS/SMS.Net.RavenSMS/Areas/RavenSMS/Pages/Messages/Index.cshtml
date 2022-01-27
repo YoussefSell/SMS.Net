@@ -14,26 +14,22 @@
                 <div class="page-utilities">
                     <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
                         <div class="col-auto">
-                            <form class="table-search-form row gx-1 align-items-center">
+                            <div class="table-search-form row gx-1 align-items-center">
                                 <div class="col-auto">
-                                    <input type="text" id="search-orders" name="searchorders" class="form-control search-orders" placeholder="Search">
+                                    <input type="text" id="search-query" name="searchQuery" class="form-control" placeholder="Search">
+                                </div>
+                                <div class="col-auto">
+                                   @* <input id="search-period" type="text" class="form-control" />*@
+                                    <div id="search-period" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <span></span> <i class="fa fa-caret-down"></i>
+                                    </div>
                                 </div>
                                 <div class="col-auto">
                                     <button type="submit" class="btn app-btn-secondary">Search</button>
                                 </div>
-                            </form>
+                            </div>
                         </div><!--//col-->
-                        <div class="col-auto">
-                            <select class="form-select w-auto">
-                                <option selected value="option-1">All</option>
-                                <option value="option-2">This week</option>
-                                <option value="option-3">This month</option>
-                                <option value="option-3">Last month</option>
-                                <option value="option-4">Last 3 months</option>
-                                <option value="option-4">This Year</option>
-
-                            </select>
-                        </div>
                         <div class="col-auto">
                             <a class="btn app-btn-secondary" asp-page="/Messages/Add">
                                 <i class="fas fa-edit"></i>
@@ -81,9 +77,28 @@
     </div>
 </div>
 
+@section styles {
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+}
+
 @section scripts {
 <script src="~/js/messages.index.page.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
+
+    // init the date range picker
+    $("#search-period").daterangepicker({
+        ranges: {
+           'Today': [moment(), moment()],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, function(start, end) {
+        $('#search-period span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    });
+
     // init the list of messages
     let messages = [];
 
@@ -174,6 +189,34 @@
             case 3: return `<span class="badge bg-success">Sent</span>`
             default: return `<span class="badge bg-secondary">Created</span>`
         }
+    }
+
+    function getFilterData() {
+
+        let startDate = null;
+        let endDate = null;
+
+
+        switch($("#search-period").val()) {
+            case 1:
+                endDate = new Date();
+                startDate = new Date().setDate(endDate.getDate() + -7);
+                break;
+
+        }
+
+
+        return new {
+            searchQuery: $("#search-query").val(),
+            startDate: new Date(),
+            endDate: new Date(),
+            Status: [
+
+            ],
+            to: [],
+            from: [],
+            clients: [],
+        };
     }
 
 </script>
