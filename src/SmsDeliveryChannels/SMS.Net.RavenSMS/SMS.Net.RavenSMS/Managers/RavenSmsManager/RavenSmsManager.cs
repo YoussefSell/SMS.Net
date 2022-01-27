@@ -6,7 +6,7 @@
 public partial class RavenSmsManager : IRavenSmsManager
 {
     /// <inheritdoc/>
-    public async Task ProcessAsync(Guid messageId)
+    public async Task ProcessAsync(string messageId)
     {
         var message = await _messagesStore.FindByIdAsync(messageId);
         if (message is null)
@@ -69,7 +69,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         => _clientsStore.AnyAsync(from);
 
     /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindClientByIdAsync(Guid clientId)
+    public Task<RavenSmsClient?> FindClientByIdAsync(string clientId)
         => _clientsStore.FindByIdAsync(clientId);
 
     /// <inheritdoc/>

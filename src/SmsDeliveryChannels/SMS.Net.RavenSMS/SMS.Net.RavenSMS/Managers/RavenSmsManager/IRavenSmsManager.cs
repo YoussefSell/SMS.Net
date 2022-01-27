@@ -10,7 +10,7 @@ public interface IRavenSmsManager
     /// </summary>
     /// <param name="messageId">the id of the message to process.</param>
     /// <returns>a Task instance</returns>
-    Task ProcessAsync(Guid messageId);
+    Task ProcessAsync(string messageId);
 
     /// <summary>
     /// queue the message for processing
@@ -46,7 +46,7 @@ public interface IRavenSmsManager
     /// </summary>
     /// <param name="clientId">the id of the client to find.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
-    Task<RavenSmsClient?> FindClientByIdAsync(Guid clientId);
+    Task<RavenSmsClient?> FindClientByIdAsync(string clientId);
 
     /// <summary>
     /// find the client with the given phone number.

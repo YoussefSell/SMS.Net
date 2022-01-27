@@ -23,7 +23,7 @@ public interface IRavenSmsMessagesStore
     /// </summary>
     /// <param name="messageId">the id of the message</param>
     /// <returns>the message, or null if not found</returns>
-    Task<RavenSmsMessage?> FindByIdAsync(Guid messageId);
+    Task<RavenSmsMessage?> FindByIdAsync(string messageId);
 
     /// <summary>
     /// save the given message.

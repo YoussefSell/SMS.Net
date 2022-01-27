@@ -9,7 +9,7 @@
         {
             To = new HashSet<string>();
             From = new HashSet<string>();
-            Clients = new HashSet<Guid?>();
+            Clients = new HashSet<string>();
             Status = new HashSet<RavenSmsMessageStatus>();
         }
 
@@ -46,6 +46,6 @@
         /// <summary>
         /// Get or set the list of ravenSMS clients filter.
         /// </summary>
-        public IEnumerable<Guid?> Clients { get; set; }
+        public IEnumerable<string> Clients { get; set; }
     }
 }

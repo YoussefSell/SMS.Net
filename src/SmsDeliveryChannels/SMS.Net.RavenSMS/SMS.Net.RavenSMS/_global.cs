@@ -6,6 +6,7 @@ global using Microsoft.Extensions.Logging;
 global using SMS.Net.RavenSMS.Pages;
 global using SMS.Net.Channel.RavenSMS;
 global using SMS.Net.Channel.RavenSMS.Enums;
+global using SMS.Net.Channel.RavenSMS.Utilities;
 global using SMS.Net.Channel.RavenSMS.Entities;
 global using SMS.Net.Channel.RavenSMS.Managers;
 global using SMS.Net.Channel.RavenSMS.Exceptions;

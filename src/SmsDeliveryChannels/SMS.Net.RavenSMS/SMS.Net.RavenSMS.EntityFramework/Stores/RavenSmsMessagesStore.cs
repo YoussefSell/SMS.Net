@@ -6,7 +6,7 @@
 public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 {
     /// <inheritdoc/>
-    public Task<RavenSmsMessage?> FindByIdAsync(Guid messageId)
+    public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
         => _context.RavenSmsMessages.FirstOrDefaultAsync(message => message.Id == messageId);
 
     /// <inheritdoc/>

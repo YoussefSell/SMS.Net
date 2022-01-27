@@ -10,15 +10,15 @@ public class RavenSmsClient
     /// </summary>
     public RavenSmsClient()
     {
-        Id = Guid.NewGuid();
         CreatedOn = DateTimeOffset.Now;
         PhoneNumbers = new HashSet<string>();
+        Id = Generator.GenerateUniqueId("clt");
     }
 
     /// <summary>
     /// Get or set the id of the client.
     /// </summary>
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Get or set for the client.
@@ -38,5 +38,5 @@ public class RavenSmsClient
     /// <summary>
     /// the phone numbers associated with this client
     /// </summary>
-    public IEnumerable<string> PhoneNumbers { get; set; } = default!;
+    public IEnumerable<string> PhoneNumbers { get; set; } 
 }

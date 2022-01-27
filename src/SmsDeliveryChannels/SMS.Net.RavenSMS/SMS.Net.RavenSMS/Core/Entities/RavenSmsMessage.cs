@@ -10,15 +10,15 @@ public class RavenSmsMessage
     /// </summary>
     public RavenSmsMessage()
     {
-        Id = Guid.NewGuid();
         CreateOn = DateTimeOffset.Now;
         Status = RavenSmsMessageStatus.Created;
+        Id = Generator.GenerateUniqueId("msg");
     }
 
     /// <summary>
     /// Get or set the id of the message.
     /// </summary>
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Get or set the date this message was create on.
@@ -58,7 +58,7 @@ public class RavenSmsMessage
     /// <summary>
     /// Get or set the id of the client used to send this message.
     /// </summary>
-    public Guid? ClientId { get; set; }
+    public string ClientId { get; set; } = default!;
 
     /// <summary>
     /// Get or set the Client used to send this message.

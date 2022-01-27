@@ -10,7 +10,7 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
         => _context.RavenSmsClients.AnyAsync(client => client.PhoneNumbers.Contains(from.ToString()));
 
     /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindByIdAsync(Guid clientId)
+    public Task<RavenSmsClient?> FindByIdAsync(string clientId)
         => _context.RavenSmsClients.FirstOrDefaultAsync(client => client.Id == clientId);
 
     /// <inheritdoc/>
