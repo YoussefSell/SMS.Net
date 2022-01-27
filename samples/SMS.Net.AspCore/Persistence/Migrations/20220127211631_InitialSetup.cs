@@ -13,7 +13,7 @@ namespace SMS.Net.AspCore.Migrations
                 name: "RavenSmsClients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
@@ -28,7 +28,7 @@ namespace SMS.Net.AspCore.Migrations
                 name: "RavenSmsMessages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     CreateOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     Priority = table.Column<string>(type: "TEXT", nullable: false),
                     Body = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
@@ -36,7 +36,7 @@ namespace SMS.Net.AspCore.Migrations
                     From = table.Column<string>(type: "TEXT", nullable: false),
                     JobQueueId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Status = table.Column<string>(type: "TEXT", nullable: false),
-                    ClientId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ClientId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,8 @@ namespace SMS.Net.AspCore.Migrations
                         name: "FK_RavenSmsMessages_RavenSmsClients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "RavenSmsClients",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

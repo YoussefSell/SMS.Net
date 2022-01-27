@@ -19,8 +19,7 @@ namespace SMS.Net.AspCore.Migrations
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedOn")
@@ -47,8 +46,7 @@ namespace SMS.Net.AspCore.Migrations
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Body")
@@ -56,7 +54,8 @@ namespace SMS.Net.AspCore.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<string>("ClientId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreateOn")
@@ -93,7 +92,9 @@ namespace SMS.Net.AspCore.Migrations
                 {
                     b.HasOne("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Client");
                 });
