@@ -10,11 +10,15 @@ public class RavenSmsMessageEntityConfiguration : IEntityTypeConfiguration<Raven
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<RavenSmsMessage> builder)
     {
+        builder.Property(e => e.Id)
+            .HasMaxLength(17);
+
         builder.Property(e => e.Priority)
             .HasConversion(new EnumToStringConverter<Priority>());
 
         builder.Property(e => e.Status)
-            .HasConversion(new EnumToStringConverter<Enums.RavenSmsMessageStatus>());
+            .HasConversion(new EnumToStringConverter<RavenSmsMessageStatus>())
+            .HasMaxLength(10);
 
         builder.Property(e => e.Body)
             .HasMaxLength(500);
@@ -22,18 +26,23 @@ public class RavenSmsMessageEntityConfiguration : IEntityTypeConfiguration<Raven
         builder.Property(e => e.JobQueueId)
             .HasMaxLength(100);
 
+        builder.Property(e => e.ClientId)
+            .HasMaxLength(17);
+
         builder.Property(e => e.To)
             .HasConversion
             (
                 entity => entity.ToString(),
                 value => new PhoneNumber(value)
-            );
+            )
+            .HasMaxLength(20);
 
         builder.Property(e => e.From)
             .HasConversion
             (
                 entity => entity.ToString(),
                 value => new PhoneNumber(value)
-            );
+            )
+            .HasMaxLength(20);
     }
 }

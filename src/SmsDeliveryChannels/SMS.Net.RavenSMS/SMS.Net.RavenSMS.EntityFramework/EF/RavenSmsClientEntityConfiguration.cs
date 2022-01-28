@@ -15,6 +15,9 @@ public class RavenSmsClientEntityConfiguration : IEntityTypeConfiguration<RavenS
     /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<RavenSmsClient> builder)
     {
+        builder.Property(e => e.Id)
+            .HasMaxLength(17);
+
         builder.Property(e => e.PhoneNumbers)
             .HasConversion
             (
