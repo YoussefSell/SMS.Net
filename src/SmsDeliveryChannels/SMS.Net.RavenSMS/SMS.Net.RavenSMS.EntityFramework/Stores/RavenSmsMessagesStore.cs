@@ -96,10 +96,10 @@ public partial class RavenSmsMessagesStore
             query = query.Where(e => EF.Functions.Like(e.Body, $"%{filter.SearchQuery}%"));
 
         if (filter.StartDate.HasValue)
-            query = query.Where(e => e.CreateOn >= filter.StartDate);
+            query = query.Where(e => e.CreateOn.Date >= filter.StartDate.Value.Date);
 
         if (filter.EndDate.HasValue)
-            query = query.Where(e => e.CreateOn >= filter.EndDate);
+            query = query.Where(e => e.CreateOn.Date <= filter.EndDate.Value.Date);
 
         if (filter.Priority.HasValue)
             query = query.Where(e => e.Priority == filter.Priority);
