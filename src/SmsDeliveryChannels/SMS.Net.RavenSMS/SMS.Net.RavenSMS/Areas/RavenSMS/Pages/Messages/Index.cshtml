@@ -14,19 +14,19 @@
                 <div class="page-utilities">
                     <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
                         <div class="col-auto">
-                            <div class="table-search-form row gx-1 align-items-center">
+                            <div class="row gx-1 align-items-center">
                                 <div class="col-auto">
                                     <input type="text" id="search-query" name="searchQuery" class="form-control" placeholder="Search">
                                 </div>
                                 <div class="col-auto">
-                                   @* <input id="search-period" type="text" class="form-control" />*@
+                                    @* <input id="search-period" type="text" class="form-control" />*@
                                     <div id="search-period" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                                         <i class="fa fa-calendar"></i>&nbsp;
                                         <span></span> <i class="fa fa-caret-down"></i>
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn app-btn-secondary">Search</button>
+                                    <button type="submit" class="btn app-btn-secondary" onclick="getFilterData()">Search</button>
                                 </div>
                             </div>
                         </div><!--//col-->
@@ -42,10 +42,11 @@
         </div>
 
         <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-            <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-            <a class="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">Queued</a>
-            <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Sent</a>
-            <a class="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab" href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">Failed</a>
+            <a class="flex-sm-fill text-sm-center nav-link active" value="-1" data-bs-toggle="tab" >All</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="0" data-bs-toggle="tab">Created</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="1" data-bs-toggle="tab">Queued</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="2" data-bs-toggle="tab">Sent</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="3" data-bs-toggle="tab">Failed</a>
         </nav>
 
         <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -95,12 +96,15 @@
            'This Month': [moment().startOf('month'), moment().endOf('month')],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-    }, function(start, end) {
-        $('#search-period span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    });
+    }, setDateRange);
 
-    // init the list of messages
+    // init the required variables
     let messages = [];
+    let startDate = null;
+    let endDate = null;
+
+    // set the date range initial value
+    setDateRange(moment().subtract(29, 'days'), moment());
 
     // load the initial data
     loadData();
@@ -137,7 +141,6 @@
 
     function buildTableRow(message) {
         const messageDate = moment(message.date);
-            console.log(messageDate);
 
         return `<tr>
             <td style="max-width:150px" class="cell">${message.id}</td>
@@ -192,31 +195,24 @@
     }
 
     function getFilterData() {
-
-        let startDate = null;
-        let endDate = null;
-
-
-        switch($("#search-period").val()) {
-            case 1:
-                endDate = new Date();
-                startDate = new Date().setDate(endDate.getDate() + -7);
-                break;
-
-        }
-
-
-        return new {
+        let vare = {
             searchQuery: $("#search-query").val(),
-            startDate: new Date(),
-            endDate: new Date(),
-            Status: [
-
-            ],
+            startDate: new Date(startDate.format()),
+            endDate: new Date(endDate.format()),
+            Status: [],
             to: [],
             from: [],
             clients: [],
         };
+    }
+
+    function setDateRange(start, end) {
+        // set the values of the start & end dates
+        startDate = start;
+        endDate = end;
+
+        // set the date range text
+        $('#search-period span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
 </script>
