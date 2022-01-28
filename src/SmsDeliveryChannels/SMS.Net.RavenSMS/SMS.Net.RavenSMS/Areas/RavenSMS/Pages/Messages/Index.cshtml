@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+        <nav id="messages-status" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
             <a class="flex-sm-fill text-sm-center nav-link active" value="-1" data-bs-toggle="tab" >All</a>
             <a class="flex-sm-fill text-sm-center nav-link" value="0" data-bs-toggle="tab">Created</a>
             <a class="flex-sm-fill text-sm-center nav-link" value="1" data-bs-toggle="tab">Queued</a>
@@ -87,6 +87,10 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
 
+    $('a[data-bs-toggle="tab"]').on('click', function (e) {
+      loadData();
+    });
+
     // init the date range picker
     $("#search-period").daterangepicker({
         ranges: {
@@ -115,6 +119,13 @@
             data: {
                 pageIndex: 1,
                 pageSize: 5,
+                searchQuery: $("#search-query").val(),
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                Status: $('nav#messages-status a.active').attr('value'),
+                to: [],
+                from: [],
+                clients: [],
             },
             success: function (result)
             {
@@ -123,6 +134,9 @@
 
                 // select table element
                 const $table = $("#messages_table");
+
+                // empty the table
+                $("#messages_table > tbody"). empty();
 
                 // add the data to the table
                 $.each(messages, function() {
@@ -192,18 +206,6 @@
             case 3: return `<span class="badge bg-success">Sent</span>`
             default: return `<span class="badge bg-secondary">Created</span>`
         }
-    }
-
-    function getFilterData() {
-        let vare = {
-            searchQuery: $("#search-query").val(),
-            startDate: new Date(startDate.format()),
-            endDate: new Date(endDate.format()),
-            Status: [],
-            to: [],
-            from: [],
-            clients: [],
-        };
     }
 
     function setDateRange(start, end) {
