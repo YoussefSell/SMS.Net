@@ -11,35 +11,38 @@ using SMS.Net.Persistence;
 namespace SMS.Net.AspCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220127211631_InitialSetup")]
+    [Migration("20220128232216_InitialSetup")]
     partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(17)
+                        .HasColumnType("varchar(17)");
 
                     b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("PhoneNumbers")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -49,39 +52,44 @@ namespace SMS.Net.AspCore.Migrations
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(17)
+                        .HasColumnType("varchar(17)");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("ClientId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(17)
+                        .HasColumnType("varchar(17)");
 
                     b.Property<DateTimeOffset>("CreateOn")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("From")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("JobQueueId")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Priority")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("To")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 

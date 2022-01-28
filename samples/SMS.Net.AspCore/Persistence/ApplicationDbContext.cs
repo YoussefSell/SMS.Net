@@ -6,17 +6,15 @@ public class ApplicationDbContext : DbContext, IRavenSmsDbContext
 
     public DbSet<RavenSmsMessage> RavenSmsMessages { get; set; } = default!;
 
-    public string DatabasePath { get; }
+    public string ConnectionString { get; }
 
     public ApplicationDbContext()
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DatabasePath = Path.Join(path, "SmsNet.db");
+        ConnectionString = "Server=localhost;Database=sms.net;User=root;Password=root; Port=3306";
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite($"Data Source={DatabasePath}");
+        => optionsBuilder.UseMySql(ConnectionString, serverVersion: ServerVersion.AutoDetect(ConnectionString));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) 
         => modelBuilder.ApplyRavenSmsEntityConfiguration();
