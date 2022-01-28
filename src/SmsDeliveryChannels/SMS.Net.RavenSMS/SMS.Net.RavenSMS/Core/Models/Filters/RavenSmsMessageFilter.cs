@@ -10,7 +10,7 @@
             To = new HashSet<string>();
             From = new HashSet<string>();
             Clients = new HashSet<string>();
-            Status = new HashSet<RavenSmsMessageStatus>();
+            Status = RavenSmsMessageStatus.None;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// <summary>
         /// Get or set the status filter.
         /// </summary>
-        public IEnumerable<RavenSmsMessageStatus> Status { get; set; }
+        public RavenSmsMessageStatus Status { get; set; }
 
         /// <summary>
         /// Get or set the list of recipients filter.

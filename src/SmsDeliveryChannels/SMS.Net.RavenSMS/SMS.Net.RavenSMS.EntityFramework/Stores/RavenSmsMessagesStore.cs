@@ -104,8 +104,8 @@ public partial class RavenSmsMessagesStore
         if (filter.Priority.HasValue)
             query = query.Where(e => e.Priority == filter.Priority);
 
-        if (filter.Status is not null && filter.Status.Any())
-            query = query.Where(e => filter.Status.Contains(e.Status));
+        if (filter.Status != RavenSmsMessageStatus.None)
+            query = query.Where(e => filter.Status == e.Status);
 
         if (filter.To is not null && filter.To.Any())
             query = query.Where(e => filter.To.Contains((string)e.To));
