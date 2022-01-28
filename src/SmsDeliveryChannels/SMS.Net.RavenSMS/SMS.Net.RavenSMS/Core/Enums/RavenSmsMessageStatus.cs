@@ -6,6 +6,11 @@
 public enum RavenSmsMessageStatus
 {
     /// <summary>
+    /// default status.
+    /// </summary>
+    None = -1,
+
+    /// <summary>
     /// the message has been created.
     /// </summary>
     Created = 0,
