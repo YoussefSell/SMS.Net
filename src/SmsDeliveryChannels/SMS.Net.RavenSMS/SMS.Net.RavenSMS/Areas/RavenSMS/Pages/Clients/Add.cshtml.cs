@@ -38,7 +38,14 @@ public partial class ClientsAddPageModel
 /// </summary>
 public partial class ClientsAddPageModel : BasePageModel
 {
-
+    public async Task<JsonResult> OnGetPhoneNumberExistAsync(string phoneNumber)
+    {
+        // return json result instance
+        return new JsonResult(new
+        {
+            exist = await _manager.ClientPhoneNumberExistAsync(phoneNumber)
+        });
+    }
 }
 
 /// <summary>
