@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS", "src\Sms
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Hangfire", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj", "{9F167F99-34EE-4710-8E57-96D5160BCE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS.Net.RavenSMS.EntityFramework", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.EntityFramework\SMS.Net.RavenSMS.EntityFramework.csproj", "{E466B617-2C66-4341-A1E4-E2634AFE6977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.EntityFramework", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.EntityFramework\SMS.Net.RavenSMS.EntityFramework.csproj", "{E466B617-2C66-4341-A1E4-E2634AFE6977}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

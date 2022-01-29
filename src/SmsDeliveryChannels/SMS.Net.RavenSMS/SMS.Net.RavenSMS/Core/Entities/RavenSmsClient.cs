@@ -21,6 +21,11 @@ public class RavenSmsClient
     public string Id { get; set; }
 
     /// <summary>
+    /// Get or set the date
+    /// </summary>
+    public DateTimeOffset CreatedOn { get; set; }
+
+    /// <summary>
     /// Get or set for the client.
     /// </summary>
     public string Name { get; set; } = default!;
@@ -29,11 +34,6 @@ public class RavenSmsClient
     /// Get or set a description for the client.
     /// </summary>
     public string Description { get; set; } = default!;
-
-    /// <summary>
-    /// Get or set the date
-    /// </summary>
-    public DateTimeOffset CreatedOn { get; set; }
 
     /// <summary>
     /// the phone numbers associated with this client

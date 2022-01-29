@@ -5,6 +5,40 @@
 /// </summary>
 public partial class ClientsAddPageModel
 {
+    /// <summary>
+    /// the input model
+    /// </summary>
+    [BindProperty]
+    public ClientsAddPageModelInput Input { get; set; } = default!;
+
+    /// <summary>
+    /// the page model input
+    /// </summary>
+    public class ClientsAddPageModelInput
+    {
+        /// <summary>
+        /// Get or set for the client.
+        /// </summary>
+        public string Name { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set a description for the client.
+        /// </summary>
+        public string Description { get; set; } = default!;
+
+        /// <summary>
+        /// the phone numbers associated with this client
+        /// </summary>
+        public IEnumerable<string> PhoneNumbers { get; set; } = default!;
+    }
+}
+
+/// <summary>
+/// partial part for <see cref="ClientsAddPageModel"/>
+/// </summary>
+public partial class ClientsAddPageModel : BasePageModel
+{
+
 }
 
 /// <summary>
