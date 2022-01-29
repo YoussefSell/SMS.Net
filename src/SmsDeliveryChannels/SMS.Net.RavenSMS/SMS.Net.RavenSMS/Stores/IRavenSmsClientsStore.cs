@@ -21,6 +21,13 @@ public interface IRavenSmsClientsStore
     Task<RavenSmsClient?> FindByIdAsync(string clientId);
 
     /// <summary>
+    /// check if the given phone number is already associated with a client.
+    /// </summary>
+    /// <param name="phoneNumber">the phone number to check for</param>
+    /// <returns>true if exist, false if not.</returns>
+    Task<bool> ClientPhoneNumberExistAsync(string phoneNumber);
+
+    /// <summary>
     /// find the client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number associated with the client to find.</param>

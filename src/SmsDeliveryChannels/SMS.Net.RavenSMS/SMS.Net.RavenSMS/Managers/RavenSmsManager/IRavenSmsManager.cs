@@ -35,6 +35,13 @@ public interface IRavenSmsManager
     Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter);
 
     /// <summary>
+    /// check if the given phone number is already associated with a client.
+    /// </summary>
+    /// <param name="phoneNumber">the phone number to check for</param>
+    /// <returns>true if exist, false if not.</returns>
+    Task<bool> ClientPhoneNumberExistAsync(string phoneNumber);
+
+    /// <summary>
     /// create a new ravenSMS client.
     /// </summary>
     /// <param name="model">the model used to create the client</param>
