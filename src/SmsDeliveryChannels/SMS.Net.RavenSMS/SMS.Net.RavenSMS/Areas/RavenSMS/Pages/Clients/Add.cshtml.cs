@@ -43,7 +43,7 @@ public partial class ClientsAddPageModel : BasePageModel
         // return json result instance
         return new JsonResult(new
         {
-            exist = await _manager.ClientPhoneNumberExistAsync(phoneNumber)
+            exist = await _manager.AnyClientAsync(phoneNumber)
         });
     }
 }

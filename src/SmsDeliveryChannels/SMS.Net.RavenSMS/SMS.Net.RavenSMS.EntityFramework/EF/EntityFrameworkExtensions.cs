@@ -14,6 +14,7 @@ public static class EntityFrameworkExtensions
     {
         modelBuilder.ApplyConfiguration(new RavenSmsClientEntityConfiguration());
         modelBuilder.ApplyConfiguration(new RavenSmsMessageEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new RavenSmsClientPhoneNumberEntityConfiguration());
 
         return modelBuilder;
     }

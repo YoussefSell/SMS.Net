@@ -6,31 +6,31 @@
 public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 {
     /// <inheritdoc/>
-    public Task<bool> AnyAsync(PhoneNumber from) 
-        => _context.RavenSmsClients.AnyAsync(client => client.PhoneNumbers.Contains(from.ToString()));
+    public Task<RavenSmsClient[]> GetAllAsync()
+        => _clients.ToArrayAsync();
 
     /// <inheritdoc/>
-    public Task<bool> ClientPhoneNumberExistAsync(string phoneNumber)
-        => _context.RavenSmsClients.AnyAsync(client => client.PhoneNumbers.Contains(phoneNumber.ToString()));
+    public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
+        => _clients.AsNoTracking().Join(_context.Set<RavenSmsClientPhoneNumber>(), e => e.Id, e => e.ClientId, (client, phoneNumberData) => new { client, phoneNumberData })
+            .AnyAsync(q => q.phoneNumberData.PhoneNumber == phoneNumber.ToString());
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByIdAsync(string clientId)
-        => _context.RavenSmsClients.FirstOrDefaultAsync(client => client.Id == clientId);
+        => _clients.FirstOrDefaultAsync(client => client.Id == clientId);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber)
-        => _context.RavenSmsClients.FirstOrDefaultAsync(client => client.PhoneNumbers.Contains(phoneNumber.ToString()));
-
-    /// <inheritdoc/>
-    public Task<RavenSmsClient[]> GetAllAsync()
-        => _context.RavenSmsClients.ToArrayAsync();
+        => _clients.Join(_context.Set<RavenSmsClientPhoneNumber>(), e => e.Id, e => e.ClientId, (client, phoneNumberData) => new { client, phoneNumberData })
+            .Where(q => q.phoneNumberData.PhoneNumber == phoneNumber.ToString())
+            .Select(e => e.client)
+            .FirstOrDefaultAsync();
 
     /// <inheritdoc/>
     public async Task<Result<RavenSmsClient>> SaveAsync(RavenSmsClient client)
     {
         try
         {
-            var entity = _context.RavenSmsClients.Add(client);
+            var entity = _clients.Add(client);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
@@ -47,7 +47,7 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     {
         try
         {
-            var entity = _context.RavenSmsClients.Update(client);
+            var entity = _clients.Update(client);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
@@ -66,9 +66,11 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 public partial class RavenSmsClientsStore
 {
     private readonly IRavenSmsDbContext _context;
+    private readonly DbSet<RavenSmsClient> _clients;
 
     public RavenSmsClientsStore(IRavenSmsDbContext context)
     {
         _context = context;
+        _clients = _context.Set<RavenSmsClient>();
     }
 }

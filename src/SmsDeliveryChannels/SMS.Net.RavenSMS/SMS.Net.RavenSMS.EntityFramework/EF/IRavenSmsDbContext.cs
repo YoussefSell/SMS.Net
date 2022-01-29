@@ -6,14 +6,11 @@
 public interface IRavenSmsDbContext
 {
     /// <summary>
-    /// Get access to ravenSMS clients
+    /// Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and save instances of TEntity.
     /// </summary>
-    DbSet<RavenSmsClient> RavenSmsClients { get; }
-
-    /// <summary>
-    /// Get access to ravenSMS messages.
-    /// </summary>
-    DbSet<RavenSmsMessage> RavenSmsMessages { get; }
+    /// <typeparam name="TEntity">The type of entity for which a set should be returned.</typeparam>
+    /// <returns>A set for the given entity type.</returns>
+    public DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
     /// <summary>
     /// Saves all changes made in this context to the database.

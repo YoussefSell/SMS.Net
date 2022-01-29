@@ -7,16 +7,16 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 {
     /// <inheritdoc/>
     public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
-        => _context.RavenSmsMessages.FirstOrDefaultAsync(message => message.Id == messageId);
+        => _messages.FirstOrDefaultAsync(message => message.Id == messageId);
 
     /// <inheritdoc/>
     public Task<RavenSmsMessage[]> GetAllAsync()
-        => _context.RavenSmsMessages.ToArrayAsync();
+        => _messages.ToArrayAsync();
 
     /// <inheritdoc/>
     public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter)
     {
-        var query = _context.RavenSmsMessages.Include(e => e.Client).AsQueryable();
+        var query = _messages.Include(e => e.Client).AsQueryable();
 
         // apply the filter & the orderBy
         query = SetFilter(query, filter);
@@ -48,7 +48,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     {
         try
         {
-            var entity = _context.RavenSmsMessages.Add(message);
+            var entity = _messages.Add(message);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
@@ -65,7 +65,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     {
         try
         {
-            var entity = _context.RavenSmsMessages.Update(message);
+            var entity = _messages.Update(message);
             await _context.SaveChangesAsync();
             return entity.Entity;
         }
@@ -84,10 +84,12 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 public partial class RavenSmsMessagesStore
 {
     private readonly IRavenSmsDbContext _context;
+    private readonly DbSet<RavenSmsMessage> _messages;
 
     public RavenSmsMessagesStore(IRavenSmsDbContext context)
     {
         _context = context;
+        _messages = _context.Set<RavenSmsMessage>();
     }
 
     private static IQueryable<RavenSmsMessage> SetFilter(IQueryable<RavenSmsMessage> query, RavenSmsMessageFilter filter)

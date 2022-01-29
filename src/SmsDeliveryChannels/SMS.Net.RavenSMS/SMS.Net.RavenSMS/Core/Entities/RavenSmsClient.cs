@@ -11,8 +11,8 @@ public class RavenSmsClient
     public RavenSmsClient()
     {
         CreatedOn = DateTimeOffset.Now;
-        PhoneNumbers = new HashSet<string>();
         Id = Generator.GenerateUniqueId("clt");
+        PhoneNumbers = new HashSet<RavenSmsClientPhoneNumber>();
     }
 
     /// <summary>
@@ -38,5 +38,5 @@ public class RavenSmsClient
     /// <summary>
     /// the phone numbers associated with this client
     /// </summary>
-    public IEnumerable<string> PhoneNumbers { get; set; } 
+    public IEnumerable<RavenSmsClientPhoneNumber> PhoneNumbers { get; set; } 
 }
