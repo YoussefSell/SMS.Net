@@ -35,8 +35,8 @@ public partial class ClientsAddPageModel
         /// get the list of phone numbers from the <see cref="PhoneNumbers"/> property
         /// </summary>
         /// <returns>a list of phone numbers</returns>
-        public string[] GetPhoneNumbers()
-            => (PhoneNumbers ?? string.Empty).Split(',');
+        public IEnumerable<string> GetPhoneNumbers()
+            => (PhoneNumbers ?? string.Empty).Split(',').Where(e => !string.IsNullOrEmpty(e));
     }
 }
 

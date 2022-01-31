@@ -70,6 +70,11 @@
           // get the form instance & prevent the default
           var $form = $(this);
 
+          // prevent the form from submitting if no phone number is configured
+          if (phoneNumbers.length <= 0) {
+              return false;
+          }
+
           // append the phone numbers
           $form.append(`<input type="hidden" name="Input.PhoneNumbers" value="${phoneNumbers}" />`);
       });
