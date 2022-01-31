@@ -29,7 +29,14 @@ public partial class ClientsAddPageModel
         /// <summary>
         /// the phone numbers associated with this client
         /// </summary>
-        public IEnumerable<string> PhoneNumbers { get; set; } = default!;
+        public string PhoneNumbers { get; set; } = default!;
+
+        /// <summary>
+        /// get the list of phone numbers from the <see cref="PhoneNumbers"/> property
+        /// </summary>
+        /// <returns>a list of phone numbers</returns>
+        public string[] GetPhoneNumbers()
+            => PhoneNumbers.Split(',');
     }
 }
 
@@ -38,6 +45,16 @@ public partial class ClientsAddPageModel
 /// </summary>
 public partial class ClientsAddPageModel : BasePageModel
 {
+    public void OnGet()
+    {
+
+    }
+
+    public void OnPost()
+    {
+
+    }
+
     public async Task<JsonResult> OnGetPhoneNumberExistAsync(string phoneNumber)
     {
         // return json result instance
