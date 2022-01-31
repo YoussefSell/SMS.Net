@@ -9,7 +9,7 @@ public partial class ClientsAddPageModel
     /// the input model
     /// </summary>
     [BindProperty]
-    public ClientsAddPageModelInput Input { get; set; } = default!;
+    public ClientsAddPageModelInput Input { get; set; }
 
     /// <summary>
     /// the page model input
@@ -45,14 +45,31 @@ public partial class ClientsAddPageModel
 /// </summary>
 public partial class ClientsAddPageModel : BasePageModel
 {
-    public void OnGet()
+    public async Task<IActionResult> OnPostAsync()
     {
+        if (ModelState.IsValid)
+        {
+            // create message instance
+            var client = new RavenSmsClient
+            {
+                Name = Input.Name,
+                Description = Input.Description,
+                PhoneNumbers = Input.GetPhoneNumbers()
+                    .Select(number => new RavenSmsClientPhoneNumber() { PhoneNumber = number }),
+            };
 
-    }
+            // add the client
+            var result = await _manager.CreateClientAsync(client);
+            if (result.IsSuccess())
+            {
+                // client added successfully
+                return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
+            }
 
-    public void OnPost()
-    {
+            ModelState.AddModelError("", result.Message);
+        }
 
+        return Page();
     }
 
     public async Task<JsonResult> OnGetPhoneNumberExistAsync(string phoneNumber)
@@ -79,5 +96,6 @@ public partial class ClientsAddPageModel : BasePageModel
         : base(localizer, logger)
     {
         _manager = ravenSmsManager;
+        Input = new ClientsAddPageModelInput();
     }
 }
