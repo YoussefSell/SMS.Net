@@ -29,14 +29,14 @@ public partial class ClientsAddPageModel
         /// <summary>
         /// the phone numbers associated with this client
         /// </summary>
-        public string PhoneNumbers { get; set; } = default!;
+        public string? PhoneNumbers { get; set; }
 
         /// <summary>
         /// get the list of phone numbers from the <see cref="PhoneNumbers"/> property
         /// </summary>
         /// <returns>a list of phone numbers</returns>
         public string[] GetPhoneNumbers()
-            => PhoneNumbers.Split(',');
+            => (PhoneNumbers ?? string.Empty).Split(',');
     }
 }
 
