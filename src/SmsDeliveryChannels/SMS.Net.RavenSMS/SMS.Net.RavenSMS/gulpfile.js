@@ -96,6 +96,17 @@ gulp.task('js-app-pages-messages-index', function () {
 		.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-clients-add', function () {
+	return gulp.src([
+		'node_modules/moment/min/moment.min.js',
+		'Assets/src/js/clients.add.page.js',
+	])
+		.pipe(sourcemaps.init())
+		.pipe(concat('clients.add.page.min.js'))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('Assets/js'));
+});
+
 // runner
 gulp.task('default', gulp.series(gulp.parallel([
 	// default
@@ -112,5 +123,6 @@ gulp.task('default', gulp.series(gulp.parallel([
 	// pages scripts
 	'js-app-pages-dashboard',
 	'js-app-pages-messages-add',
-	'js-app-pages-messages-index'
+	'js-app-pages-messages-index',
+	'js-app-pages-clients-add'
 ])));
