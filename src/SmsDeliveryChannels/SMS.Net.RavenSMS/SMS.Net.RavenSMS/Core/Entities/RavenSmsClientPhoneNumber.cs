@@ -14,9 +14,4 @@ public class RavenSmsClientPhoneNumber
     /// the id of the client that owns this phone number
     /// </summary>
     public string ClientId { get; set; } = default!;
-
-    /// <summary>
-    /// the client that owns this phone number
-    /// </summary>
-    public RavenSmsClient Client { get; set; } = default!;
 }
