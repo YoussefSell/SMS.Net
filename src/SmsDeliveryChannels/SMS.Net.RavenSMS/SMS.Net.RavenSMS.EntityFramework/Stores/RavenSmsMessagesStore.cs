@@ -1,4 +1,6 @@
-﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿using System.Globalization;
+
+namespace SMS.Net.Channel.RavenSMS.EntityFramework;
 
 /// <summary>
 /// the store implementation for <see cref="IRavenSmsMessagesStore"/>
@@ -83,6 +85,8 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 /// </summary>
 public partial class RavenSmsMessagesStore
 {
+    const string _dateFormat = "yyyy-MM-ddTHH:mm:sszzz";
+
     private readonly IRavenSmsDbContext _context;
     private readonly DbSet<RavenSmsMessage> _messages;
 
@@ -97,11 +101,11 @@ public partial class RavenSmsMessagesStore
         if (!string.IsNullOrEmpty(filter.SearchQuery))
             query = query.Where(e => EF.Functions.Like(e.Body, $"%{filter.SearchQuery}%"));
 
-        if (filter.StartDate.HasValue)
-            query = query.Where(e => e.CreateOn.Date >= filter.StartDate.Value.Date);
+        if (!string.IsNullOrEmpty(filter.StartDate) && DateTimeOffset.TryParseExact(filter.StartDate, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate))
+            query = query.Where(e => e.CreateOn.Date >= startDate.Date);
 
-        if (filter.EndDate.HasValue)
-            query = query.Where(e => e.CreateOn.Date <= filter.EndDate.Value.Date);
+        if (!string.IsNullOrEmpty(filter.EndDate) && DateTimeOffset.TryParseExact(filter.EndDate, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var endDate))
+            query = query.Where(e => e.CreateOn.Date <= endDate.Date);
 
         if (filter.Priority.HasValue)
             query = query.Where(e => e.Priority == filter.Priority);

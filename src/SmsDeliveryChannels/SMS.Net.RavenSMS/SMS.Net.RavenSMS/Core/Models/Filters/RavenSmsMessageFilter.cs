@@ -16,12 +16,12 @@
         /// <summary>
         /// Get or set the creation start date filter.
         /// </summary>
-        public DateTimeOffset? StartDate { get; set; }
+        public string? StartDate { get; set; }
 
         /// <summary>
         /// Get or set the creation end date filter.
         /// </summary>
-        public DateTimeOffset? EndDate { get; set; }
+        public string? EndDate { get; set; }
 
         /// <summary>
         /// Get or set the priority filter.

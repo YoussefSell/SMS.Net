@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn app-btn-secondary" onclick="getFilterData()">Search</button>
+                                    <button type="submit" class="btn app-btn-secondary" onclick="loadData()">Search</button>
                                 </div>
                             </div>
                         </div><!--//col-->
@@ -120,8 +120,8 @@
                 pageIndex: 1,
                 pageSize: 5,
                 searchQuery: $("#search-query").val(),
-                startDate: startDate.toISOString(),
-                endDate: endDate.toISOString(),
+                endDate: endDate.format('yyyy-MM-DDTHH:mm:ssZ'),
+                startDate: startDate.format('yyyy-MM-DDTHH:mm:ssZ'),
                 Status: $('nav#messages-status a.active').attr('value'),
                 to: [],
                 from: [],
