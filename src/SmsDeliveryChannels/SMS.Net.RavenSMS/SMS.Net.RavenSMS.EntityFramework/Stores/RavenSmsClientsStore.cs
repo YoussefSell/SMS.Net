@@ -7,7 +7,7 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 {
     /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllAsync()
-        => _clients.ToArrayAsync();
+        => _clients.Include(e => e.PhoneNumbers).ToArrayAsync();
 
     /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
