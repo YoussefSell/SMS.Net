@@ -55,7 +55,8 @@ public partial class ClientsAddPageModel : BasePageModel
                 Name = Input.Name,
                 Description = Input.Description,
                 PhoneNumbers = Input.GetPhoneNumbers()
-                    .Select(number => new RavenSmsClientPhoneNumber() { PhoneNumber = number }),
+                    .Select(number => new RavenSmsClientPhoneNumber() { PhoneNumber = number })
+                    .ToArray(),
             };
 
             // add the client
