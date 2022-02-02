@@ -11,8 +11,8 @@ using SMS.Net.Persistence;
 namespace SMS.Net.AspCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220129225351_AddedClientPhoneNumber")]
-    partial class AddedClientPhoneNumber
+    [Migration("20220202195138_InitialSetup")]
+    partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,13 +114,11 @@ namespace SMS.Net.AspCore.Migrations
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClientPhoneNumber", b =>
                 {
-                    b.HasOne("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", "Client")
+                    b.HasOne("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", null)
                         .WithMany("PhoneNumbers")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
