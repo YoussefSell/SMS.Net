@@ -15,10 +15,5 @@ public class RavenSmsClientPhoneNumberEntityConfiguration : IEntityTypeConfigura
 
         builder.Property(e => e.ClientId)
             .HasMaxLength(17);
-
-        builder.HasOne(e => e.Client)
-            .WithMany(e => e.PhoneNumbers)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(true);
     }
 }
