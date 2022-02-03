@@ -11,7 +11,7 @@ using SMS.Net.Persistence;
 namespace SMS.Net.AspCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220202195138_InitialSetup")]
+    [Migration("20220203215049_InitialSetup")]
     partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,11 @@ namespace SMS.Net.AspCore.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
@@ -93,12 +98,13 @@ namespace SMS.Net.AspCore.Migrations
 
                     b.Property<string>("Priority")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("To")
                         .IsRequired()

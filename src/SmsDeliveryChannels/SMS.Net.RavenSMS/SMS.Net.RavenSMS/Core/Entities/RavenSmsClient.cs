@@ -12,6 +12,7 @@ public class RavenSmsClient
     {
         CreatedOn = DateTimeOffset.Now;
         Id = Generator.GenerateUniqueId("clt");
+        Status = RavenSmsClientStatus.RequireSetup;
         PhoneNumbers = new HashSet<RavenSmsClientPhoneNumber>();
     }
 
@@ -29,6 +30,11 @@ public class RavenSmsClient
     /// Get or set for the client.
     /// </summary>
     public string Name { get; set; } = default!;
+    
+    /// <summary>
+    /// the current status of the client app.
+    /// </summary>
+    public RavenSmsClientStatus Status { get; set; }
 
     /// <summary>
     /// Get or set a description for the client.

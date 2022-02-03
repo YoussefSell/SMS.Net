@@ -38,6 +38,11 @@ namespace SMS.Net.AspCore.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
                     b.HasKey("Id");
 
                     b.ToTable("RavenSmsClients");
@@ -91,12 +96,13 @@ namespace SMS.Net.AspCore.Migrations
 
                     b.Property<string>("Priority")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("To")
                         .IsRequired()

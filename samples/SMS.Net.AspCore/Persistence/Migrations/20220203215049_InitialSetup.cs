@@ -21,6 +21,8 @@ namespace SMS.Net.AspCore.Migrations
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
                     Name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -58,7 +60,7 @@ namespace SMS.Net.AspCore.Migrations
                     Id = table.Column<string>(type: "varchar(17)", maxLength: 17, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreateOn = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    Priority = table.Column<string>(type: "longtext", nullable: false)
+                    Priority = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Body = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -68,7 +70,7 @@ namespace SMS.Net.AspCore.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     JobQueueId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ClientId = table.Column<string>(type: "varchar(17)", maxLength: 17, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
