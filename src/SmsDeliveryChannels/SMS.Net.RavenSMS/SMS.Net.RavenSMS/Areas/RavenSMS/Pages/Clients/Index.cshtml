@@ -3,6 +3,160 @@
 @{
 }
 
-<h1>
-    Clients
-</h1>
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="app-page-title mb-0">Clients</h1>
+            </div>
+            <div class="col-auto">
+                <div class="page-utilities">
+                    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                        <div class="col-auto">
+                            <div class="row gx-1 align-items-center">
+                                <div class="col-auto">
+                                    <input type="text" id="search-query" name="searchQuery" class="form-control" placeholder="Search">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn app-btn-secondary" onclick="loadData()">Search</button>
+                                </div>
+                            </div>
+                        </div><!--//col-->
+                        <div class="col-auto">
+                            <a class="btn app-btn-secondary" asp-page="/Clients/Add">
+                                <i class="fas fa-mobile me-1"></i>
+                                Connect new client
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-card app-card-orders-table shadow-sm mb-5">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table id="clients_table" class="table app-table-hover mb-0 text-left">
+                        <thead>
+                            <tr>
+                                <th class="cell">Id</th>
+                                <th class="cell">Name</th>
+                                <th class="cell">Status</th>
+                                <th class="cell"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <nav class="app-pagination">
+            <ul id="paginator" class="pagination justify-content-center">
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section scripts {
+<script src="~/js/clients.index.page.min.js"></script>
+<script>
+    // init the status tabs click event
+    $('a[data-bs-toggle="tab"]').on('click', function (e) {
+      loadData();
+    });
+
+    // init the required variables
+    let clients = [];
+
+    // load the initial data
+    loadData();
+
+    function loadData() {
+        $.ajax({
+            url: '/ravenSMS/clients/index/?handler=clients',
+            data: {
+                pageIndex: 1,
+                pageSize: 5,
+                searchQuery: $("#search-query").val(),
+                Status: $('nav#clients-status a.active').attr('value'),
+                to: [],
+            },
+            success: function (result)
+            {
+                // save the result
+                clients = result.data;
+
+                // select table element
+                const $table = $("#clients_table");
+
+                // empty the table
+                $("#clients_table > tbody"). empty();
+
+                // add the data to the table
+                $.each(clients, function() {
+                    $table.append(buildTableRow(this));
+                });
+
+                // set the pagination details
+                SetPagination(
+                    result.pagination.rowsCount,
+                    result.pagination.pageIndex,
+                    result.pagination.pageSize,
+                );
+            }
+        });
+    }
+
+    function buildTableRow(client) {
+        const clientDate = moment(client.date);
+
+        return `<tr>
+            <td style="max-width:150px" class="cell">${client.id}</td>
+            <td class="cell"><span class="truncate">${client.name}</span></td>
+            <td class="cell">${GetStatusSpan()}</td>
+            <td class="cell">
+                <a class="btn-sm app-btn-secondary" href="clients/${client.id}/Preview">View</a>
+            </td>
+        </tr>`
+    }
+
+    function SetPagination(rowsCount, pageIndex, pageSize) {
+        // select the paginator
+        const $paginator = $("#paginator");
+
+        // empty the paginator
+        $paginator.empty();
+
+        // append the previous button
+        $paginator.append(`
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+        `);
+
+        // get the pagination logic
+        const pagination = paginate(rowsCount, pageIndex, pageSize);
+
+        // append pages
+        $.each(pagination.pages, function() {
+            $paginator.append(`<li class="page-item ${this == pagination.currentPage ? 'active': ''}"><a class="page-link" href="#">${this}</a></li>`);
+        })
+
+        // append the Next button
+        $paginator.append(`
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        `);
+    }
+
+    function GetStatusSpan(status) {
+        switch(status){
+            case 2: return `<span class="badge bg-danger">Disconnected</span>`
+            case 1: return `<span class="badge bg-warning">UnActive</span>`
+            default: return `<span class="badge bg-success">Active</span>`
+        }
+    }
+
+</script>
+}
