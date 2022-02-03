@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
 
 /// <summary>
 /// the entity configuration for <see cref="RavenSmsMessage"/> entity
@@ -14,11 +12,12 @@ public class RavenSmsMessageEntityConfiguration : IEntityTypeConfiguration<Raven
             .HasMaxLength(17);
 
         builder.Property(e => e.Priority)
-            .HasConversion(new EnumToStringConverter<Priority>());
+            .HasConversion(new EnumToStringConverter<Priority>())
+            .HasMaxLength(20);
 
         builder.Property(e => e.Status)
             .HasConversion(new EnumToStringConverter<RavenSmsMessageStatus>())
-            .HasMaxLength(10);
+            .HasMaxLength(20);
 
         builder.Property(e => e.Body)
             .HasMaxLength(500);
