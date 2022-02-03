@@ -10,6 +10,36 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
         => _clients.Include(e => e.PhoneNumbers).ToArrayAsync();
 
     /// <inheritdoc/>
+    public async Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter)
+    {
+        var query = _clients.Include(e => e.PhoneNumbers).AsQueryable();
+
+        // apply the filter & the orderBy
+        query = SetFilter(query, filter);
+        query = query.DynamicOrderBy(filter.OrderBy, filter.SortDirection);
+
+        var rowsCount = 0;
+
+        if (!filter.IgnorePagination)
+        {
+            rowsCount = await query.Select(e => e.Id)
+                .Distinct()
+                .CountAsync();
+
+            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+        }
+
+        var data = await query.ToArrayAsync();
+
+        rowsCount = filter.IgnorePagination
+            ? data.Length
+            : rowsCount;
+
+        return (data, rowsCount);
+    }
+
+    /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
         => _clients.AsNoTracking().Join(_context.Set<RavenSmsClientPhoneNumber>(), e => e.Id, e => e.ClientId, (client, phoneNumberData) => new { client, phoneNumberData })
             .AnyAsync(q => q.phoneNumberData.PhoneNumber == phoneNumber.ToString());
@@ -72,5 +102,28 @@ public partial class RavenSmsClientsStore
     {
         _context = context;
         _clients = _context.Set<RavenSmsClient>();
+    }
+
+    private IQueryable<RavenSmsClient> SetFilter(IQueryable<RavenSmsClient> query, RavenSmsClientsFilter filter)
+    {
+        if (!string.IsNullOrEmpty(filter.SearchQuery))
+            query = query.Where(e => 
+                EF.Functions.Like(e.Description, $"%{filter.SearchQuery}%") ||
+                EF.Functions.Like(e.Name, $"%{filter.SearchQuery}%")
+            );
+
+        if (filter.Status != RavenSmsClientStatus.None)
+            query = query.Where(e => filter.Status == e.Status);
+
+        if (filter.phoneNumbers is not null && filter.phoneNumbers.Any())
+        {
+            var join = _clients.Join(_context.Set<RavenSmsClientPhoneNumber>(),
+                e => e.Id, e => e.ClientId, (client, phoneNumber) => new { client, phoneNumber });
+
+            query = join.Where(e => filter.phoneNumbers.Contains(e.phoneNumber.PhoneNumber))
+                .Select(e => e.client);
+        }
+
+        return query;
     }
 }

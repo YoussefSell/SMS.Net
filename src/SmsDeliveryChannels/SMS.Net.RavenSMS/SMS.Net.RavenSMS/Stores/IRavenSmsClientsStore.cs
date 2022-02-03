@@ -12,6 +12,13 @@ public interface IRavenSmsClientsStore
     Task<RavenSmsClient[]> GetAllAsync();
 
     /// <summary>
+    /// get the list of all clients
+    /// </summary>
+    /// <param name="filter">the filter used to retrieve the messages.</param>
+    /// <returns>the list of messages and total count of rows</returns>
+    Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter);
+
+    /// <summary>
     /// check if there is any client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number instance.</param>

@@ -65,8 +65,12 @@ public partial class RavenSmsManager : IRavenSmsManager
         => _clientsStore.GetAllAsync();
 
     /// <inheritdoc/>
-    public Task<bool> AnyClientAsync(PhoneNumber from)
-        => _clientsStore.AnyAsync(from);
+    public Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter)
+        => _clientsStore.GetAllAsync(filter);
+
+    /// <inheritdoc/>
+    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber)
+        => _clientsStore.AnyAsync(phoneNumber);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindClientByIdAsync(string clientId)

@@ -1,5 +1,5 @@
 ﻿@page
-@model SMS.Net.RavenSMS.Pages.ClientIndexPage
+@model SMS.Net.RavenSMS.Pages.ClientIndexPageModel
 @{
 }
 
@@ -79,7 +79,7 @@
                 pageSize: 5,
                 searchQuery: $("#search-query").val(),
                 Status: $('nav#clients-status a.active').attr('value'),
-                to: [],
+                phoneNumbers: [],
             },
             success: function (result)
             {
@@ -152,9 +152,10 @@
 
     function GetStatusSpan(status) {
         switch(status){
+            case 0: return `<span class="badge bg-warning">UnActive</span>`
+            case 1: return `<span class="badge bg-success">Active</span>`
             case 2: return `<span class="badge bg-danger">Disconnected</span>`
-            case 1: return `<span class="badge bg-warning">UnActive</span>`
-            default: return `<span class="badge bg-success">Active</span>`
+            default: return `<span class="badge bg-danger">Require setup</span>`
         }
     }
 
