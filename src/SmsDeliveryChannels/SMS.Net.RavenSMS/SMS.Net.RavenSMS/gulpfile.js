@@ -41,6 +41,7 @@ gulp.task('css-app', function () {
 // js
 gulp.task('js-vendor', function(){
 	return gulp.src([
+		'node_modules/moment/min/moment.min.js',
 		'node_modules/jquery/dist/jquery.min.js',
 		'node_modules/@popperjs/core/dist/umd/popper.min.js',
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
@@ -84,10 +85,7 @@ gulp.task('js-app-pages-dashboard', function () {
 });
 
 gulp.task('js-app-pages-messages-add', function () {
-	return gulp.src([
-		'node_modules/moment/min/moment.min.js',
-		'Assets/src/js/messages.add.page.js',
-	])
+	return gulp.src(['Assets/src/js/messages.add.page.js'])
 	.pipe(sourcemaps.init())
 	.pipe(concat('messages.add.page.min.js'))
 	.pipe(sourcemaps.write())
@@ -95,20 +93,23 @@ gulp.task('js-app-pages-messages-add', function () {
 });
 
 gulp.task('js-app-pages-messages-index', function () {
-	return gulp.src([
-		'node_modules/moment/min/moment.min.js',
-		'Assets/src/js/messages.index.page.js',
-	])
+	return gulp.src(['Assets/src/js/messages.index.page.js'])
 		.pipe(sourcemaps.init())
 		.pipe(concat('messages.index.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-clients-index', function () {
+	return gulp.src(['Assets/src/js/clients.index.page.js'])
+		.pipe(sourcemaps.init())
+		.pipe(concat('clients.index.page.min.js'))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('Assets/js'));
+});
+
 gulp.task('js-app-pages-clients-add', function () {
-	return gulp.src([
-		'Assets/src/js/clients.add.page.js',
-	])
+	return gulp.src(['Assets/src/js/clients.add.page.js'])
 		.pipe(sourcemaps.init())
 		.pipe(concat('clients.add.page.min.js'))
 		.pipe(sourcemaps.write())
@@ -130,8 +131,14 @@ gulp.task('default', gulp.series(gulp.parallel([
 	'js-vendor-jquery-validation',
 
 	// pages scripts
+	// dashboard
 	'js-app-pages-dashboard',
+
+	// messages
 	'js-app-pages-messages-add',
 	'js-app-pages-messages-index',
-	'js-app-pages-clients-add'
+
+	// clients
+	'js-app-pages-clients-add',
+	'js-app-pages-clients-index',
 ])));
