@@ -27,7 +27,7 @@ public class RavenSmsClient
     public DateTimeOffset CreatedOn { get; set; }
 
     /// <summary>
-    /// Get or set for the client.
+    /// Get or set for the name of client app.
     /// </summary>
     public string Name { get; set; } = default!;
     
