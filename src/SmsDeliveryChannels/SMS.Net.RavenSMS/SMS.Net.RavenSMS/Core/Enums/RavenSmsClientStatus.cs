@@ -28,5 +28,5 @@ public enum RavenSmsClientStatus
     /// <summary>
     /// the client app require setup
     /// </summary>
-    RequireSetup,
+    RequireSetup = 3,
 }
