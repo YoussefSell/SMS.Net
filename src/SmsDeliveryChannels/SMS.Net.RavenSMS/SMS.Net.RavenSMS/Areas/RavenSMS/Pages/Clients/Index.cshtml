@@ -110,14 +110,17 @@
     function buildTableRow(client) {
         const clientDate = moment(client.date);
 
-        return `<tr>
+        let markup = `<tr>
             <td style="max-width:150px" class="cell">${client.id}</td>
             <td class="cell"><span class="truncate">${client.name}</span></td>
             <td class="cell">${GetStatusSpan()}</td>
-            <td class="cell">
-                <a class="btn-sm app-btn-secondary" href="clients/${client.id}/Preview">View</a>
-            </td>
-        </tr>`
+            <td class="cell"><a class="btn-sm app-btn-secondary" href=Clients/Preview/${client.id}">View</a>`
+
+        if (client.status == 3) {
+            markup += `<a class="btn-sm app-btn-secondary ms-2" href="Clients/Setup/${client.id}">Setup</a>`;
+        }
+
+        return markup += "</td></tr>";
     }
 
     function SetPagination(rowsCount, pageIndex, pageSize) {

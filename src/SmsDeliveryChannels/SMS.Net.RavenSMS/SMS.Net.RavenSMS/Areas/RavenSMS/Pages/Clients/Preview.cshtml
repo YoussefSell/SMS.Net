@@ -1,8 +1,8 @@
-﻿@page
+﻿@page "{id}"
 @model SMS.Net.RavenSMS.Pages.ClientsPreviewPage
 @{
 }
 
 <h1>
-    Preview client details
+    Preview client details @RouteData.Values["id"]
 </h1>
