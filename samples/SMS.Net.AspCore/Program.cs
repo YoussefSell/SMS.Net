@@ -40,4 +40,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.MapRavenSmsHub();
+
 app.Run();
