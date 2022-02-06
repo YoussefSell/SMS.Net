@@ -1,8 +1,26 @@
 ﻿@page "{id}"
-@model SMS.Net.RavenSMS.Pages.ClientsPreviewPage
+@model SMS.Net.RavenSMS.Pages.ClientSetupPageModel
 @{
+    ViewData["page_title"] = "preview Client";
 }
 
-<h1>
-    Preview client details @RouteData.Values["id"]
-</h1>
+@if (Model.Client is not null)
+{
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <h1 class="app-page-title">Client details @Model.Client.Name</h1>
+            <hr class="mb-4">
+            <div class="row g-4 settings-section">
+                <div class="app-card app-card-settings shadow-sm p-4">
+                    <div class="app-card-body">
+                        <form id="add-client-form" class="settings-form" method="post">
+                            
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+        </div>
+    </div>
+}
