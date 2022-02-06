@@ -1,8 +1,28 @@
 ﻿@page "{id}"
 @model SMS.Net.RavenSMS.Pages.ClientSetupPageModel
 @{
+    ViewData["page_title"] = "Client registration";
 }
 
-<h1>
-    setup @RouteData.Values["id"]
-</h1>
+@if (Model.Client is not null)
+{
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <h1 class="app-page-title">Setup Client @Model.Client.Name</h1>
+            <hr class="mb-4">
+            <div class="row g-4 settings-section">
+                <div class="app-card app-card-settings shadow-sm p-4">
+                    <div class="app-card-body">
+                        <form id="add-client-form" class="settings-form" method="post">
+                            
+
+                            <!-- Send action -->
+                        <button type="submit" class="btn app-btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+        </div>
+    </div>
+}
