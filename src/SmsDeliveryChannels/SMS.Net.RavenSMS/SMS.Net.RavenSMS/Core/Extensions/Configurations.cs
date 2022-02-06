@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
@@ -35,6 +36,11 @@ public static class Configurations
         builder.ServiceCollection.ConfigureOptions(typeof(RavenSmsUIConfigureOptions));
 
         return builder;
+    }
+
+    public static void MapRavenSmsHub(this IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapHub<RavenSmsHub>("RavenSMS/Hub");
     }
 }
 
