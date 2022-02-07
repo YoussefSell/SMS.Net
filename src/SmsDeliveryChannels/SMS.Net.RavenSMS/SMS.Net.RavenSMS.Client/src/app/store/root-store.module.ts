@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { UIStoreModule } from '.';
 
 // stores imports
 import { MessagesStoreModule } from './messages-store';
+import { UIStoreModule } from './ui-store';
 
 const modules = [
     UIStoreModule,
