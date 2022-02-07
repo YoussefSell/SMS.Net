@@ -1,0 +1,7 @@
+{
+  "name": "SMS.Net.RavenSMS.Client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
