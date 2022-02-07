@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
  * this enums defines the action types for the ui module
  */
 export enum StoreActionTypes {
-    TOGGLE_DARK_MODE = '@ui/dark_mode/toggle',
+    UPDATE_DARK_MODE = '@ui/dark_mode/update',
 }
 
-export const toggleDarkMode = createAction(StoreActionTypes.TOGGLE_DARK_MODE);
+export const updateDarkMode = createAction(StoreActionTypes.UPDATE_DARK_MODE, props<{ value: boolean }>());

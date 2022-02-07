@@ -25,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subSink.sink = this.store.select(UIStoreSelectors.IsDarkModeSelector)
       .subscribe(e => {
-        this.dark = e; console.log(e);
+        this.dark = e;
+        console.log('AppComponent', this.dark);
       });
   }
 

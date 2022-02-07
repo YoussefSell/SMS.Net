@@ -1,28 +1,33 @@
-import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { RootStoreState, UIStoreActions } from 'src/app/store';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'page-map',
   templateUrl: 'preferences.html',
   styleUrls: ['./preferences.scss']
 })
-export class PreferencesPage {
-  // Our local settings object
-  options: any;
+export class PreferencesPage implements OnInit {
 
-  dark = false;
+  subsink = new SubSink();
+  settingsForm: FormGroup;
 
-  profileSettings = {
-    page: 'profile',
-    pageTitleKey: 'SETTINGS_PAGE_PROFILE'
-  };
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<RootStoreState.State>,
+  ) { }
 
-  page: string = 'main';
-  pageTitleKey: string = 'SETTINGS_TITLE';
-  pageTitle: string;
+  ngOnInit(): void {
+    this.settingsForm = this.fb
+      .group({
+        darkMode: this.fb.control(false),
+      });
 
-  subSettings: any = PreferencesPage;
-  constructor() { }
-
-
+    this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
+      .subscribe(value => {
+        this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
+      })
+  }
 }

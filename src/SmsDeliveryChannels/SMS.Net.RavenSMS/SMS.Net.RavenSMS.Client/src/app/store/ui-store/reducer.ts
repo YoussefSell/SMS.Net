@@ -17,10 +17,10 @@ export const MainReducer = createReducer<State>(
     initialState,
 
     // check the actions
-    on(Actions.toggleDarkMode, (state, action): State => {
+    on(Actions.updateDarkMode, (state, action): State => {
         return {
             ...state,
-            darkMode: !state.darkMode,
+            darkMode: action.value,
         };
     }),
 );

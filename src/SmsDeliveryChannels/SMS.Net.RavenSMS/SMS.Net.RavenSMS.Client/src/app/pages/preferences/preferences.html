@@ -7,19 +7,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list style="width: 100%;">
-    <ion-item>
-      <ion-icon slot="start" name="moon-outline"></ion-icon>
-      <ion-label>
-        Dark Mode
-      </ion-label>
-      <ion-toggle [(ngModel)]="dark"></ion-toggle>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>this is a test</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-
-  </ion-list>
+  <form [formGroup]="settingsForm" *ngIf="settingsForm">
+    <ion-list style="width: 100%;">
+      <ion-item>
+        <ion-icon slot="start" name="moon-outline"></ion-icon>
+        <ion-label>
+          Dark Mode
+        </ion-label>
+        <ion-toggle formControlName="darkMode"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </form>
 </ion-content>
