@@ -25,7 +25,6 @@ export class MessageDetailPage {
   }
 
   sessionClick(item: string) {
-    console.log('Clicked', item);
   }
 
   toggleFavorite() {
@@ -33,6 +32,5 @@ export class MessageDetailPage {
   }
 
   shareSession() {
-    console.log('Clicked share session');
   }
 }

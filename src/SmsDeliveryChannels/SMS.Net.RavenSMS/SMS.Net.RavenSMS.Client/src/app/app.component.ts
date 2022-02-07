@@ -1,7 +1,7 @@
-import { RootStoreState, StorePersistenceActions, RootActions, UIStoreSelectors } from './store';
+import { RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -20,13 +20,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<RootStoreState.State>,
-  ) { }
+  ) {
+    // add a listener on the app state
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        this.store.dispatch(StorePersistenceActions.PersistStore());
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.subSink.sink = this.store.select(UIStoreSelectors.IsDarkModeSelector)
-      .subscribe(e => {
-        this.dark = e;
-        console.log('AppComponent', this.dark);
+      .subscribe(value => {
+        this.dark = value;
       });
   }
 

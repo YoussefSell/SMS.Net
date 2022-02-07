@@ -1,11 +1,12 @@
-import { distinctUntilChanged, exhaustMap, map, switchMap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, exhaustMap, map, switchMap } from 'rxjs/operators';
 import { createEffect, Actions, ofType, OnInitEffects } from '@ngrx/effects';
 import { StorageService } from 'src/app/core/services';
 import { Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import * as ActionsTypes from './actions';
 import { State } from '../root-state';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
+import { RootActions } from '..';
 
 @Injectable()
 export class StorePersistenceEffects implements OnInitEffects {
@@ -31,6 +32,10 @@ export class StorePersistenceEffects implements OnInitEffects {
                                 return ActionsTypes.StateLoadingFailed();
                             }))
                 });
+            }),
+            catchError(e => {
+                console.log('error in load state', e);
+                return of(RootActions.NoAction());
             })
         );
     });
@@ -43,6 +48,10 @@ export class StorePersistenceEffects implements OnInitEffects {
             distinctUntilChanged(),
             exhaustMap((state) => {
                 return from(this._storage.saveState$<State>(state));
+            }),
+            catchError(e => {
+                console.log('error in persist state', e);
+                return of(RootActions.NoAction());
             })
         );
     },

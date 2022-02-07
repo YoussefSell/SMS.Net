@@ -11,7 +11,6 @@ export class StorageService {
     constructor(private _storage: Storage) { }
 
     async initAsync() {
-        console.log('init');
         const storage = await this._storage.create();
         this._storage = storage;
     }
