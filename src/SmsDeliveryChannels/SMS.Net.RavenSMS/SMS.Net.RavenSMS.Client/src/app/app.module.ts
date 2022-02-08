@@ -1,7 +1,6 @@
 import { StatePersistenceReducer, StorePersistenceEffects } from './store/state-persistence';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { IonicStorageModule } from '@ionic/storage-angular';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
@@ -20,7 +19,6 @@ import { RootStoreModule } from './store';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
 
     RootStoreModule,
     StoreModule.forRoot({}, { metaReducers: StatePersistenceReducer.metaReducers }),
