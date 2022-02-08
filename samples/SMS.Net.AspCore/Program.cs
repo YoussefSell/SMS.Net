@@ -8,7 +8,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy",
+    options.AddPolicy("ionic-cors",
         builder => builder.WithOrigins("http://localhost:8100")
         .AllowAnyMethod()
         .AllowAnyHeader()
@@ -45,7 +45,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseCors("CorsPolicy");
+app.UseCors("ionic-cors");
 
 app.UseAuthorization();
 

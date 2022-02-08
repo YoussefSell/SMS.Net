@@ -1,5 +1,6 @@
 import { RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SignalRService } from './core/services';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   dark: boolean = false;
 
   constructor(
+    public signalRService: SignalRService,
     private store: Store<RootStoreState.State>,
   ) {
     // add a listener on the app state
@@ -34,6 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(value => {
         this.dark = value;
       });
+
+    this.signalRService.initConnection();
   }
 
   ngOnDestroy(): void {
