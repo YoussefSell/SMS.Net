@@ -11,7 +11,7 @@ export class SignalRService {
     public initConnection = () => {
 
         this.hubConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:5001/chart')
+            .withUrl('https://localhost:7114/RavenSMS/Hub')
             .build();
 
         this.hubConnection
