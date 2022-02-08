@@ -1,5 +1,5 @@
-import { Storage } from '@ionic/storage-angular';
 import { Injectable } from '@angular/core';
+import { Storage } from '@capacitor/storage';
 import { from, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -8,13 +8,6 @@ export class StorageService {
     private STATE_KEY = 'STATE';
     private TOKEN_KEY = 'TOKEN';
 
-    constructor(private _storage: Storage) { }
-
-    async initAsync() {
-        const storage = await this._storage.create();
-        this._storage = storage;
-    }
-
     /**
      * save the value in storage for a given key.
      * @param key the key to save the value with it
@@ -22,7 +15,7 @@ export class StorageService {
      * @returns a promise that define the operation status
      */
     saveAsync<TValue>(key: string, value: TValue): Promise<void> {
-        return this._storage.set(key, value);
+        return Storage.set({ key, value: JSON.stringify(value) });
     }
 
     /**
@@ -31,7 +24,7 @@ export class StorageService {
      * @returns the value of the given key in the storage
      */
     async getAsync<TValue>(key: string): Promise<TValue | null> {
-        const result = await this._storage.get(key);
+        const result = await Storage.get({ key });
 
         // check if we have a value
         if (result && result.value) {
@@ -48,7 +41,7 @@ export class StorageService {
      * @returns a promise with the operation status
      */
     removeAsync(key: string): Promise<void> {
-        return this._storage.remove(key);
+        return Storage.remove({ key });
     }
 
     /**
@@ -56,7 +49,7 @@ export class StorageService {
      * @returns a promise with the operation status
      */
     clearStorageAsync(): Promise<void> {
-        return this._storage.clear();
+        return Storage.clear();
     }
 
     /**
