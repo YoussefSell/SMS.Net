@@ -1,7 +1,9 @@
-import { MessagesService } from "./messages.service";
-import { StorageService } from "./storage.service";
+import { MessagesService } from "./app/messages.service";
+import { StorageService } from "./app/storage.service";
+import { SignalRService } from "./app/signalr.service";
 
 export {
     MessagesService,
-    StorageService
+    StorageService,
+    SignalRService
 }
