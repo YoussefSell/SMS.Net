@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-
+import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root'
 })
@@ -17,7 +16,7 @@ export class SignalRService {
         this.hubConnection
             .start()
             .then(() => console.log('Connection started'))
-            .catch(err => console.log('Error while starting connection: ' + err))
+            .catch(err => console.log('Error while starting connection: ' + err));
     }
 
     public addTransferDataListener = () => {
