@@ -28,6 +28,10 @@ export class PreferencesPage implements OnInit {
     this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
-      })
+      });
+  }
+
+  initializeForm(): void {
+
   }
 }
