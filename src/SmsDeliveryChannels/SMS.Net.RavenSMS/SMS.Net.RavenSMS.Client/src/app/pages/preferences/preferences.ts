@@ -20,10 +20,8 @@ export class PreferencesPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.settingsForm = this.fb
-      .group({
-        darkMode: this.fb.control(false),
-      });
+    // init the form
+    this.initializeForm();
 
     this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
       .subscribe(value => {
@@ -32,6 +30,14 @@ export class PreferencesPage implements OnInit {
   }
 
   initializeForm(): void {
-
+    this.settingsForm = this.fb
+      .group({
+        darkMode: this.fb.control(false),
+        clientId: this.fb.control('clt_rhmf7bvhq8is9'),
+        clientName: this.fb.control('Default App'),
+        clientDescription: this.fb.control('sample client description'),
+        serverURL: this.fb.control('https://localhost:7114'),
+        serverStatus: this.fb.control('online')
+      });
   }
 }
