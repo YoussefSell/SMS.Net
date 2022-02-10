@@ -24,17 +24,17 @@
         <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
           Client Id
         </ion-label>
-        <ion-input value="clt_test"></ion-input>
+        <ion-input formControlName="clientId"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
           Client Name
         </ion-label>
-        <ion-input value="Default client application"></ion-input>
+        <ion-input formControlName="clientName"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Description</ion-label>
-        <ion-textarea value="Ionic enables developers to build performant, high-quality mobile apps.">
+        <ion-textarea formControlName="clientDescription">
         </ion-textarea>
       </ion-item>
     </ion-list>
@@ -44,13 +44,13 @@
         <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
           Server Url
         </ion-label>
-        <ion-input value="https://localhost:7114"></ion-input>
+        <ion-input formControlName="serverURL"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
           Status
         </ion-label>
-        <ion-input value="Connected"></ion-input>
+        <ion-input formControlName="serverStatus"></ion-input>
       </ion-item>
     </ion-list>
   </form>
