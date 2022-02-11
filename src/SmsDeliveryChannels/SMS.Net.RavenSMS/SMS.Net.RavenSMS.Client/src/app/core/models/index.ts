@@ -1,5 +1,10 @@
+import { IAppIdentification } from "./IAppIdentification";
+import { IServerInfo } from "./IServerInfo";
+
 import { IMessages } from "./IMessages";
 
 export {
-    IMessages
+    IAppIdentification,
+    IServerInfo,
+    IMessages,
 }
