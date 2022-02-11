@@ -34,6 +34,10 @@ import { RootStoreModule } from './store';
       {
         path: 'app',
         loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsModule)
+      },
+      {
+        path: 'setup',
+        loadChildren: () => import('./pages/Setup/setup.module').then(m => m.SetupModule)
       }
     ])
   ],
