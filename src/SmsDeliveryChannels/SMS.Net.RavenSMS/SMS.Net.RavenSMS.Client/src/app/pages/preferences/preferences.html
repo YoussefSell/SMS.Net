@@ -1,53 +1,59 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
     <ion-title>Preferences</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <form [formGroup]="settingsForm" *ngIf="settingsForm">
     <h3 class="ion-padding-top ion-padding-start">Appearance</h3>
-    <ion-list style="width: 100%;">
+    <ion-list style="width: 100%">
       <ion-item>
         <ion-icon slot="start" name="moon-outline"></ion-icon>
-        <ion-label>
-          Dark Mode
-        </ion-label>
+        <ion-label> Dark Mode </ion-label>
         <ion-toggle formControlName="darkMode"></ion-toggle>
       </ion-item>
     </ion-list>
     <h3 class="ion-padding-top ion-padding-start">App Identification</h3>
-    <ion-list style="width: 100%;">
+    <ion-list style="width: 100%">
       <ion-item>
-        <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
+        <ion-label
+          position="stacked"
+          style="margin-right: 10px; min-width: 100px"
+        >
           Client Id
         </ion-label>
         <ion-input formControlName="clientId"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
+        <ion-label
+          position="stacked"
+          style="margin-right: 10px; min-width: 100px"
+        >
           Client Name
         </ion-label>
         <ion-input formControlName="clientName"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Description</ion-label>
-        <ion-textarea formControlName="clientDescription">
-        </ion-textarea>
+        <ion-textarea formControlName="clientDescription"> </ion-textarea>
       </ion-item>
     </ion-list>
     <h3 class="ion-padding-top ion-padding-start">Server info</h3>
-    <ion-list style="width: 100%;">
+    <ion-list style="width: 100%">
       <ion-item>
-        <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
+        <ion-label
+          position="stacked"
+          style="margin-right: 10px; min-width: 100px"
+        >
           Server Url
         </ion-label>
         <ion-input formControlName="serverURL"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked" style="margin-right: 10px; min-width: 100px;">
+        <ion-label
+          position="stacked"
+          style="margin-right: 10px; min-width: 100px"
+        >
           Status
         </ion-label>
         <ion-input formControlName="serverStatus"></ion-input>

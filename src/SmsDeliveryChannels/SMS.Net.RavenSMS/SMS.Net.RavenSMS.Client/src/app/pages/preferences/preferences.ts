@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { RootStoreState, UIStoreActions } from 'src/app/store';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 @Component({

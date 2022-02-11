@@ -10,8 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     IonicModule,
     FormsModule,
-    ReactiveFormsModule,
     CommonModule,
+    ReactiveFormsModule,
     MapPageRoutingModule
   ],
   declarations: [
