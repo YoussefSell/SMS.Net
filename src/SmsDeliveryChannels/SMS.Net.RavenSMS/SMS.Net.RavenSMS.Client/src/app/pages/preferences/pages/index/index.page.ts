@@ -5,11 +5,11 @@ import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'page-map',
-  templateUrl: 'preferences.html',
-  styleUrls: ['./preferences.scss']
+  selector: 'page-preferences-index',
+  templateUrl: 'index.page.html',
+  styleUrls: ['index.page.scss']
 })
-export class PreferencesPage implements OnInit {
+export class IndexPage implements OnInit {
 
   subsink = new SubSink();
   settingsForm: FormGroup;
@@ -27,6 +27,7 @@ export class PreferencesPage implements OnInit {
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
       });
+
   }
 
   initializeForm(): void {

@@ -22,7 +22,7 @@
         >
           Client Id
         </ion-label>
-        <ion-input formControlName="clientId"></ion-input>
+        <ion-input readonly formControlName="clientId"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label
@@ -31,11 +31,12 @@
         >
           Client Name
         </ion-label>
-        <ion-input formControlName="clientName"></ion-input>
+        <ion-input readonly formControlName="clientName"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Description</ion-label>
-        <ion-textarea formControlName="clientDescription"> </ion-textarea>
+        <ion-textarea readonly formControlName="clientDescription">
+        </ion-textarea>
       </ion-item>
     </ion-list>
     <h3 class="ion-padding-top ion-padding-start">Server info</h3>
@@ -47,7 +48,7 @@
         >
           Server Url
         </ion-label>
-        <ion-input formControlName="serverURL"></ion-input>
+        <ion-input readonly formControlName="serverURL"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label
@@ -56,7 +57,7 @@
         >
           Status
         </ion-label>
-        <ion-input formControlName="serverStatus"></ion-input>
+        <ion-input readonly formControlName="serverStatus"></ion-input>
       </ion-item>
     </ion-list>
   </form>

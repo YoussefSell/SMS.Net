@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { PreferencesPage } from './preferences';
+import { IndexPage } from './pages/index/index.page';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
     path: '',
-    component: PreferencesPage
+    component: IndexPage
   }
 ];
 
