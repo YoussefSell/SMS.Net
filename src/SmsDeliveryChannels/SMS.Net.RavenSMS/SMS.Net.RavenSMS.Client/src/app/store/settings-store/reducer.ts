@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { ServerStatus } from 'src/app/core/constants/enums';
 import * as Actions from './actions';
 import { State } from './state';
 
@@ -41,6 +42,20 @@ export const MainReducer = createReducer<State>(
             appIdentification: {
                 ...action.data
             },
+        };
+    }),
+    on(Actions.ConfigureClient, (state, action): State => {
+        return {
+            ...state,
+            appIdentification: {
+                clientId: action.data.clientId,
+                clientName: action.data.clientName,
+                clientDescription: action.data.clientDescription,
+            },
+            serverInfo: {
+                status: ServerStatus.ONLINE,
+                serverUrl: action.data.serverUrl,
+            }
         };
     }),
 );
