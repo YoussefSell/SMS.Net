@@ -1,10 +1,27 @@
-<ion-content class="ion-padding-top ion-padding-start ion-padding-end">
-  <h3 class="">Client application configuration</h3>
-  <div>
-    <p>
-      first create an app on your server, and then scan the qr code to configure
-      this client instance
-    </p>
+<ion-content
+  class="ion-padding-top ion-padding-start ion-padding-end"
+  [style.--background]="scanActive ? '#00000000' : '#ffff'"
+>
+  <div *ngIf="!scanActive">
+    <h3 class="">Client application configuration</h3>
+    <div>
+      <p>
+        first create an app on your server, and then scan the qr code to
+        configure this client instance.
+      </p>
+      <p>{{message}}</p>
+      <ion-button
+        *ngIf="!scanActive && permissionGranted"
+        (click)="startScanning()"
+        >start scanning</ion-button
+      >
+      <ion-button *ngIf="showOpenSettingsButton" (click)="openSettingPage()"
+        >open settings</ion-button
+      >
+      <ion-button *ngIf="showGrantPermissionButton" (click)="grantPermission()"
+        >grant permission</ion-button
+      >
+    </div>
   </div>
-  <div></div>
+  <div *ngIf="scanActive" class="scan-box"></div>
 </ion-content>
