@@ -14,6 +14,11 @@ public partial class ClientSetupPageModel
     /// Get or set the client to setup.
     /// </summary>
     public RavenSmsClient? Client { get; set; }
+
+    /// <summary>
+    /// the server url
+    /// </summary>
+    public string QrCodeText { get; set; }
 }
 
 /// <summary>
@@ -26,14 +31,24 @@ public partial class ClientSetupPageModel
         if (string.IsNullOrEmpty(id))
             return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
 
-        var client = await _manager.FindClientByIdAsync(id);
-        if (client is null)
+        Client = await _manager.FindClientByIdAsync(id);
+        if (Client is null)
         {
             Message = $"Couldn't find a client with the Id: {id}";
             return Page();
         }
 
-        Client = client;
+        // build the json model
+        var jsonModel = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            clientId = Client.Id,
+            clientName = Client.Name,
+            clientDescription = Client.Description,
+            serverUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}",
+        });
+
+        // convert the json model to a base64 string
+        QrCodeText = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonModel));
 
         return Page();
     }
