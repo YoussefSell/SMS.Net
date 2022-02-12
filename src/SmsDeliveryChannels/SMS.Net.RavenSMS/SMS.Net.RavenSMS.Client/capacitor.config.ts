@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'SMS.Net.RavenSMS.Client',
+  appId: 'net.sms.ravensms',
+  appName: 'RavenSMS',
   webDir: 'www',
   bundledWebRuntime: false
 };

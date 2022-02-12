@@ -1,5 +1,5 @@
 {
-  "name": "SMS.Net.RavenSMS.Client",
+  "name": "RavenSMS",
   "integrations": {
     "capacitor": {}
   },

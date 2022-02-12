@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package net.sms.ravensms;
 
 import com.getcapacitor.BridgeActivity;
 
