@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import { SettingsStoreSelectors } from 'src/app/store/settings-store';
+import { IAppIdentification, IServerInfo } from 'src/app/core/models';
 
 @Component({
   selector: 'page-preferences-index',
@@ -20,25 +22,32 @@ export class IndexPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // init the form
-    this.initializeForm();
+    this.settingsForm = this.fb
+      .group({
+        darkMode: this.fb.control(false),
+        clientId: this.fb.control(''),
+        serverURL: this.fb.control(''),
+        clientName: this.fb.control(''),
+        serverStatus: this.fb.control(''),
+        clientDescription: this.fb.control(''),
+      });
 
     this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
       });
 
+    this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
+      .subscribe(state => {
+        this.initializeForm(state.appIdentification, state.serverInfo);
+      })
   }
 
-  initializeForm(): void {
-    this.settingsForm = this.fb
-      .group({
-        darkMode: this.fb.control(false),
-        clientId: this.fb.control('clt_rhmf7bvhq8is9'),
-        clientName: this.fb.control('Default App'),
-        clientDescription: this.fb.control('sample client description'),
-        serverURL: this.fb.control('https://localhost:7114'),
-        serverStatus: this.fb.control('online')
-      });
+  initializeForm(appIdentification: IAppIdentification, serverInfo: IServerInfo): void {
+    this.settingsForm.get('clientId').setValue(appIdentification.clientId);
+    this.settingsForm.get('clientName').setValue(appIdentification.clientName);
+    this.settingsForm.get('clientDescription').setValue(appIdentification.clientDescription);
+    this.settingsForm.get('serverURL').setValue(serverInfo.serverUrl);
+    this.settingsForm.get('serverStatus').setValue(serverInfo.status);
   }
 }
