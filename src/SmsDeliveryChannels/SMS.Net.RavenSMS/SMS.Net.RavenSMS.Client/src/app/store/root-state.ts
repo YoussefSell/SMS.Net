@@ -1,12 +1,16 @@
-import { ApplicationFeatures } from '../core/constants';
-import { UIStoreState } from './ui-store';
+import { DeviceNetworkStatus, ServerStatus } from '../core/constants/enums';
 
 /**
  * the root state of the application
  */
 export interface State {
     /**
-     * the ui state
+     * the server connection status
      */
-    [ApplicationFeatures.ui]: UIStoreState.State;
+    serverConnection: ServerStatus;
+
+    /**
+     * the network connection status
+     */
+    networkConnection: DeviceNetworkStatus;
 }

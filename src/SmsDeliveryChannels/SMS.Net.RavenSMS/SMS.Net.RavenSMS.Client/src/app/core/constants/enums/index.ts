@@ -1,5 +1,7 @@
 import { ServerStatus } from "./ServerStatus";
+import { DeviceNetworkStatus } from "./NetworkStatus";
 
 export {
-    ServerStatus
+    ServerStatus,
+    DeviceNetworkStatus,
 }
