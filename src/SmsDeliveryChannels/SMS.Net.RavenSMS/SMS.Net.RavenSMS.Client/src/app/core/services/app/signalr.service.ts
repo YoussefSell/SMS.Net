@@ -5,18 +5,43 @@ import { Injectable } from '@angular/core';
 })
 export class SignalRService {
 
-    private hubConnection: HubConnection
+    private serverSuffix = "RavenSMS/Hub";
+    private hubConnection: HubConnection;
 
-    public initConnection = () => {
+    /**
+     * build the instance of the HubConnection
+     * @param serverUrl the ravenSMS server url
+     */
+    private buildHubConnection(serverUrl: string): void {
+        if (serverUrl == null || serverUrl == undefined) {
+            throw new Error('the server url is not specified');
+        }
 
+        // build the server url
+        let url = serverUrl.endsWith('/')
+            ? serverUrl + this.serverSuffix
+            : serverUrl + '/' + this.serverSuffix;
+
+        // build the connection hub
         this.hubConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:7114/RavenSMS/Hub')
+            .withUrl(url)
             .build();
+    }
 
-        this.hubConnection
-            .start()
-            .then(() => console.log('Connection started'))
-            .catch(err => console.log('Error while starting connection: ' + err));
+    /**
+     * start the server connection
+     */
+    private startConnectionAsync(): Promise<void> {
+        return this.hubConnection.start();
+    }
+
+    // init the server connection
+    public initConnection(serverUrl: string): Promise<void> {
+        // 1- build the connection hub
+        this.buildHubConnection(serverUrl);
+
+        // 2- start the connection
+        return this.startConnectionAsync();
     }
 
     public addTransferDataListener = () => {

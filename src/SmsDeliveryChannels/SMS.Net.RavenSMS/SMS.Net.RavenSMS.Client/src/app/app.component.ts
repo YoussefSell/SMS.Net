@@ -1,11 +1,14 @@
-import { RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
+import { RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
+import { SettingsStoreSelectors } from './store/settings-store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService } from './core/services';
+import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { SettingsStoreSelectors } from './store/settings-store';
-import { Router } from '@angular/router';
+import { Network } from '@capacitor/network';
+import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +26,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    //private network: Network,
     public signalRService: SignalRService,
+    public toastController: ToastController,
     private store: Store<RootStoreState.State>,
   ) {
     // add a listener on the app state
@@ -34,33 +39,68 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    Network.addListener('networkStatusChange', status => {
+      this.store.dispatch(RootActions.UpdateNetworkConnectionStatus({
+        newStatus: status.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
+      }));
+    });
+
     this.subSink.sink = this.store.select(UIStoreSelectors.IsDarkModeSelector)
-      .subscribe(value => {
-        this.dark = value;
-      });
+      .subscribe(value => this.dark = value);
 
     this.subSink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
-          console.log('connecting to server: ', state.serverInfo.serverUrl);
-          this.signalRService.initConnection();
+          this.signalRService.initConnection(state.serverInfo?.serverUrl)
+            .then(() => {
+              this.store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }))
+            })
+            .catch(async (error) => {
+              await this.presentToast('connection  failed' + error + state.serverInfo.serverUrl);
+              this.store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+            });
           return;
         }
 
-        // here the app is not configured yet
-        // redirect to the setup page
-        console.log('client app is not configured yet, redirecting to setup page ...');
+        // here the app is not configured yet, redirect to the setup page
         this.redirectToSetupPage();
       });
 
+    this.subSink.sink = this.store.select(RootStoreSelectors.ServerConnectionSelector)
+      .subscribe(async status => {
+        if (status == ServerStatus.ONLINE) {
+          await this.presentToast("you have been connected to the server successfully", 3000);
+          return;
+        }
+
+        //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
+      });
+
+    // check current network status
+    await this.checkCurrentNetworkStatus();
+  }
+
+  private async checkCurrentNetworkStatus() {
+    const currentNetworkStatus = await Network.getStatus();
+    this.store.dispatch(RootActions.UpdateNetworkConnectionStatus({
+      newStatus: currentNetworkStatus.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+    Network.removeAllListeners();
   }
 
   redirectToSetupPage(): void {
     this.router.navigateByUrl('/setup');
   }
 
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
+  async presentToast(message: string, duration: number | undefined = undefined) {
+    const toast = await this.toastController.create({
+      duration: duration, message: message,
+    });
+    toast.present();
   }
 }

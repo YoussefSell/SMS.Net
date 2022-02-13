@@ -1,14 +1,14 @@
-import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
 import { SettingsStoreActions, SettingsStoreSelectors } from 'src/app/store/settings-store';
+import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IQrContentModel } from 'src/app/core/models';
 import { AlertController } from '@ionic/angular';
 import { RootStoreState } from 'src/app/store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-setup-index',
@@ -36,9 +36,9 @@ export class IndexPage implements OnInit, OnDestroy {
     private store: Store<RootStoreState.State>,
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
-      .subscribe(state => {
+      .subscribe(async state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
           console.log('client app already configured, redirecting to the home page...');
           this.router.navigateByUrl('/');
@@ -46,8 +46,19 @@ export class IndexPage implements OnInit, OnDestroy {
         }
 
         this.configurationAllowed = true;
+        await this.initialize();
       });
+  }
 
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
+
+    if (this.platform != 'web') {
+      BarcodeScanner.stopScan();
+    }
+  }
+
+  async initialize(): Promise<void> {
     // get the platform
     this.platform = Capacitor.getPlatform();
 
@@ -67,14 +78,6 @@ export class IndexPage implements OnInit, OnDestroy {
     }
 
     this.initializeForm();
-  }
-
-  ngOnDestroy(): void {
-    this.subsink.unsubscribe();
-
-    if (this.platform != 'web') {
-      BarcodeScanner.stopScan();
-    }
   }
 
   async startScanning(): Promise<void> {
@@ -114,7 +117,7 @@ export class IndexPage implements OnInit, OnDestroy {
 
   async checkUserPermission(): Promise<boolean> {
     // check if user already granted permission
-    const status = await BarcodeScanner.checkPermission({ force: true });
+    const status = await BarcodeScanner.checkPermission({ force: false });
 
     // user granted permission
     if (status.granted) {

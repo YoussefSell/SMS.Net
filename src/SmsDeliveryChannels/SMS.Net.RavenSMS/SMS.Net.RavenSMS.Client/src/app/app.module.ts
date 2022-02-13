@@ -10,7 +10,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { RootEffects } from './store/root-effects';
-import { RootStoreModule } from './store';
+import { RootReducer, RootStoreModule } from './store';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { RootStoreModule } from './store';
     IonicModule.forRoot(),
 
     RootStoreModule,
-    StoreModule.forRoot({}, { metaReducers: StatePersistenceReducer.metaReducers }),
+    StoreModule.forRoot(RootReducer, { metaReducers: StatePersistenceReducer.metaReducers }),
     EffectsModule.forRoot([RootEffects, StorePersistenceEffects.StorePersistenceEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, name: 'Sms.Net - RavenSMS', logOnly: environment.production }),
 
