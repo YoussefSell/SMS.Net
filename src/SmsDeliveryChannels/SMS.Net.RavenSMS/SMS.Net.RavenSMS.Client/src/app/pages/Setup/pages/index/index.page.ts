@@ -1,11 +1,14 @@
 import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
-import { SettingsStoreActions } from 'src/app/store/settings-store';
+import { SettingsStoreActions, SettingsStoreSelectors } from 'src/app/store/settings-store';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IQrContentModel } from 'src/app/core/models';
 import { AlertController } from '@ionic/angular';
 import { RootStoreState } from 'src/app/store';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Capacitor } from '@capacitor/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-setup-index',
@@ -19,31 +22,59 @@ export class IndexPage implements OnInit, OnDestroy {
   message: string;
   scanActive = false;
   permissionGranted = false;
+  configurationAllowed = false;
   showOpenSettingsButton = false;
   showGrantPermissionButton = false;
 
+  platform: string;
+  configurationForm: FormGroup;
+
   constructor(
+    private router: Router,
+    private fb: FormBuilder,
     private alert: AlertController,
     private store: Store<RootStoreState.State>,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.message = 'checking camera permission ...';
+    this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
+      .subscribe(state => {
+        if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
+          console.log('client app already configured, redirecting to the home page...');
+          this.router.navigateByUrl('/');
+          return;
+        }
 
-    // first check for the user permission
-    this.permissionGranted = await this.checkUserPermission();
+        this.configurationAllowed = true;
+      });
 
-    if (this.permissionGranted) {
-      this.message = "ready for scanning";
+    // get the platform
+    this.platform = Capacitor.getPlatform();
+
+    // this code is only relevant if we are not previewing in a web browser
+    if (this.platform != 'web') {
+      // first check for the user permission
+      this.message = 'checking camera permission ...';
+      this.permissionGranted = await this.checkUserPermission();
+
+      if (this.permissionGranted) {
+        this.message = "ready for scan";
+      }
+
+      // prepare the barcode scanner
+      BarcodeScanner.prepare();
+      return;
     }
 
-    // prepare the barcode scanner
-    BarcodeScanner.prepare();
+    this.initializeForm();
   }
 
   ngOnDestroy(): void {
     this.subsink.unsubscribe();
-    BarcodeScanner.stopScan();
+
+    if (this.platform != 'web') {
+      BarcodeScanner.stopScan();
+    }
   }
 
   async startScanning(): Promise<void> {
@@ -153,5 +184,40 @@ export class IndexPage implements OnInit, OnDestroy {
 
   openSettingPage() {
     BarcodeScanner.openAppSettings();
+  }
+
+  initializeForm(): void {
+    this.configurationForm = this.fb.group({
+      clientId: this.fb.control('', [
+        Validators.required,
+        Validators.maxLength(17),
+        Validators.minLength(17),
+      ]),
+      serverUrl: this.fb.control('', [
+        Validators.required,
+        Validators.pattern(/^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/)
+      ]),
+      clientName: this.fb.control(''),
+      clientDescription: this.fb.control(''),
+    });
+  }
+
+  submit(): void {
+    if (!this.configurationForm.valid) {
+      console.log(this.configurationForm);
+      this.message = "invalid form value, please enter a valid values.";
+      return;
+    }
+
+    var model = this.configurationForm.value as IQrContentModel;
+
+    // check if we have any valid content
+    if (!model.serverUrl || !model.clientId) {
+      this.message = "invalid form value, please enter a valid values.";
+      return;
+    }
+
+    // dispatch the configuration action
+    this.store.dispatch(SettingsStoreActions.ConfigureClient({ data: model }));
   }
 }
