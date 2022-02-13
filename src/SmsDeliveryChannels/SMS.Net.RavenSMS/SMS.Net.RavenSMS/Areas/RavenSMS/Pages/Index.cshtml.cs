@@ -3,7 +3,7 @@
     /// <summary>
     /// the dashboard pages
     /// </summary>
-    public class DashboradPage
+    public class DashboradPageModel
     {
     }
 }
