@@ -84,6 +84,17 @@ public partial class RavenSmsManager : IRavenSmsManager
     public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model)
         => _clientsStore.SaveAsync(model);
 
+    /// <inheritdoc/>
+    public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
+    {
+        // set the client id
+        client.ConnectionId = connectionId;
+        client.Status = RavenSmsClientStatus.Connected;
+
+        // attach the connection id to the client in database
+        return await _clientsStore.UpdateAsync(client);
+    }
+
     #endregion
 
     #region Messages management

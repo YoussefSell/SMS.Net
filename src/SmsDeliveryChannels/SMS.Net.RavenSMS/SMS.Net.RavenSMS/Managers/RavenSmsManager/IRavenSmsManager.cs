@@ -75,4 +75,12 @@ public interface IRavenSmsManager
     /// <param name="filter">the filter used to retrieve the messages.</param>
     /// <returns>the list of messages and total count of rows</returns>
     Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter);
+
+    /// <summary>
+    /// set the client as Connected, and associated the given connection id with it.
+    /// </summary>
+    /// <param name="client">the connected client</param>
+    /// <param name="connectionId">the connection id</param>
+    /// <returns>task</returns>
+    Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId);
 }
