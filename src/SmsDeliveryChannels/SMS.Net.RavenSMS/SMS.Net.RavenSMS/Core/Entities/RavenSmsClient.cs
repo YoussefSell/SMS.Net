@@ -42,7 +42,12 @@ public class RavenSmsClient
     public string Description { get; set; } = default!;
 
     /// <summary>
+    /// the client id associated with this client app
+    /// </summary>
+    public string? ConnectionId { get; set; }
+
+    /// <summary>
     /// the phone numbers associated with this client
     /// </summary>
-    public IEnumerable<RavenSmsClientPhoneNumber> PhoneNumbers { get; set; } 
+    public IEnumerable<RavenSmsClientPhoneNumber> PhoneNumbers { get; set; }
 }
