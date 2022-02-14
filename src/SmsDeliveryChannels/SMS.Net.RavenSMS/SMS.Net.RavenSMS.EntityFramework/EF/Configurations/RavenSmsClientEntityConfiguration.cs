@@ -17,6 +17,9 @@ public class RavenSmsClientEntityConfiguration : IEntityTypeConfiguration<RavenS
         builder.Property(e => e.Description)
             .HasMaxLength(300);
 
+        builder.Property(e => e.ConnectionId)
+            .HasMaxLength(250);
+
         builder.Property(e => e.Status)
             .HasConversion(new EnumToStringConverter<RavenSmsClientStatus>())
             .HasMaxLength(20);
