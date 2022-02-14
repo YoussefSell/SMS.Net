@@ -18,7 +18,7 @@ public enum RavenSmsClientStatus
     /// <summary>
     /// the message has been Queued.
     /// </summary>
-    Active = 1,
+    Connected = 1,
 
     /// <summary>
     /// failed to send the message.
