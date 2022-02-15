@@ -1,5 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Injectable } from '@angular/core';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -12,7 +13,7 @@ export class SignalRService {
      * build the instance of the HubConnection
      * @param serverUrl the ravenSMS server url
      */
-    private buildHubConnection(serverUrl: string): void {
+    private buildHubConnection(serverUrl: string, clientId: string): void {
         if (serverUrl == null || serverUrl == undefined) {
             throw new Error('the server url is not specified');
         }
@@ -21,6 +22,9 @@ export class SignalRService {
         let url = serverUrl.endsWith('/')
             ? serverUrl + this.serverSuffix
             : serverUrl + '/' + this.serverSuffix;
+
+        // attach the clientId asa queryString
+        url += `?clientId=${clientId}`
 
         // build the connection hub
         this.hubConnection = new HubConnectionBuilder()
@@ -36,9 +40,9 @@ export class SignalRService {
     }
 
     // init the server connection
-    public initConnection(serverUrl: string): Promise<void> {
+    public initConnection(serverUrl: string, clientId: string): Promise<void> {
         // 1- build the connection hub
-        this.buildHubConnection(serverUrl);
+        this.buildHubConnection(serverUrl, clientId);
 
         // 2- start the connection
         return this.startConnectionAsync();

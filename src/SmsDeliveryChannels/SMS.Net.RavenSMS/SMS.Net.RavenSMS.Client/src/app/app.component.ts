@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subSink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
-          this.signalRService.initConnection(state.serverInfo?.serverUrl)
+          this.signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
             .then(() => {
               this.store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }))
             })
