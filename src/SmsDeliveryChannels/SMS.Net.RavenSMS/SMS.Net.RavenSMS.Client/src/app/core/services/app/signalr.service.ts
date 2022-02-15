@@ -48,9 +48,11 @@ export class SignalRService {
         return this.startConnectionAsync();
     }
 
-    public addTransferDataListener = () => {
-        this.hubConnection.on('transferchartdata', (data) => {
-            console.log('on message sent', data);
-        });
+    /**
+     * send the on client connected command
+     * @param clientId the id of the client app
+     */
+    public sendOnConnectedEvent(clientId: string): Promise<void> {
+        return this.hubConnection.send('clientConnectedAsync', clientId);
     }
 }
