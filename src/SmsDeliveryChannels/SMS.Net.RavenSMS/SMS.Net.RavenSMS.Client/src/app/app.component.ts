@@ -1,14 +1,15 @@
 import { RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
+import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 import { SettingsStoreSelectors } from './store/settings-store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SignalRService } from './core/services';
+import { SignalRService, SmsService } from './core/services';
 import { ToastController } from '@ionic/angular';
+import { Network } from '@capacitor/network';
+import { IMessages } from './core/models';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { Network } from '@capacitor/network';
-import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    //private network: Network,
-    public signalRService: SignalRService,
-    public toastController: ToastController,
+    private _smsService: SmsService,
+    private signalRService: SignalRService,
+    private toastController: ToastController,
     private store: Store<RootStoreState.State>,
   ) {
     // add a listener on the app state
@@ -87,8 +88,23 @@ export class AppComponent implements OnInit, OnDestroy {
         //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
       });
 
+
+
+
     // check current network status
     await this.checkCurrentNetworkStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+    Network.removeAllListeners();
+  }
+
+  registerServerEvents(): void {
+    // register the handler for the send message event
+    this.signalRService.onSendMessageEvent((message: IMessages) => {
+      this._smsService.sendSms$(message.to, message.content);
+    });
   }
 
   private async checkCurrentNetworkStatus() {
@@ -96,11 +112,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.dispatch(RootActions.UpdateNetworkConnectionStatus({
       newStatus: currentNetworkStatus.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
     }));
-  }
-
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
-    Network.removeAllListeners();
   }
 
   redirectToSetupPage(): void {
