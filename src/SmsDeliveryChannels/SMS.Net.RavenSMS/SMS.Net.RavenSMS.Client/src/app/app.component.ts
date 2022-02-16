@@ -77,6 +77,16 @@ export class AppComponent implements OnInit, OnDestroy {
         //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
       });
 
+    this.subSink.sink = this.store.select(RootStoreSelectors.NetworkConnectionSelector)
+      .subscribe(async status => {
+        if (status == DeviceNetworkStatus.OFFLINE) {
+          await this.presentToast("you have been disconnected, please check your internet connection.");
+          return;
+        }
+
+        //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
+      });
+
     // check current network status
     await this.checkCurrentNetworkStatus();
   }
