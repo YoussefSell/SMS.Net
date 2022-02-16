@@ -22,44 +22,44 @@ import { SubSink } from 'subsink';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  subSink = new SubSink();
+  _subSink = new SubSink();
   dark: boolean = false;
 
   constructor(
-    private router: Router,
+    private _router: Router,
     private _smsService: SmsService,
-    private signalRService: SignalRService,
-    private toastController: ToastController,
-    private store: Store<RootStoreState.State>,
+    private _signalRService: SignalRService,
+    private _toastController: ToastController,
+    private _store: Store<RootStoreState.State>,
   ) {
     // add a listener on the app state
     App.addListener('appStateChange', ({ isActive }) => {
       if (!isActive) {
-        this.store.dispatch(StorePersistenceActions.PersistStore());
+        this._store.dispatch(StorePersistenceActions.PersistStore());
       }
     });
   }
 
   async ngOnInit(): Promise<void> {
     Network.addListener('networkStatusChange', status => {
-      this.store.dispatch(RootActions.UpdateNetworkConnectionStatus({
+      this._store.dispatch(RootActions.UpdateNetworkConnectionStatus({
         newStatus: status.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
       }));
     });
 
-    this.subSink.sink = this.store.select(UIStoreSelectors.IsDarkModeSelector)
+    this._subSink.sink = this._store.select(UIStoreSelectors.IsDarkModeSelector)
       .subscribe(value => this.dark = value);
 
-    this.subSink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
+    this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
-          this.signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
+          this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
             .then(() => {
-              this.store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }))
+              this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }))
             })
             .catch(async (error) => {
               await this.presentToast('connection  failed' + error + state.serverInfo.serverUrl);
-              this.store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+              this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
             });
           return;
         }
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.redirectToSetupPage();
       });
 
-    this.subSink.sink = this.store.select(RootStoreSelectors.ServerConnectionSelector)
+    this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
       .subscribe(async status => {
         if (status == ServerStatus.ONLINE) {
           await this.presentToast("you have been connected to the server successfully", 3000);
@@ -78,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
         //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
       });
 
-    this.subSink.sink = this.store.select(RootStoreSelectors.NetworkConnectionSelector)
+    this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
       .subscribe(async status => {
         if (status == DeviceNetworkStatus.OFFLINE) {
           await this.presentToast("you have been disconnected, please check your internet connection.");
@@ -88,38 +88,38 @@ export class AppComponent implements OnInit, OnDestroy {
         //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
       });
 
-
-
+    // register the server events handlers
+    this.registerServerEvents();
 
     // check current network status
     await this.checkCurrentNetworkStatus();
   }
 
   ngOnDestroy(): void {
-    this.subSink.unsubscribe();
+    this._subSink.unsubscribe();
     Network.removeAllListeners();
   }
 
   registerServerEvents(): void {
     // register the handler for the send message event
-    this.signalRService.onSendMessageEvent((message: IMessages) => {
+    this._signalRService.onSendMessageEvent((message: IMessages) => {
       this._smsService.sendSms$(message.to, message.content);
     });
   }
 
   private async checkCurrentNetworkStatus() {
     const currentNetworkStatus = await Network.getStatus();
-    this.store.dispatch(RootActions.UpdateNetworkConnectionStatus({
+    this._store.dispatch(RootActions.UpdateNetworkConnectionStatus({
       newStatus: currentNetworkStatus.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
     }));
   }
 
   redirectToSetupPage(): void {
-    this.router.navigateByUrl('/setup');
+    this._router.navigateByUrl('/setup');
   }
 
   async presentToast(message: string, duration: number | undefined = undefined) {
-    const toast = await this.toastController.create({
+    const toast = await this._toastController.create({
       duration: duration, message: message,
     });
     toast.present();
