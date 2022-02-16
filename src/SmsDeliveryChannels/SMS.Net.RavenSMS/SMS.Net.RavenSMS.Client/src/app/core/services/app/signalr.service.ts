@@ -55,4 +55,12 @@ export class SignalRService {
     public sendOnConnectedEvent(clientId: string): Promise<void> {
         return this.hubConnection.send('clientConnectedAsync', clientId);
     }
+
+    /**
+     * register an event handler to handle send message requests
+     * @param handler the handler to be executed when the event is triggered
+     */
+    public onSendMessageEvent(handler: (...args: any[]) => void): void {
+        this.hubConnection.on('onSendMessage', handler);
+    }
 }
