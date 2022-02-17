@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -52,8 +52,10 @@ export class SignalRService {
      * send the on client connected command
      * @param clientId the id of the client app
      */
-    public sendOnConnectedEvent(clientId: string): Promise<void> {
-        return this.hubConnection.send('clientConnectedAsync', clientId);
+    public async sendOnConnectedEvent$(clientId: string): Promise<void> {
+        if (this.hubConnection.state == HubConnectionState.Connected) {
+            await this.hubConnection.send('clientConnectedAsync', clientId);
+        }
     }
 
     /**
@@ -61,6 +63,8 @@ export class SignalRService {
      * @param handler the handler to be executed when the event is triggered
      */
     public onSendMessageEvent(handler: (...args: any[]) => void): void {
-        this.hubConnection.on('onSendMessage', handler);
+        if (this.hubConnection) {
+            this.hubConnection.on('onSendMessage', handler);
+        }
     }
 }
