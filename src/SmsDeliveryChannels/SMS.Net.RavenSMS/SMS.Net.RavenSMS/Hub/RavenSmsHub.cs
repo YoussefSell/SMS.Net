@@ -2,7 +2,7 @@
 
 namespace SMS.Net.Channel.RavenSMS;
 
-public class RavenSmsHub : Hub
+public class RavenSmsHub : Hub, IRavenSmsClientConnector
 {
     private readonly IRavenSmsManager _manager;
 
