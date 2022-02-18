@@ -29,11 +29,12 @@ public static class Configurations
         options.Validate();
 
         builder.ServiceCollection.AddSingleton((s) => options);
+        builder.ServiceCollection.ConfigureOptions(typeof(RavenSmsUIConfigureOptions));
+        
+        builder.ServiceCollection.AddScoped<IRavenSmsManager, RavenSmsManager>();
+        builder.ServiceCollection.AddScoped<IRavenSmsClientConnector, RavenSmsHub>();
         builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
         builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
-        builder.ServiceCollection.AddScoped<IRavenSmsManager, RavenSmsManager>();
-
-        builder.ServiceCollection.ConfigureOptions(typeof(RavenSmsUIConfigureOptions));
 
         return builder;
     }
