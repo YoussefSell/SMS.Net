@@ -5,12 +5,12 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
 import { Network } from '@capacitor/network';
-import { IMessages } from './core/models';
+import { IAppIdentification, IMessages } from './core/models';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { takeLast } from 'rxjs';
+import { takeLast, withLatestFrom } from 'rxjs';
 import { State } from './store/settings-store/state';
 
 @Component({
@@ -25,8 +25,9 @@ import { State } from './store/settings-store/state';
 export class AppComponent implements OnInit, OnDestroy {
 
   _subSink = new SubSink();
-  _networkAlert: HTMLIonAlertElement | null = null;
   _serverAlert: HTMLIonAlertElement | null = null;
+  _networkAlert: HTMLIonAlertElement | null = null;
+  _clientIdentification: IAppIdentification | null = null;
   dark: boolean = false;
 
   constructor(
@@ -58,6 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
+          this._clientIdentification = state.appIdentification;
           this.setupSignalR(state);
           return;
         }
@@ -67,10 +69,11 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
-      .subscribe(async status => {
+      .subscribe(async (status) => {
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
           await this.presentToast("you have been connected to the server successfully", 3000);
+          setTimeout(async () => { await this._signalRService.sendOnConnectedEvent$(this._clientIdentification.clientId) }, 5000);
           return;
         }
 
@@ -79,7 +82,6 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
-      .pipe(takeLast(1))
       .subscribe(async status => {
         if (status == DeviceNetworkStatus.OFFLINE) {
           this._networkAlert = await this._alertController.create({ message: "you have been disconnected, please check your internet connection." });
