@@ -48,6 +48,14 @@ export class SignalRService {
         return this.startConnectionAsync();
     }
 
+    /** Registers a handler that will be invoked when the connection is closed.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection is closed. Optionally receives a single argument containing the error that caused the connection to close (if any).
+     */
+    onclose(callback: (error?: Error) => void): void {
+        this.hubConnection.onclose(callback);
+    }
+
     /**
      * send the on client connected command
      * @param clientId the id of the client app

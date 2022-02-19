@@ -1,15 +1,17 @@
 import { RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 import { SettingsStoreSelectors } from './store/settings-store';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
-import { ToastController } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { IMessages } from './core/models';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import { takeLast } from 'rxjs';
+import { State } from './store/settings-store/state';
 
 @Component({
   selector: 'app-root',
@@ -23,12 +25,15 @@ import { SubSink } from 'subsink';
 export class AppComponent implements OnInit, OnDestroy {
 
   _subSink = new SubSink();
+  _networkAlert: HTMLIonAlertElement | null = null;
+  _serverAlert: HTMLIonAlertElement | null = null;
   dark: boolean = false;
 
   constructor(
     private _router: Router,
     private _smsService: SmsService,
     private _signalRService: SignalRService,
+    private _alertController: AlertController,
     private _toastController: ToastController,
     private _store: Store<RootStoreState.State>,
   ) {
@@ -53,14 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
-          this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
-            .then(() => {
-              this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }))
-            })
-            .catch(async (error) => {
-              await this.presentToast('connection  failed' + error + state.serverInfo.serverUrl);
-              this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
-            });
+          this.setupSignalR(state);
           return;
         }
 
@@ -71,21 +69,25 @@ export class AppComponent implements OnInit, OnDestroy {
     this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
       .subscribe(async status => {
         if (status == ServerStatus.ONLINE) {
+          await this._serverAlert?.dismiss();
           await this.presentToast("you have been connected to the server successfully", 3000);
           return;
         }
 
-        //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
+        this._serverAlert = await this._alertController.create({ message: "failed to connect to server, make sure the server is up, and try again." });
+        await this._serverAlert.present();
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
+      .pipe(takeLast(1))
       .subscribe(async status => {
         if (status == DeviceNetworkStatus.OFFLINE) {
-          await this.presentToast("you have been disconnected, please check your internet connection.");
+          this._networkAlert = await this._alertController.create({ message: "you have been disconnected, please check your internet connection." });
+          await this._networkAlert.present();
           return;
         }
 
-        //await this.presentToast("failed to connect to server, make sure the server is up, and try again");
+        await this._networkAlert?.dismiss();
       });
 
     // register the server events handlers
@@ -104,6 +106,24 @@ export class AppComponent implements OnInit, OnDestroy {
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent((message: IMessages) => {
       this._smsService.sendSms$(message.to, message.content);
+    });
+  }
+
+  private setupSignalR(state: State) {
+    // init the connection
+    this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
+      .then(() => {
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
+      })
+      .catch(async (error) => {
+        console.error('server connection failed', error);
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+      });
+
+    // register the event for on close
+    this._signalRService.onclose(async (error) => {
+      console.error('server connection failed', error);
+      this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
     });
   }
 

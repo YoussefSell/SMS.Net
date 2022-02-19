@@ -7,8 +7,8 @@ import { State } from './root-state';
  * set the initial state of the ui module
  */
 const initialState: State = {
-    serverConnection: ServerStatus.OFFLINE,
-    networkConnection: DeviceNetworkStatus.OFFLINE,
+    serverConnection: ServerStatus.ONLINE,
+    networkConnection: DeviceNetworkStatus.ONLINE,
 };
 
 /**
