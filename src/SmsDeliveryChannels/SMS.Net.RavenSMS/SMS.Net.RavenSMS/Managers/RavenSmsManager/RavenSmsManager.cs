@@ -95,6 +95,18 @@ public partial class RavenSmsManager : IRavenSmsManager
         return await _clientsStore.UpdateAsync(client);
     }
 
+    /// <inheritdoc/>
+    public async Task ClientDisconnectedAsync(string connectionId)
+    {
+        var client = await _clientsStore.FindByConnectionIdAsync(connectionId);
+        if (client is null)
+            return;
+
+        client.ConnectionId = string.Empty;
+        client.Status = RavenSmsClientStatus.Disconnected;
+        await _clientsStore.UpdateAsync(client);
+    }
+
     #endregion
 
     #region Messages management

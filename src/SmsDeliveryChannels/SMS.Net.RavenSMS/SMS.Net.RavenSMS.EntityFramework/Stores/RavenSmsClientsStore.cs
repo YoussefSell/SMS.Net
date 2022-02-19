@@ -47,6 +47,10 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByIdAsync(string clientId)
         => _clients.FirstOrDefaultAsync(client => client.Id == clientId);
+    
+    /// <inheritdoc/>
+    public Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId)
+        => _clients.FirstOrDefaultAsync(client => client.ConnectionId == connectionId);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber)

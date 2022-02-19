@@ -83,4 +83,11 @@ public interface IRavenSmsManager
     /// <param name="connectionId">the connection id</param>
     /// <returns>task</returns>
     Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId);
+
+    /// <summary>
+    /// set the client asscociated with the given connectionId
+    /// </summary>
+    /// <param name="connectionId">the connection Id</param>
+    /// <returns>task</returns>
+    Task ClientDisconnectedAsync(string connectionId);
 }

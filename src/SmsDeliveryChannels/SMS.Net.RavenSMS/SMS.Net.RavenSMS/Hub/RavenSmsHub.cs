@@ -9,6 +9,11 @@ public class RavenSmsHub : Hub, IRavenSmsClientConnector
     public RavenSmsHub(IRavenSmsManager manager)
         => _manager = manager;
 
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        await _manager.ClientDisconnectedAsync(Context.ConnectionId);
+    }
+
     public async Task ClientConnectedAsync(string clientId)
     {
         // get the client associated with the given id
@@ -22,7 +27,9 @@ public class RavenSmsHub : Hub, IRavenSmsClientConnector
         // check if the client already connected
         if (client.Status == RavenSmsClientStatus.Connected)
         {
-            await Clients.Caller.SendAsync("forceDisconnect", "client_already_connected");
+            if (client.ConnectionId != Context.ConnectionId)
+                await Clients.Caller.SendAsync("forceDisconnect", "client_already_connected");
+
             return;
         }
 

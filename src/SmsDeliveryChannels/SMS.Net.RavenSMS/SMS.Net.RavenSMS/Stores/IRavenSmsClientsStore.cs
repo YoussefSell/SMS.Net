@@ -34,6 +34,13 @@ public interface IRavenSmsClientsStore
     Task<RavenSmsClient?> FindByIdAsync(string clientId);
 
     /// <summary>
+    /// find a client by connection Id
+    /// </summary>
+    /// <param name="connectionId">the connection Id</param>
+    /// <returns>the client asscoiated with the given connection Id</returns>
+    Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId);
+
+    /// <summary>
     /// find the client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number associated with the client to find.</param>
