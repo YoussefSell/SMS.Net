@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.SignalR;
-
-namespace SMS.Net.Channel.RavenSMS;
+﻿namespace SMS.Net.Channel.RavenSMS;
 
 public class RavenSmsHub : Hub, IRavenSmsClientConnector
 {
+    private readonly ILogger _logger;
     private readonly IRavenSmsManager _manager;
 
-    public RavenSmsHub(IRavenSmsManager manager)
-        => _manager = manager;
+    public RavenSmsHub(IRavenSmsManager manager, ILogger<RavenSmsHub> logger)
+    {
+        _logger = logger;
+        _manager = manager;
+    }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        // disconnecting the client
+        _logger.LogInformation("client associated with connection Id: {connectionId} has been disconnected", Context.ConnectionId);
         await _manager.ClientDisconnectedAsync(Context.ConnectionId);
     }
 
@@ -34,6 +38,30 @@ public class RavenSmsHub : Hub, IRavenSmsClientConnector
         }
 
         // attach the client to the current connection
+        _logger.LogInformation("connecting client with Id: {clientId}, connection Id: {connectionId}", client.Id, Context.ConnectionId);
         await _manager.ClientConnectedAsync(client, Context.ConnectionId);
+    }
+
+    public async Task<Result> SendSmsMessageAsync(RavenSmsClient client, RavenSmsMessage message)
+    {
+        if (client.ConnectionId is null)
+            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
+
+        try
+        {
+            await Clients.Client(client.ConnectionId).SendAsync("sendSmsMessage", new
+            {
+                content = message.Body,
+                from = message.From,
+                to = message.To,
+            });
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure()
+                .WithErrors(ex);
+        }
     }
 }
