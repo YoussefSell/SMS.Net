@@ -1,17 +1,16 @@
 import { RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
-import { SettingsStoreSelectors } from './store/settings-store';
 import { AlertController, ToastController } from '@ionic/angular';
+import { SettingsStoreSelectors } from './store/settings-store';
+import { IAppIdentification, IMessages } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
+import { State } from './store/settings-store/state';
 import { Network } from '@capacitor/network';
-import { IAppIdentification, IMessages } from './core/models';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { takeLast, withLatestFrom } from 'rxjs';
-import { State } from './store/settings-store/state';
 
 @Component({
   selector: 'app-root',
@@ -107,7 +106,7 @@ export class AppComponent implements OnInit, OnDestroy {
   registerServerEvents(): void {
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent((message: IMessages) => {
-      this._smsService.sendSms$(message.to, message.content);
+      this._smsService.sendSmsAsync(message.to, message.content);
     });
   }
 
