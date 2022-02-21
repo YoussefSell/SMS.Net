@@ -60,7 +60,7 @@ public partial class ClientsAddPageModel : BasePageModel
             };
 
             // add the client
-            var result = await _manager.CreateClientAsync(client);
+            var result = await _clientsManager.CreateClientAsync(client);
             if (result.IsSuccess())
             {
                 // client added successfully
@@ -78,7 +78,7 @@ public partial class ClientsAddPageModel : BasePageModel
         // return json result instance
         return new JsonResult(new
         {
-            exist = await _manager.AnyClientAsync(phoneNumber)
+            exist = await _clientsManager.AnyClientAsync(phoneNumber)
         });
     }
 }
@@ -88,15 +88,15 @@ public partial class ClientsAddPageModel : BasePageModel
 /// </summary>
 public partial class ClientsAddPageModel : BasePageModel
 {
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _clientsManager;
 
     public ClientsAddPageModel(
-        IRavenSmsManager ravenSmsManager,
+        IRavenSmsClientsManager clientsManager,
         IStringLocalizer<MessagesAddPageModel> localizer,
         ILogger<MessagesAddPageModel> logger)
         : base(localizer, logger)
     {
-        _manager = ravenSmsManager;
+        _clientsManager = clientsManager;
         Input = new ClientsAddPageModelInput();
     }
 }

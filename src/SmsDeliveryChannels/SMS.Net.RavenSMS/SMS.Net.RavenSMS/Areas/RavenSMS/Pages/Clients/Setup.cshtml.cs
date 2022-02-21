@@ -16,9 +16,9 @@ public partial class ClientSetupPageModel
     public RavenSmsClient? Client { get; set; }
 
     /// <summary>
-    /// the server url
+    /// the Qr code content
     /// </summary>
-    public string QrCodeText { get; set; }
+    public string? QrCodeText { get; set; }
 }
 
 /// <summary>
@@ -60,10 +60,10 @@ public partial class ClientSetupPageModel
 /// </summary>
 public partial class ClientSetupPageModel : BasePageModel
 {
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _manager;
 
     public ClientSetupPageModel(
-        IRavenSmsManager ravenSmsManager,
+        IRavenSmsClientsManager ravenSmsManager,
         IStringLocalizer<ClientSetupPageModel> localizer,
         ILogger<ClientSetupPageModel> logger)
         : base(localizer, logger)

@@ -44,10 +44,10 @@ public partial class ClientsPreviewPage
 /// </summary>
 public partial class ClientsPreviewPage : BasePageModel
 {
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _manager;
 
     public ClientsPreviewPage(
-        IRavenSmsManager ravenSmsManager,
+        IRavenSmsClientsManager ravenSmsManager,
         IStringLocalizer<ClientsPreviewPage> localizer,
         ILogger<ClientsPreviewPage> logger)
         : base(localizer, logger)

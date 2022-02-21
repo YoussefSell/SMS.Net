@@ -39,10 +39,10 @@ public partial class MessagesIndexPageModel
 /// </summary>
 public partial class MessagesIndexPageModel : BasePageModel
 {
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsMessagesManager _manager;
 
     public MessagesIndexPageModel(
-        IRavenSmsManager ravenSmsManager,
+        IRavenSmsMessagesManager ravenSmsManager,
         IStringLocalizer<MessagesAddPageModel> localizer,
         ILogger<MessagesAddPageModel> logger)
         : base(localizer, logger)

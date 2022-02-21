@@ -3,25 +3,25 @@
 public class RavenSmsHub : Hub, IRavenSmsClientConnector
 {
     private readonly ILogger _logger;
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _clientsManager;
 
-    public RavenSmsHub(IRavenSmsManager manager, ILogger<RavenSmsHub> logger)
+    public RavenSmsHub(IRavenSmsClientsManager manager, ILogger<RavenSmsHub> logger)
     {
         _logger = logger;
-        _manager = manager;
+        _clientsManager = manager;
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         // disconnecting the client
         _logger.LogInformation("client associated with connection Id: {connectionId} has been disconnected", Context.ConnectionId);
-        await _manager.ClientDisconnectedAsync(Context.ConnectionId);
+        await _clientsManager.ClientDisconnectedAsync(Context.ConnectionId);
     }
 
     public async Task ClientConnectedAsync(string clientId)
     {
         // get the client associated with the given id
-        var client = await _manager.FindClientByIdAsync(clientId);
+        var client = await _clientsManager.FindClientByIdAsync(clientId);
         if (client is null)
         {
             await Clients.Caller.SendAsync("forceDisconnect", "client_not_found");
@@ -39,7 +39,7 @@ public class RavenSmsHub : Hub, IRavenSmsClientConnector
 
         // attach the client to the current connection
         _logger.LogInformation("connecting client with Id: {clientId}, connection Id: {connectionId}", client.Id, Context.ConnectionId);
-        await _manager.ClientConnectedAsync(client, Context.ConnectionId);
+        await _clientsManager.ClientConnectedAsync(client, Context.ConnectionId);
     }
 
     public async Task<Result> SendSmsMessageAsync(RavenSmsClient client, RavenSmsMessage message)

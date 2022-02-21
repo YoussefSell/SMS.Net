@@ -90,7 +90,7 @@ public partial class MessagesAddPageModel
     public async Task<JsonResult> OnGetClientsAsync()
     {
         // get the list of all clients
-        var clients = await _manager.GetAllClientsAsync();
+        var clients = await _clientsManager.GetAllClientsAsync();
 
         // convert the clients to models
         var clientsModels = clients.Select(client => new
@@ -113,13 +113,16 @@ public partial class MessagesAddPageModel
 public partial class MessagesAddPageModel
 {
     private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _clientsManager;
 
     public MessagesAddPageModel(
         IRavenSmsManager ravenSmsManager,
+        IRavenSmsClientsManager clientsManager,
         IStringLocalizer<MessagesAddPageModel> localizer,
         ILogger<MessagesAddPageModel> logger)
         : base(localizer, logger)
     {
         _manager = ravenSmsManager;
+        _clientsManager = clientsManager;
     }
 }

@@ -33,10 +33,10 @@ public partial class ClientIndexPageModel
 /// </summary>
 public partial class ClientIndexPageModel : BasePageModel
 {
-    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsClientsManager _manager;
 
     public ClientIndexPageModel(
-        IRavenSmsManager ravenSmsManager,
+        IRavenSmsClientsManager ravenSmsManager,
         IStringLocalizer<ClientIndexPageModel> localizer,
         ILogger<ClientIndexPageModel> logger)
         : base(localizer, logger)
