@@ -13,7 +13,20 @@ public partial class RavenSmsManager : IRavenSmsManager
             throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
 
         // get the client associated with the given from number
-        _ = await FindClientByPhoneNumberAsync(message.From);
+        var client = await _clientsManagers.FindClientByPhoneNumberAsync(message.From);
+        if (client is null)
+        {
+            // no client so we can do anything in here
+            return;
+        }
+
+        if (client.Status != RavenSmsClientStatus.Connected)
+        {
+            // client is not connected
+            return;
+        }
+
+        await _clientConnector.SendSmsMessageAsync(client, message);
 
         // add the logic for sending the message with the client
     }
@@ -22,7 +35,7 @@ public partial class RavenSmsManager : IRavenSmsManager
     public async Task<Result> QueueMessageAsync(RavenSmsMessage message)
     {
         // queue the message for future processing
-        // message.JobQueueId = await _queueManager.QueueMessageAsync(message);
+        message.JobQueueId = await _queueManager.QueueMessageAsync(message);
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
@@ -42,7 +55,7 @@ public partial class RavenSmsManager : IRavenSmsManager
     public async Task<Result> QueueMessageAsync(RavenSmsMessage message, TimeSpan delay)
     {
         // queue the message for future processing
-        // message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay);
+        message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay);
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
@@ -57,65 +70,6 @@ public partial class RavenSmsManager : IRavenSmsManager
         // all done
         return Result.Success();
     }
-
-    #region Clients management
-
-    /// <inheritdoc/>
-    public Task<RavenSmsClient[]> GetAllClientsAsync()
-        => _clientsStore.GetAllAsync();
-
-    /// <inheritdoc/>
-    public Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter)
-        => _clientsStore.GetAllAsync(filter);
-
-    /// <inheritdoc/>
-    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber)
-        => _clientsStore.AnyAsync(phoneNumber);
-
-    /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindClientByIdAsync(string clientId)
-        => _clientsStore.FindByIdAsync(clientId);
-
-    /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber)
-        => _clientsStore.FindByPhoneNumberAsync(phoneNumber);
-
-    /// <inheritdoc/>
-    public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model)
-        => _clientsStore.SaveAsync(model);
-
-    /// <inheritdoc/>
-    public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
-    {
-        // set the client id
-        client.ConnectionId = connectionId;
-        client.Status = RavenSmsClientStatus.Connected;
-
-        // attach the connection id to the client in database
-        return await _clientsStore.UpdateAsync(client);
-    }
-
-    /// <inheritdoc/>
-    public async Task ClientDisconnectedAsync(string connectionId)
-    {
-        var client = await _clientsStore.FindByConnectionIdAsync(connectionId);
-        if (client is null)
-            return;
-
-        client.ConnectionId = string.Empty;
-        client.Status = RavenSmsClientStatus.Disconnected;
-        await _clientsStore.UpdateAsync(client);
-    }
-
-    #endregion
-
-    #region Messages management
-
-    /// <inheritdoc/>
-    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter) 
-        => _messagesStore.GetAllAsync(filter);
-
-    #endregion
 }
 
 /// <summary>
@@ -126,14 +80,20 @@ public partial class RavenSmsManager
     private readonly IQueueManager _queueManager;
     private readonly IRavenSmsClientsStore _clientsStore;
     private readonly IRavenSmsMessagesStore _messagesStore;
+    private readonly IRavenSmsClientConnector _clientConnector;
+    private readonly IRavenSmsClientsManager _clientsManagers;
 
     public RavenSmsManager(
         IQueueManager queueManager,
         IRavenSmsClientsStore clientsStore,
+        IRavenSmsClientsManager clientsManagers,
+        IRavenSmsClientConnector clientConnector,
         IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;
         _clientsStore = clientsStore;
+        _clientsManagers = clientsManagers;
+        this._clientConnector = clientConnector;
         _messagesStore = messagesRepository;
     }
 }
