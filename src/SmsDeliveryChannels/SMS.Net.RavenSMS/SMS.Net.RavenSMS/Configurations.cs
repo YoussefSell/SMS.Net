@@ -13,9 +13,9 @@ using Microsoft.Extensions.Options;
 public static class Configurations
 {
     /// <summary>
-    /// add the Twilio channel to be used with your SMS service.
+    /// add the RavenSMS channel to be used with your SMS service.
     /// </summary>
-    /// <param name="builder">the SMSNet builder instance.</param>
+    /// <param name="builder">the SMS.Net builder instance.</param>
     /// <param name="config">the configuration builder instance.</param>
     /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
     public static SmsNetBuilder UseRavenSMS(this SmsNetBuilder builder, Action<RavenSmsBuilder> config)
@@ -32,6 +32,9 @@ public static class Configurations
         builder.ServiceCollection.ConfigureOptions(typeof(RavenSmsUIConfigureOptions));
         
         builder.ServiceCollection.AddScoped<IRavenSmsManager, RavenSmsManager>();
+        builder.ServiceCollection.AddScoped<IRavenSmsClientsManager, RavenSmsClientsManager>();
+        builder.ServiceCollection.AddScoped<IRavenSmsMessagesManager, RavenSmsMessagesManager>();
+
         builder.ServiceCollection.AddScoped<IRavenSmsClientConnector, RavenSmsHub>();
         builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
         builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
