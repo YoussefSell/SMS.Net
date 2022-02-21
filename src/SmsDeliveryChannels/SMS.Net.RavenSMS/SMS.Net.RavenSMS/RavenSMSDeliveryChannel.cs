@@ -74,7 +74,7 @@ public partial class RavenSmsDeliveryChannel
     /// <summary>
     /// create an instance of <see cref="RavenSmsDeliveryChannel"/>
     /// </summary>
-    /// <param name="options">the edp options instance</param>
+    /// <param name="options">the EDP options instance</param>
     /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
     public RavenSmsDeliveryChannel(
         IRavenSmsManager ravenSmsManager,
@@ -94,16 +94,12 @@ public partial class RavenSmsDeliveryChannel
     /// </summary>
     /// <param name="message">the <see cref="SmsMessage"/> instance</param>
     /// <returns>an instance of <see cref="RavenSmsMessage"/> class</returns>
-    public static RavenSmsMessage CreateMessage(SmsMessage message)
-    {
-        var ravenSmsMessage = new RavenSmsMessage
+    public static RavenSmsMessage CreateMessage(SmsMessage message) 
+        => new()
         {
             To = message.To,
             Body = message.Body,
             From = message.From,
             Priority = message.Priority,
         };
-
-        return ravenSmsMessage;
-    }
 }

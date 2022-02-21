@@ -2,6 +2,7 @@
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Localization;
 global using Microsoft.Extensions.Logging;
+global using Microsoft.AspNetCore.SignalR;
 
 global using SMS.Net.RavenSMS.Pages;
 global using SMS.Net.Channel.RavenSMS;
