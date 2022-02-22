@@ -1,9 +1,10 @@
-import { SMS } from '@awesome-cordova-plugins/sms/ngx';
+// import { SMS } from '@awesome-cordova-plugins/sms/ngx';
 import { Injectable } from '@angular/core';
+declare var SMS: any;
 
 @Injectable({ providedIn: 'root' })
 export class SmsService {
-    constructor(private sms: SMS) { }
+    constructor() { }
 
     /**
      * send the sms message to the given number
@@ -11,7 +12,7 @@ export class SmsService {
      * @param message the sms message content
      */
     async sendSmsAsync(phoneNumber: string, message: string): Promise<void> {
-        await this.sms.send(phoneNumber, message, {
+        await SMS.send(phoneNumber, message, {
             android: { intent: '' }
         });
     }

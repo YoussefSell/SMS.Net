@@ -80,14 +80,14 @@ public partial class RavenSmsManager
     private readonly IQueueManager _queueManager;
     private readonly IRavenSmsClientsStore _clientsStore;
     private readonly IRavenSmsMessagesStore _messagesStore;
-    private readonly IRavenSmsClientConnector _clientConnector;
+    private readonly IHubContext<RavenSmsHub> _clientConnector;
     private readonly IRavenSmsClientsManager _clientsManagers;
 
     public RavenSmsManager(
         IQueueManager queueManager,
         IRavenSmsClientsStore clientsStore,
         IRavenSmsClientsManager clientsManagers,
-        IRavenSmsClientConnector clientConnector,
+        IHubContext<RavenSmsHub> clientConnector,
         IRavenSmsMessagesStore messagesRepository)
     {
         _queueManager = queueManager;

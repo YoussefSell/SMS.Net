@@ -91,9 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
         await this._networkAlert?.dismiss();
       });
 
-    // register the server events handlers
-    this.registerServerEvents();
-
     // check current network status
     await this.checkCurrentNetworkStatus();
   }
@@ -101,13 +98,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._subSink.unsubscribe();
     Network.removeAllListeners();
-  }
-
-  registerServerEvents(): void {
-    // register the handler for the send message event
-    this._signalRService.onSendMessageEvent((message: IMessages) => {
-      this._smsService.sendSmsAsync(message.to, message.content);
-    });
   }
 
   private setupSignalR(state: State) {
@@ -125,6 +115,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this._signalRService.onclose(async (error) => {
       console.error('server connection failed', error);
       this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+    });
+
+    // register the handler for the send message event
+    this._signalRService.onSendMessageEvent((message: IMessages) => {
+      // this._smsService.sendSmsAsync(message.to, message.content);
+      console.log("send message", message);
     });
   }
 

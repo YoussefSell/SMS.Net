@@ -62,7 +62,7 @@ export class SignalRService {
      */
     public async sendOnConnectedEvent$(clientId: string): Promise<void> {
         if (this.hubConnection.state == HubConnectionState.Connected) {
-            await this.hubConnection.send('clientConnectedAsync', clientId);
+            await this.hubConnection.send('clientConnectedAsync', clientId, true);
         }
     }
 
@@ -72,7 +72,7 @@ export class SignalRService {
      */
     public onSendMessageEvent(handler: (...args: any[]) => void): void {
         if (this.hubConnection) {
-            this.hubConnection.on('onSendMessage', handler);
+            this.hubConnection.on('sendSmsMessage', handler);
         }
     }
 }
