@@ -13,6 +13,7 @@ public class RavenSmsMessage
         CreateOn = DateTimeOffset.Now;
         Status = RavenSmsMessageStatus.Created;
         Id = Generator.GenerateUniqueId("msg");
+        SendAttempts = new List<RavenSmsMessageSendAttempt>();
     }
 
     /// <summary>
@@ -64,4 +65,9 @@ public class RavenSmsMessage
     /// Get or set the Client used to send this message.
     /// </summary>
     public RavenSmsClient? Client { get; set; }
+
+    /// <summary>
+    /// the list of sent attempts associated with this message
+    /// </summary>
+    public ICollection<RavenSmsMessageSendAttempt> SendAttempts { get; set; }
 }
