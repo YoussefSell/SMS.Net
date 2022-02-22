@@ -35,7 +35,6 @@ public static class Configurations
         builder.ServiceCollection.AddScoped<IRavenSmsClientsManager, RavenSmsClientsManager>();
         builder.ServiceCollection.AddScoped<IRavenSmsMessagesManager, RavenSmsMessagesManager>();
 
-        builder.ServiceCollection.AddScoped<IRavenSmsClientConnector, RavenSmsHub>();
         builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
         builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
 
