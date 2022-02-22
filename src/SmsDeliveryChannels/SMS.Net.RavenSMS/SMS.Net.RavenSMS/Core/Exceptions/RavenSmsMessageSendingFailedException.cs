@@ -1,0 +1,17 @@
+﻿namespace SMS.Net.Channel.RavenSMS.Exceptions;
+
+/// <summary>
+/// exception thrown when the sending of sms message has failed
+/// </summary>
+[Serializable]
+public class RavenSmsMessageSendingFailedException : Exception
+{
+    /// <inheritdoc/>
+    public RavenSmsMessageSendingFailedException(string cause) 
+        : base($"failed to send the sms message, cause: [{cause}]") { }
+
+    /// <inheritdoc/>
+    protected RavenSmsMessageSendingFailedException(
+      System.Runtime.Serialization.SerializationInfo info,
+      System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+}

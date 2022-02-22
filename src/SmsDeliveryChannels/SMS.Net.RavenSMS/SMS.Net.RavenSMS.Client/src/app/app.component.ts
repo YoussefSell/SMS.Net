@@ -76,14 +76,20 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this._serverAlert = await this._alertController.create({ message: "failed to connect to server, make sure the server is up, and try again." });
+        this._serverAlert = await this._alertController.create({
+          backdropDismiss: false,
+          message: "failed to connect to server, make sure the server is up, and try again."
+        });
         await this._serverAlert.present();
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
       .subscribe(async status => {
         if (status == DeviceNetworkStatus.OFFLINE) {
-          this._networkAlert = await this._alertController.create({ message: "you have been disconnected, please check your internet connection." });
+          this._networkAlert = await this._alertController.create({
+            backdropDismiss: false,
+            message: "you have been disconnected, please check your internet connection."
+          });
           await this._networkAlert.present();
           return;
         }
@@ -101,6 +107,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private setupSignalR(state: State) {
+    console.log('setup signalR ...');
+
     // init the connection
     this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
       .then(() => {
