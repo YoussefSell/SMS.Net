@@ -15,6 +15,16 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 
+// Add Hangfire services.
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseMariaDb(builder.Configuration.GetConnectionString("hangfire")));
+
+// Add the processing server as IHostedService
+builder.Services.AddHangfireServer();
+
 // add SMS.Net services
 builder.Services.AddSMSNet(options =>
 {
@@ -50,6 +60,7 @@ app.UseCors("ionic-cors");
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHangfireDashboard();
 
 app.MapRavenSmsHub();
 
