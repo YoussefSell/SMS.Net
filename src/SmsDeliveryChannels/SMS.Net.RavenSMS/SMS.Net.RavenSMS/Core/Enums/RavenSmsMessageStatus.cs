@@ -3,7 +3,7 @@
 /// <summary>
 /// the status of the message.
 /// </summary>
-public enum RavenSmsMessageStatus
+public enum RavenSmsMessageStatus 
 {
     /// <summary>
     /// default status.

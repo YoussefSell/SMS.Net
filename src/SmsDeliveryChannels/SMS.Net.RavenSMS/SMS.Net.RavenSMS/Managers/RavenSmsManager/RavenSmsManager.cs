@@ -8,7 +8,7 @@ public partial class RavenSmsManager : IRavenSmsManager
     /// <inheritdoc/>
     public async Task ProcessAsync(string messageId)
     {
-        var message = await _messagesStore.FindByIdAsync(messageId);
+        var message = await _messagesManager.FindByIdAsync(messageId);
         if (message is null)
             throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
 
@@ -39,7 +39,7 @@ public partial class RavenSmsManager : IRavenSmsManager
             };
         }
 
-        await _messagesStore.UpdateAsync(message);
+        await _messagesManager.UpdateAsync(message);
 
         if (sendResult.IsFailure())
             throw new RavenSmsMessageSendingFailedException(sendResult.Code);
@@ -53,7 +53,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
-        var saveResult = await _messagesStore.SaveAsync(message);
+        var saveResult = await _messagesManager.SaveAsync(message);
         if (saveResult.IsFailure())
         {
             return Result.Failure()
@@ -73,7 +73,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         message.Status = RavenSmsMessageStatus.Queued;
 
         // save the message
-        var saveResult = await _messagesStore.SaveAsync(message);
+        var saveResult = await _messagesManager.SaveAsync(message);
         if (saveResult.IsFailure())
         {
             return Result.Failure()
@@ -92,22 +92,19 @@ public partial class RavenSmsManager : IRavenSmsManager
 public partial class RavenSmsManager
 {
     private readonly IQueueManager _queueManager;
-    private readonly IRavenSmsClientsStore _clientsStore;
-    private readonly IRavenSmsMessagesStore _messagesStore;
     private readonly IHubContext<RavenSmsHub> _clientConnector;
     private readonly IRavenSmsClientsManager _clientsManagers;
+    private readonly IRavenSmsMessagesManager _messagesManager;
 
     public RavenSmsManager(
         IQueueManager queueManager,
-        IRavenSmsClientsStore clientsStore,
-        IRavenSmsClientsManager clientsManagers,
         IHubContext<RavenSmsHub> clientConnector,
-        IRavenSmsMessagesStore messagesRepository)
+        IRavenSmsClientsManager clientsManagers,
+        IRavenSmsMessagesManager messagesManager)
     {
         _queueManager = queueManager;
-        _clientsStore = clientsStore;
+        _clientConnector = clientConnector;
         _clientsManagers = clientsManagers;
-        this._clientConnector = clientConnector;
-        _messagesStore = messagesRepository;
+        _messagesManager = messagesManager;
     }
 }
