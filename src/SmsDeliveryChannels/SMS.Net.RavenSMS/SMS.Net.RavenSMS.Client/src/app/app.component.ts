@@ -1,4 +1,4 @@
-import { RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
+import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreSelectors } from './store/settings-store';
@@ -129,6 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._signalRService.onSendMessageEvent((message: IMessages) => {
       // this._smsService.sendSmsAsync(message.to, message.content);
       console.log("send message", message);
+      this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
     });
   }
 

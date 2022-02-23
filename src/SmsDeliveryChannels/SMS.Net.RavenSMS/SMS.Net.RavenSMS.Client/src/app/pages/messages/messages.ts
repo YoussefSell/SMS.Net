@@ -1,13 +1,19 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { IMessages } from 'src/app/core/models';
+import { MessagesStoreSelectors, RootStoreState } from 'src/app/store';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'page-messages',
   templateUrl: 'messages.html',
   styleUrls: ['./messages.scss'],
 })
-export class MessagesPage implements OnInit {
+export class MessagesPage implements OnInit, OnDestroy {
+  _subSink = new SubSink();
+
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
@@ -21,6 +27,8 @@ export class MessagesPage implements OnInit {
   confDate: string;
   showSearchbar: boolean;
 
+  _messages: ReadonlyArray<IMessages> = [];
+
   constructor(
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
@@ -28,13 +36,24 @@ export class MessagesPage implements OnInit {
     public router: Router,
     public routerOutlet: IonRouterOutlet,
     public toastCtrl: ToastController,
-    public config: Config
+    public config: Config,
+    private _store: Store<RootStoreState.State>,
   ) { }
 
   ngOnInit() {
+    this._subSink.sink = this._store.select(MessagesStoreSelectors.MessagesSelector)
+      .subscribe(messages => {
+        this._messages = messages;
+        console.log('messages', messages);
+      });
+
     this.updateSchedule();
 
     this.ios = this.config.get('mode') === 'ios';
+  }
+
+  ngOnDestroy(): void {
+    this._subSink.unsubscribe();
   }
 
   updateSchedule() {
