@@ -28,6 +28,7 @@ export class SignalRService {
 
         // build the connection hub
         this.hubConnection = new HubConnectionBuilder()
+            .withAutomaticReconnect()
             .withUrl(url)
             .build();
     }
