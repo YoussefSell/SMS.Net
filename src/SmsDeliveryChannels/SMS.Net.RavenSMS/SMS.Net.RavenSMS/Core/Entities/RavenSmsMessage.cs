@@ -25,6 +25,11 @@ public class RavenSmsMessage
     /// Get or set the date this message was create on.
     /// </summary>
     public DateTimeOffset CreateOn { get; set; }
+    
+    /// <summary>
+    /// the date the message has been sent
+    /// </summary>
+    public DateTimeOffset SentOn { get; set; }
 
     /// <summary>
     /// Gets or sets the priority of this e-mail message.
