@@ -5,6 +5,8 @@ import { IMessages } from 'src/app/core/models';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-messages',
@@ -22,12 +24,12 @@ export class IndexPage implements OnInit, OnDestroy {
   queryText = '';
   segment = 'all';
   excludeTracks: any = [];
-  shownSessions: any = [];
+  showMessages: any = [];
   groups: any = [];
   confDate: string;
   showSearchbar: boolean;
 
-  _messages: ReadonlyArray<IMessages> = [];
+  _messagesGroups: { date: string; messages: IMessages[] }[] = [];
 
   constructor(
     public alertCtrl: AlertController,
@@ -43,14 +45,19 @@ export class IndexPage implements OnInit, OnDestroy {
   ngOnInit() {
     this._subSink.sink = this._store.select(MessagesStoreSelectors.MessagesSelector)
       .subscribe(messages => {
-        this._messages = messages;
-        console.log('messages', messages);
+        // group messages by date
+        const grouping = _.groupBy(messages, item => moment(item.date).format('YYYY-MM-DD'));
+
+        // transform the grouping into an array
+        this._messagesGroups = Object.keys(grouping)
+          .map(key => ({ date: key, messages: grouping[key] }))
+
+        console.log('messages', this._messagesGroups);
       });
 
     this.updateSchedule();
 
     this.ios = this.config.get('mode') === 'ios';
-    this.router.navigateByUrl('app/tabs/messages/msg_ssssss');
   }
 
   ngOnDestroy(): void {

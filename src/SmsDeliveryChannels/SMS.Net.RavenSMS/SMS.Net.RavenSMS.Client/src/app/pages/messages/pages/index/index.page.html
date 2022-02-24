@@ -35,25 +35,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list #scheduleList [hidden]="shownSessions === 0">
-    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
+  <ion-list #scheduleList [hidden]="_messagesGroups.length === 0">
+    <ion-item-group *ngFor="let group of _messagesGroups">
       <ion-item-divider sticky>
-        <ion-label> {{group.time}} </ion-label>
+        <ion-label> {{group.date}} </ion-label>
       </ion-item-divider>
 
       <ion-item-sliding
-        *ngFor="let session of group.sessions"
-        #slidingItem
-        [attr.track]="session.tracks[0] | lowercase"
-        [hidden]="session.hide"
+        *ngFor="let message of group.messages"
+        class="failed-sent"
       >
-        <ion-item routerLink="/app/tabs/messages/{{session.id}}">
+        <ion-item routerLink="/app/tabs/messages/{{message.id}}">
           <ion-label>
-            <h3>{{session.name}}</h3>
-            <p>
-              {{session.timeStart}} &mdash; {{session.timeEnd}}:
-              {{session.location}}
-            </p>
+            <h3>To: {{message.to}}</h3>
+            <p>At: {{message.date | date:'fullTime'}}</p>
           </ion-label>
         </ion-item>
         <ion-item-options>
@@ -69,7 +64,7 @@
     </ion-item-group>
   </ion-list>
 
-  <ion-list-header [hidden]="shownSessions > 0">
-    No Sessions Found
+  <ion-list-header [hidden]="_messagesGroups.length > 0">
+    No messages Found
   </ion-list-header>
 </ion-content>

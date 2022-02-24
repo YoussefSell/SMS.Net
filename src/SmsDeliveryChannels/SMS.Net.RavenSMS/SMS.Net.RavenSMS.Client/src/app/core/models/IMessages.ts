@@ -25,6 +25,11 @@ export interface IMessages {
     content: string;
 
     /**
+     * the date the message is sent
+     */
+    date: Date;
+
+    /**
      * the status of the message
      */
     status: MessageStatus;
