@@ -58,14 +58,8 @@
         </ion-item>
         <ion-item-options>
           <ion-item-option
-            color="favorite"
-            (click)="console.log('add to favorite clicked')"
-          >
-            Favorite
-          </ion-item-option>
-          <ion-item-option
             color="danger"
-            (click)="console.log('remove to favorite clicked')"
+            (click)="removeMessage()"
             *ngIf="segment === 'favorites'"
           >
             Remove

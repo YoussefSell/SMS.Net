@@ -1,10 +1,10 @@
+import { SettingsStoreSelectors } from 'src/app/store/settings-store';
+import { IAppIdentification, IServerInfo } from 'src/app/core/models';
 import { RootStoreState, UIStoreActions } from 'src/app/store';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { SettingsStoreSelectors } from 'src/app/store/settings-store';
-import { IAppIdentification, IServerInfo } from 'src/app/core/models';
 
 @Component({
   selector: 'page-preferences-index',

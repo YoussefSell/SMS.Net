@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { MessagesPage } from './messages';
+import { DetailPage } from './pages/detail/detail.page';
+import { IndexPage } from './pages/index/index.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MessagesPage
+    component: IndexPage
+  },
+  {
+    path: ':messageId',
+    component: DetailPage
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

@@ -1,17 +1,17 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
-import { Store } from '@ngrx/store';
-import { IMessages } from 'src/app/core/models';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MessagesStoreSelectors, RootStoreState } from 'src/app/store';
+import { IMessages } from 'src/app/core/models';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 @Component({
   selector: 'page-messages',
-  templateUrl: 'messages.html',
-  styleUrls: ['./messages.scss'],
+  templateUrl: 'index.page.html',
+  styleUrls: ['./index.page.scss'],
 })
-export class MessagesPage implements OnInit, OnDestroy {
+export class IndexPage implements OnInit, OnDestroy {
   _subSink = new SubSink();
 
   // Gets a reference to the list element
@@ -50,10 +50,15 @@ export class MessagesPage implements OnInit, OnDestroy {
     this.updateSchedule();
 
     this.ios = this.config.get('mode') === 'ios';
+    this.router.navigateByUrl('app/tabs/messages/msg_ssssss');
   }
 
   ngOnDestroy(): void {
     this._subSink.unsubscribe();
+  }
+
+  removeMessage(): void {
+    console.log('remove to favorite clicked')
   }
 
   updateSchedule() {

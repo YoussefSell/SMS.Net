@@ -207,7 +207,6 @@ export class IndexPage implements OnInit, OnDestroy {
 
   submit(): void {
     if (!this.configurationForm.valid) {
-      console.log(this.configurationForm);
       this.message = "invalid form value, please enter a valid values.";
       return;
     }

@@ -9,7 +9,6 @@ import { AboutModule } from '../about/about.module';
 import { MessagesModule } from '../messages/messages.module';
 import { PreferencesModule } from '../preferences/preferences.module';
 import { ContactsListModule } from '../contacts-list/contacts-list.module';
-import { MessageDetailModule } from '../message-detail/message-detail.module';
 import { ContactDetailModule } from '../contact-detail/contact-detail.module';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { ContactDetailModule } from '../contact-detail/contact-detail.module';
     IonicModule,
     PreferencesModule,
     MessagesModule,
-    MessageDetailModule,
     ContactDetailModule,
     ContactsListModule,
     TabsPageRoutingModule

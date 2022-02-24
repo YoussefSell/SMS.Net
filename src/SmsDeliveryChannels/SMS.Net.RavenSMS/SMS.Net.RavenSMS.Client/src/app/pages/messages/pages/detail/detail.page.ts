@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-message-detail',
-  styleUrls: ['./message-detail.scss'],
-  templateUrl: 'message-detail.html'
+  styleUrls: ['./detail.page.scss'],
+  templateUrl: 'detail.page.html'
 })
-export class MessageDetailPage {
+export class DetailPage {
   session: any;
   isFavorite = false;
   defaultHref = '';

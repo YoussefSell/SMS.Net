@@ -1,6 +1,5 @@
 import { Tabs } from './tabs-page';
 import { NgModule } from '@angular/core';
-import { MessagesPage } from '../messages/messages';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -10,16 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'messages',
-        children: [
-          {
-            path: '',
-            component: MessagesPage,
-          },
-          {
-            path: ':messageId',
-            loadChildren: () => import('../message-detail/message-detail.module').then(m => m.MessageDetailModule)
-          }
-        ]
+        loadChildren: () => import('../messages/messages.module').then(m => m.MessagesModule)
+      },
+      {
+        path: 'preferences',
+        loadChildren: () => import('../preferences/preferences.module').then(m => m.PreferencesModule)
+      },
+      {
+        path: 'about',
+        loadChildren: () => import('../about/about.module').then(m => m.AboutModule)
       },
       {
         path: 'contacts',
@@ -31,24 +29,6 @@ const routes: Routes = [
           {
             path: 'contacts-details/:contactId',
             loadChildren: () => import('../contact-detail/contact-detail.module').then(m => m.ContactDetailModule)
-          }
-        ]
-      },
-      {
-        path: 'preferences',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../preferences/preferences.module').then(m => m.PreferencesModule)
-          }
-        ]
-      },
-      {
-        path: 'about',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../about/about.module').then(m => m.AboutModule)
           }
         ]
       },

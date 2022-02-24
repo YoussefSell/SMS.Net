@@ -107,8 +107,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private setupSignalR(state: State) {
-    console.log('setup signalR ...');
-
     // init the connection
     this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
       .then(() => {
