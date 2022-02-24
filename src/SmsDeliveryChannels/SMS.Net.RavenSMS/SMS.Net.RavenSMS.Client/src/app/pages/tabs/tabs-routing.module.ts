@@ -20,19 +20,6 @@ const routes: Routes = [
         loadChildren: () => import('../about/about.module').then(m => m.AboutModule)
       },
       {
-        path: 'contacts',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../contacts-list/contacts-list.module').then(m => m.ContactsListModule)
-          },
-          {
-            path: 'contacts-details/:contactId',
-            loadChildren: () => import('../contact-detail/contact-detail.module').then(m => m.ContactDetailModule)
-          }
-        ]
-      },
-      {
         path: '',
         redirectTo: '/app/tabs/messages',
         pathMatch: 'full'

@@ -8,8 +8,6 @@ import { TabsPageRoutingModule } from './tabs-routing.module';
 import { AboutModule } from '../about/about.module';
 import { MessagesModule } from '../messages/messages.module';
 import { PreferencesModule } from '../preferences/preferences.module';
-import { ContactsListModule } from '../contacts-list/contacts-list.module';
-import { ContactDetailModule } from '../contact-detail/contact-detail.module';
 
 @NgModule({
   imports: [
@@ -18,8 +16,6 @@ import { ContactDetailModule } from '../contact-detail/contact-detail.module';
     IonicModule,
     PreferencesModule,
     MessagesModule,
-    ContactDetailModule,
-    ContactsListModule,
     TabsPageRoutingModule
   ],
   declarations: [

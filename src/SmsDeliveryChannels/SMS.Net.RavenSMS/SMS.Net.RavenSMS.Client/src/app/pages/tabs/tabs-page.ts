@@ -8,10 +8,6 @@ import { Component } from '@angular/core';
         <ion-icon name="mail"></ion-icon>
         <ion-label>Messages</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="contacts">
-        <ion-icon name="people"></ion-icon>
-        <ion-label>Contacts</ion-label>
-      </ion-tab-button>
       <ion-tab-button tab="preferences">
         <ion-icon name="settings"></ion-icon>
         <ion-label>Preferences</ion-label>
