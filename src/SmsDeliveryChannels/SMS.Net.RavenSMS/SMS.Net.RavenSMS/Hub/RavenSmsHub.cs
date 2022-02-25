@@ -62,6 +62,7 @@ public static class RavenSmsHubExtensions
             {
                 from = message.From.ToString(),
                 to = message.To.ToString(),
+                status = message.Status,
                 content = message.Body,
                 date = message.SentOn,
                 id = message.Id,
