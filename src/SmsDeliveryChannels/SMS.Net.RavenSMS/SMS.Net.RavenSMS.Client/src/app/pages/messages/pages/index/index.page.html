@@ -41,12 +41,16 @@
         <ion-label> {{group.date}} </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding
-        *ngFor="let message of group.messages"
-        class="failed-sent"
-      >
+      <ion-item-sliding *ngFor="let message of group.messages">
         <ion-item routerLink="/app/tabs/messages/{{message.id}}">
-          <ion-label>
+          <ion-label
+            [ngClass]="{
+              'message-created': message.status === _messageStatus.Created, 
+              'message-queued': message.status === _messageStatus.Queued, 
+              'message-failed': message.status === _messageStatus.Failed, 
+              'message-sent': message.status === _messageStatus.Sent
+            }"
+          >
             <h3>To: {{message.to}}</h3>
             <p>At: {{message.date | date:'fullTime'}}</p>
           </ion-label>

@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { MessageStatus } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'page-messages',
@@ -29,6 +30,7 @@ export class IndexPage implements OnInit, OnDestroy {
   confDate: string;
   showSearchbar: boolean;
 
+  _messageStatus = MessageStatus;
   _messagesGroups: { date: string; messages: IMessages[] }[] = [];
 
   constructor(
