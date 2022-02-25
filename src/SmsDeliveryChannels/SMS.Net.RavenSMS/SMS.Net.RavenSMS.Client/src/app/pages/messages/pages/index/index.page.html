@@ -1,20 +1,23 @@
 <ion-header translucent="true">
   <ion-toolbar>
-    <ion-buttons *ngIf="!showSearchbar" slot="start">
+    <ion-buttons *ngIf="!_showSearchbar" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-title *ngIf="!ios && !showSearchbar">Messages</ion-title>
+    <ion-title *ngIf="!_is_ios && !_showSearchbar">Messages</ion-title>
     <ion-searchbar
-      *ngIf="showSearchbar"
+      *ngIf="_showSearchbar"
       showCancelButton="always"
-      [(ngModel)]="queryText"
-      (ionChange)="updateSchedule()"
-      (ionCancel)="showSearchbar = false"
+      (ionChange)="search()"
+      [(ngModel)]="_searchQuery"
+      (ionCancel)="_showSearchbar = false"
       placeholder="Search"
     ></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
+      <ion-button
+        *ngIf="!_is_ios && !_showSearchbar"
+        (click)="_showSearchbar = true"
+      >
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -28,8 +31,8 @@
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar
-        [(ngModel)]="queryText"
-        (ionChange)="updateSchedule()"
+        [(ngModel)]="_searchQuery"
+        (ionChange)="search()"
         placeholder="Search"
       ></ion-searchbar>
     </ion-toolbar>
