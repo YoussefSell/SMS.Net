@@ -21,31 +21,38 @@ export class IndexPage implements OnInit, OnDestroy {
   _showSearchbar: boolean;
   _searchQuery: string;
   _messageStatus = MessageStatus;
+
+  _messages: ReadonlyArray<IMessages> = [];
+  _filteredMessages: ReadonlyArray<IMessages> = [];
   _messagesGroups: { date: string; messages: IMessages[] }[] = [];
 
   constructor(
-    public config: Config,
+    private _config: Config,
     private _store: Store<RootStoreState.State>,
   ) { }
 
   ngOnInit() {
     this._subSink.sink = this._store.select(MessagesStoreSelectors.MessagesSelector)
       .subscribe(messages => {
-        // group messages by date
-        const grouping = _.groupBy(messages, item => moment(item.date).format('YYYY-MM-DD'));
-
-        // transform the grouping into an array
-        this._messagesGroups = Object.keys(grouping)
-          .map(key => ({ date: key, messages: grouping[key] }))
-
-        console.log('messages', this._messagesGroups);
+        this._filteredMessages = messages;
+        this._messages = messages;
+        this.groupMessages();
       });
 
-    this._is_ios = this.config.get('mode') === 'ios';
+    this._is_ios = this._config.get('mode') === 'ios';
   }
 
   ngOnDestroy(): void {
     this._subSink.unsubscribe();
+  }
+
+  groupMessages(): void {
+    // group messages by date
+    const grouping = _.groupBy(this._filteredMessages, item => moment(item.date).format('YYYY-MM-DD'));
+
+    // transform the grouping into an array
+    this._messagesGroups = Object.keys(grouping)
+      .map(key => ({ date: key, messages: grouping[key] }));
   }
 
   removeMessage(message: IMessages): void {
@@ -53,6 +60,19 @@ export class IndexPage implements OnInit, OnDestroy {
   }
 
   search(): void {
-    console.log(this._searchQuery);
+    if (this._searchQuery && this._searchQuery.length > 0) {
+      // perform search
+      this._filteredMessages = this._messages.filter(message =>
+        message.content.includes(this._searchQuery)
+        || message.to.includes(this._searchQuery));
+
+      // group messages
+      this.groupMessages();
+      return;
+    }
+
+    // reset the list & perform the grouping
+    this._filteredMessages = this._messages;
+    this.groupMessages();
   }
 }
