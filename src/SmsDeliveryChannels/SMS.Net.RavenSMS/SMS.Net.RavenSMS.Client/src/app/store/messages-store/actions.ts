@@ -10,6 +10,7 @@ export enum StoreActionTypes {
     LOAD_MESSAGES_FINISHED = '@company/load/finished',
     SELECT_MESSAGE = '@messages/select',
     INSERT_MESSAGE = '@messages/insert',
+    DELETE_MESSAGE = '@messages/delete',
     UPDATE_MESSAGE_STATUS = '@messages/update/status',
 }
 
@@ -17,6 +18,7 @@ export const LoadMessages = createAction(StoreActionTypes.LOAD_MESSAGES);
 export const LoadMessagesFinished = createAction(StoreActionTypes.LOAD_MESSAGES_FINISHED, props<{ data: IMessages[] }>());
 
 export const SelectMessage = createAction(StoreActionTypes.LOAD_MESSAGES, props<{ messageId: string; }>());
+export const DeleteMessage = createAction(StoreActionTypes.DELETE_MESSAGE, props<{ messageId: string; }>());
 
 export const InsertMessage = createAction(StoreActionTypes.INSERT_MESSAGE, props<{ message: IMessages }>());
 export const UpdateMessageStatus = createAction(StoreActionTypes.UPDATE_MESSAGE_STATUS, props<{ messageId: string, newStatus: MessageStatus }>());

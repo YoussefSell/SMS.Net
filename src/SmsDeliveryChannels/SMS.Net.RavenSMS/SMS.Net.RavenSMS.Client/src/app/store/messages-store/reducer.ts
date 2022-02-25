@@ -80,4 +80,22 @@ export const MainReducer = createReducer<State>(
 
         return newState;
     }),
+    on(Actions.DeleteMessage, (state, action): State => {
+        // get the message index
+        const messageIndex = state.messages.map(m => m.id).indexOf(action.messageId);
+
+        let newState: State = {
+            ...state,
+            messages: [
+                ...state.messages.slice(0, messageIndex),
+                ...state.messages.slice(messageIndex + 1),
+            ]
+        };
+
+        if (state.selectedMessage && state.selectedMessage.id == action.messageId) {
+            newState.selectedMessage = null
+        }
+
+        return newState;
+    }),
 );

@@ -1,6 +1,6 @@
 import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { MessagesStoreSelectors, RootStoreState } from 'src/app/store';
+import { MessagesStoreActions, MessagesStoreSelectors, RootStoreState } from 'src/app/store';
 import { IMessages } from 'src/app/core/models';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -66,8 +66,8 @@ export class IndexPage implements OnInit, OnDestroy {
     this._subSink.unsubscribe();
   }
 
-  removeMessage(): void {
-    console.log('remove to favorite clicked')
+  removeMessage(message: IMessages): void {
+    this._store.dispatch(MessagesStoreActions.DeleteMessage({ messageId: message.id }));
   }
 
   updateSchedule() {
