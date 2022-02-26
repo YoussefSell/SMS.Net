@@ -13,3 +13,8 @@ export const IsDarkModeSelector = createSelector(
   featureStateSelector,
   (state: State) => state.darkMode
 );
+
+export const LanguageSelector = createSelector(
+  featureStateSelector,
+  (state: State) => state.language
+);

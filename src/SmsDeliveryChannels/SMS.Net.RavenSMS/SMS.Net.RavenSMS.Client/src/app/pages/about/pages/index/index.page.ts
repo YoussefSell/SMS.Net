@@ -3,10 +3,10 @@ import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'page-about',
-  templateUrl: 'about.html',
-  styleUrls: ['./about.scss'],
+  templateUrl: 'index.page.html',
+  styleUrls: ['./index.page.scss'],
 })
-export class AboutPage {
+export class IndexPage {
   location = 'madison';
   conferenceDate = '2047-05-17';
 

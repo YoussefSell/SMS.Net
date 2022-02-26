@@ -1,64 +1,92 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Preferences</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <form [formGroup]="settingsForm" *ngIf="settingsForm">
-    <h3 class="ion-padding-top ion-padding-start">Appearance</h3>
-    <ion-list style="width: 100%">
-      <ion-item>
-        <ion-icon slot="start" name="moon-outline"></ion-icon>
-        <ion-label> Dark Mode </ion-label>
-        <ion-toggle formControlName="darkMode"></ion-toggle>
-      </ion-item>
-    </ion-list>
-    <h3 class="ion-padding-top ion-padding-start">App Identification</h3>
-    <ion-list style="width: 100%">
-      <ion-item>
-        <ion-label
-          position="stacked"
-          style="margin-right: 10px; min-width: 100px"
-        >
-          Client Id
-        </ion-label>
-        <ion-input readonly formControlName="clientId"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label
-          position="stacked"
-          style="margin-right: 10px; min-width: 100px"
-        >
-          Client Name
-        </ion-label>
-        <ion-input readonly formControlName="clientName"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Description</ion-label>
-        <ion-textarea readonly formControlName="clientDescription">
-        </ion-textarea>
-      </ion-item>
-    </ion-list>
-    <h3 class="ion-padding-top ion-padding-start">Server info</h3>
-    <ion-list style="width: 100%">
-      <ion-item>
-        <ion-label
-          position="stacked"
-          style="margin-right: 10px; min-width: 100px"
-        >
-          Server Url
-        </ion-label>
-        <ion-input readonly formControlName="serverURL"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label
-          position="stacked"
-          style="margin-right: 10px; min-width: 100px"
-        >
-          Status
-        </ion-label>
-        <ion-input readonly formControlName="serverStatus"></ion-input>
-      </ion-item>
-    </ion-list>
-  </form>
-</ion-content>
+<ng-container *transloco="let translate">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{translate('preferences.pages.index.page_title')}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form [formGroup]="settingsForm" *ngIf="settingsForm">
+      <h3 class="ion-padding-top ion-padding-start">
+        {{translate('preferences.pages.index.sections.appearance.title')}}
+      </h3>
+      <ion-list style="width: 100%">
+        <ion-item>
+          <ion-icon slot="start" name="moon-outline"></ion-icon>
+          <ion-label>
+            {{translate('preferences.pages.index.sections.appearance.labels.dark_mode')}}
+          </ion-label>
+          <ion-toggle formControlName="darkMode"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="language-outline"></ion-icon>
+          <ion-label>
+            {{translate('preferences.pages.index.sections.appearance.labels.language')}}
+          </ion-label>
+          <ion-select
+            formControlName="language"
+            placeholder="{{translate('preferences.pages.index.sections.appearance.labels.language')}}"
+          >
+            <ion-select-option
+              *ngFor="let language of _languages"
+              value="{{language.value}}"
+              >{{language.label}}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <h3 class="ion-padding-top ion-padding-start">
+        {{translate('preferences.pages.index.sections.app_id.title')}}
+      </h3>
+      <ion-list style="width: 100%">
+        <ion-item>
+          <ion-label
+            position="stacked"
+            style="margin-right: 10px; min-width: 100px"
+          >
+            {{translate('preferences.pages.index.sections.app_id.labels.client_id')}}
+          </ion-label>
+          <ion-input readonly formControlName="clientId"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label
+            position="stacked"
+            style="margin-right: 10px; min-width: 100px"
+          >
+            {{translate('preferences.pages.index.sections.app_id.labels.client_name')}}
+          </ion-label>
+          <ion-input readonly formControlName="clientName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">
+            {{translate('preferences.pages.index.sections.app_id.labels.client_description')}}
+          </ion-label>
+          <ion-textarea readonly formControlName="clientDescription">
+          </ion-textarea>
+        </ion-item>
+      </ion-list>
+      <h3 class="ion-padding-top ion-padding-start">
+        {{translate('preferences.pages.index.sections.server_info.title')}}
+      </h3>
+      <ion-list style="width: 100%">
+        <ion-item>
+          <ion-label
+            position="stacked"
+            style="margin-right: 10px; min-width: 100px"
+          >
+            {{translate('preferences.pages.index.sections.server_info.labels.server_url')}}
+          </ion-label>
+          <ion-input readonly formControlName="serverURL"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label
+            position="stacked"
+            style="margin-right: 10px; min-width: 100px"
+          >
+            {{translate('preferences.pages.index.sections.server_info.labels.server_status')}}
+          </ion-label>
+          <ion-input readonly formControlName="serverStatus"></ion-input>
+        </ion-item>
+      </ion-list>
+    </form>
+  </ion-content>
+</ng-container>

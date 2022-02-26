@@ -1,0 +1,28 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Mensajes",
+            "labels": {
+                "message_to": "Para",
+                "message_sent_on": "Enviado el",
+                "empty_page": "No se han encontrado mensajes"
+            },
+            "actions": {
+                "remove": "Eliminar"
+            }
+        },
+        "details": {
+            "page_title": "Detalles del mensaje",
+            "labels": {
+                "message_content": "Contenido",
+                "message_status": "Estado",
+                "message_to": "Para",
+                "message_sent_on": "Enviado el",
+                "message_created_on": "Creado el"
+            },
+            "actions": {
+                "remove": "Eliminar"
+            }
+        }
+    }
+}

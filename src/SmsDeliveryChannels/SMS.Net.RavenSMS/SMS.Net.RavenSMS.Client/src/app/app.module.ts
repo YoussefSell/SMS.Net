@@ -3,14 +3,16 @@ import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { AppTranslationModule } from './app-translation.module';
 import { environment } from 'src/environments/environment';
-import { RootEffects } from './store/root-effects';
 import { RootReducer, RootStoreModule } from './store';
+import { RootEffects } from './store/root-effects';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { RootReducer, RootStoreModule } from './store';
     IonicModule.forRoot(),
 
     RootStoreModule,
+    HttpClientModule,
+    AppTranslationModule,
     StoreModule.forRoot(RootReducer, { metaReducers: StatePersistenceReducer.metaReducers }),
     EffectsModule.forRoot([RootEffects, StorePersistenceEffects.StorePersistenceEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, name: 'Sms.Net - RavenSMS', logOnly: environment.production }),

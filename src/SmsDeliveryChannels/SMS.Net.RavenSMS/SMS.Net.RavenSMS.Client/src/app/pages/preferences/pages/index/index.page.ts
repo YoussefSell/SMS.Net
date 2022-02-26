@@ -16,6 +16,12 @@ export class IndexPage implements OnInit {
   subsink = new SubSink();
   settingsForm: FormGroup;
 
+  _languages: { value: string; label: string }[] = [
+    { value: "en", label: "English" },
+    { value: "es", label: "Spanish" },
+    { value: "fr", label: "French" },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private store: Store<RootStoreState.State>,
@@ -25,6 +31,7 @@ export class IndexPage implements OnInit {
     this.settingsForm = this.fb
       .group({
         darkMode: this.fb.control(false),
+        language: this.fb.control(''),
         clientId: this.fb.control(''),
         serverURL: this.fb.control(''),
         clientName: this.fb.control(''),
@@ -32,9 +39,16 @@ export class IndexPage implements OnInit {
         clientDescription: this.fb.control(''),
       });
 
+
     this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
+      });
+
+    this.subsink.sink = this.settingsForm.get('language').valueChanges
+      .subscribe(value => {
+        console.log(value);
+        this.store.dispatch(UIStoreActions.updateLanguage({ value }))
       });
 
     this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)

@@ -7,6 +7,7 @@ import { State } from './state';
  */
 const initialState: State = {
     darkMode: false,
+    language: 'en',
 };
 
 /**
@@ -21,6 +22,12 @@ export const MainReducer = createReducer<State>(
         return {
             ...state,
             darkMode: action.value,
+        };
+    }),
+    on(Actions.updateLanguage, (state, action): State => {
+        return {
+            ...state,
+            language: action.value,
         };
     }),
 );

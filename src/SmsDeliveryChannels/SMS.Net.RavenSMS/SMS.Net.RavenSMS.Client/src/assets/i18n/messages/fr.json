@@ -1,0 +1,28 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Messages",
+            "labels": {
+                "message_to": "Pour",
+                "message_sent_on": "Envoyé à",
+                "empty_page": "Aucun message trouvé"
+            },
+            "actions": {
+                "remove": "Supprimer"
+            }
+        },
+        "details": {
+            "page_title": "Détails du message",
+            "labels": {
+                "message_content": "Contenu",
+                "message_status": "Statut",
+                "message_to": "Pour",
+                "message_sent_on": "Envoyé à",
+                "message_created_on": "Créé à"
+            },
+            "actions": {
+                "remove": "Supprimer"
+            }
+        }
+    }
+}

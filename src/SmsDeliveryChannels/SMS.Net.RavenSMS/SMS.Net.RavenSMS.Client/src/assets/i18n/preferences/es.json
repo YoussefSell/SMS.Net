@@ -1,0 +1,31 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Preferencias",
+            "sections": {
+                "appearance": {
+                    "title": "Apariencia",
+                    "labels": {
+                        "dark_mode": "Modo oscuro",
+                        "language": "Idioma"
+                    }
+                },
+                "app_id": {
+                    "title": "Identificación de la aplicación",
+                    "labels": {
+                        "client_id": "Identificación del cliente",
+                        "client_name": "Nombre del cliente",
+                        "client_description": "Descripción"
+                    }
+                },
+                "server_info": {
+                    "title": "Información del servidor",
+                    "labels": {
+                        "server_url": "URL del servidor",
+                        "server_status": "Estado"
+                    }
+                }
+            }
+        }
+    }
+}

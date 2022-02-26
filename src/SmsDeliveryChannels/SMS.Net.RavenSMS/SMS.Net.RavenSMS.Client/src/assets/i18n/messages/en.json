@@ -1,0 +1,28 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Messages",
+            "labels": {
+                "message_to": "To",
+                "message_sent_on": "Sent on",
+                "empty_page": "No messages Found"
+            },
+            "actions": {
+                "remove": "Remove"
+            }
+        },
+        "details": {
+            "page_title": "Message details",
+            "labels": {
+                "message_content": "Content",
+                "message_status": "Status",
+                "message_to": "To",
+                "message_sent_on": "Sent on",
+                "message_created_on": "Created on"
+            },
+            "actions": {
+                "remove": "Remove"
+            }
+        }
+    }
+}

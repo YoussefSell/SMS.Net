@@ -1,0 +1,24 @@
+{
+    "enumerations": {
+        "messageStatus": {
+            "-1": "Aucun",
+            "0": "Créé",
+            "1": "En attente",
+            "2": "Échoué",
+            "3": "Envoyé"
+        },
+        "networkStatus": {
+            "0": "En ligne",
+            "1": "Hors ligne"
+        },
+        "serverStatus": {
+            "0": "En ligne",
+            "1": "Hors ligne"
+        }
+    },
+    "languages": {
+        "en": "Anglais",
+        "es": "Espagnol",
+        "fr": "Français"
+    }
+}
