@@ -6,6 +6,7 @@ import { IAppIdentification, IMessages } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
 import { State } from './store/settings-store/state';
+import { TranslocoService } from '@ngneat/transloco';
 import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _alertController: AlertController,
     private _toastController: ToastController,
     private _store: Store<RootStoreState.State>,
+    private _translationService: TranslocoService,
   ) {
     // add a listener on the app state
     App.addListener('appStateChange', ({ isActive }) => {
@@ -52,8 +54,11 @@ export class AppComponent implements OnInit, OnDestroy {
       }));
     });
 
-    this._subSink.sink = this._store.select(UIStoreSelectors.IsDarkModeSelector)
-      .subscribe(value => this.dark = value);
+    this._subSink.sink = this._store.select(UIStoreSelectors.StateSelector)
+      .subscribe(state => {
+        this.dark = state.darkMode;
+        this._translationService.setActiveLang(state.language);
+      });
 
     this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
