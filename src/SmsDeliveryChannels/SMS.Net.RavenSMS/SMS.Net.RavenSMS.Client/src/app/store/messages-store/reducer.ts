@@ -46,6 +46,12 @@ export const MainReducer = createReducer<State>(
 
         return state;
     }),
+    on(Actions.UnselectMessage, (state, action): State => {
+        return {
+            ...state,
+            selectedMessage: null,
+        }
+    }),
     on(Actions.InsertMessage, (state, action): State => {
         return {
             ...state,

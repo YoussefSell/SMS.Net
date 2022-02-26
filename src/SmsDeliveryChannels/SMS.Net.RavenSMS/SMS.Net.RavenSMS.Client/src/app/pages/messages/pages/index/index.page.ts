@@ -1,13 +1,12 @@
-import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MessagesStoreActions, MessagesStoreSelectors, RootStoreState } from 'src/app/store';
+import { MessageStatus } from 'src/app/core/constants/enums';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IMessages } from 'src/app/core/models';
-import { Router } from '@angular/router';
+import { Config } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { MessageStatus } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'page-messages',
