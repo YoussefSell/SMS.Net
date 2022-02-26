@@ -47,7 +47,7 @@ export class IndexPage implements OnInit, OnDestroy {
 
   groupMessages(): void {
     // group messages by date
-    const grouping = _.groupBy(this._filteredMessages, item => moment(item.date).format('YYYY-MM-DD'));
+    const grouping = _.groupBy(this._filteredMessages, item => moment(item.sentOn).format('YYYY-MM-DD'));
 
     // transform the grouping into an array
     this._messagesGroups = Object.keys(grouping)

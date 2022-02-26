@@ -11,15 +11,27 @@
     <h1>Message details</h1>
     <p>
       Status: <br />
-      <span class="session-track-angular">aaaa</span>
+      <span
+        [ngClass]="{
+        'message-created-color': _message.status === _messageStatus.Created, 
+        'message-queued-color': _message.status === _messageStatus.Queued, 
+        'message-failed-color': _message.status === _messageStatus.Failed, 
+        'message-sent-color': _message.status === _messageStatus.Sent
+      }"
+        >{{_message.status}}</span
+      >
     </p>
     <p>
       To: <br />
       {{_message.to }}
     </p>
     <p>
-      At:<br />
-      {{_message.date | date:'long'}}
+      Sent:<br />
+      {{_message.sentOn | date:'long'}}
+    </p>
+    <p>
+      Created:<br />
+      {{_message.createdOn | date:'long'}}
     </p>
     <p>
       Content: <br />

@@ -27,7 +27,12 @@ export interface IMessages {
     /**
      * the date the message is sent
      */
-    date: Date;
+    sentOn: Date;
+
+    /**
+     * the date the message was created on
+     */
+    createdOn: Date;
 
     /**
      * the status of the message

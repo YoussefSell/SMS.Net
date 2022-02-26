@@ -4,6 +4,7 @@ import { MessagesStoreActions, MessagesStoreSelectors, RootStoreState } from 'sr
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import { IMessages } from 'src/app/core/models';
+import { MessageStatus } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'page-message-detail',
@@ -16,6 +17,7 @@ export class DetailPage implements OnDestroy {
 
   session: any;
   isFavorite = false;
+  _messageStatus = MessageStatus;
 
   constructor(
     private _router: Router,

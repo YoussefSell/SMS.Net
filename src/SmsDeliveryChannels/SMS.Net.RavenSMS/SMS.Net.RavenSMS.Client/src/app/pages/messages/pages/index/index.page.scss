@@ -1,35 +1,19 @@
-ion-fab-button {
-  --background: var(--ion-color-step-150, #fff);
-  --background-hover: var(--ion-color-step-200, #f2f2f2);
-  --background-focused: var(--ion-color-step-250, #d9d9d9);
-
-  --color: var(--ion-color-primary, #3880ff);
-}
-
-/*
- * Material Design uses the ripple for activated
- * so only style the iOS activated background
- */
-.ios ion-fab-button {
-  --background-activated: var(--ion-color-step-250, #d9d9d9);
-}
-
 .message-created {
-  border-left: 2px solid #8e8d93;
+  border-left: 2px solid var(--ion-color-message-created);
   padding-left: 10px;
 }
 
 .message-sent {
-  border-left: 2px solid #69bb7b;
+  border-left: 2px solid var(--ion-color-message-sent);
   padding-left: 10px;
 }
 
 .message-failed {
-  border-left: 2px solid #ac282b;
+  border-left: 2px solid var(--ion-color-message-failed);
   padding-left: 10px;
 }
 
 .message-queued {
-  border-left: 2px solid #fd8b2d;
+  border-left: 2px solid var(--ion-color-message-queued);
   padding-left: 10px;
 }
