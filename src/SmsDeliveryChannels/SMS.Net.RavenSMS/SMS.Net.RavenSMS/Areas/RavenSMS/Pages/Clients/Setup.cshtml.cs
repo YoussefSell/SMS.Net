@@ -42,10 +42,7 @@ public partial class ClientSetupPageModel
         var jsonModel = System.Text.Json.JsonSerializer.Serialize(new
         {
             clientId = Client.Id,
-            clientName = Client.Name,
-            clientDescription = Client.Description,
             serverUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}",
-            type = "_connection_model",
         });
 
         // convert the json model to a base64 string
