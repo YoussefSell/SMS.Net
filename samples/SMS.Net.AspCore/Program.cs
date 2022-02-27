@@ -9,7 +9,13 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ionic-cors",
-        builder => builder.WithOrigins("http://localhost:8100", "http://192.168.1.99:8100")
+        builder => builder.WithOrigins(
+            "http://localhost",
+            "ionic://localhost",
+            "capacitor://localhost",
+            "http://localhost:8100", 
+            "http://192.168.1.99:8100"
+        )
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
