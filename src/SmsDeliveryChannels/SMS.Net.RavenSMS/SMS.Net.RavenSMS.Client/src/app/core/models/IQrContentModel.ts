@@ -1,7 +1,6 @@
 /**
  * the interface that defines the qr code content
  */
-
 export interface IQrContentModel {
     /**
      * the server url
@@ -12,14 +11,4 @@ export interface IQrContentModel {
      * the client id
      */
     clientId: string;
-
-    /**
-     * the client name
-     */
-    clientName: string;
-
-    /**
-     * the client description
-     */
-    clientDescription: string;
 }

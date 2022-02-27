@@ -9,6 +9,7 @@ import { Capacitor } from '@capacitor/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'page-setup-index',
@@ -19,7 +20,8 @@ export class IndexPage implements OnInit, OnDestroy {
 
   subsink = new SubSink();
 
-  message: string;
+  DEBUG_MESSAGE: string;
+  messageTranslationKey: string;
   scanActive = false;
   permissionGranted = false;
   configurationAllowed = false;
@@ -34,6 +36,7 @@ export class IndexPage implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private alert: AlertController,
     private store: Store<RootStoreState.State>,
+    private translationService: TranslocoService,
   ) { }
 
   ngOnInit(): void {
@@ -65,15 +68,17 @@ export class IndexPage implements OnInit, OnDestroy {
     // this code is only relevant if we are not previewing in a web browser
     if (this.platform != 'web') {
       // first check for the user permission
-      this.message = 'checking camera permission ...';
-      this.permissionGranted = await this.checkUserPermission();
+      this.messageTranslationKey = 'setup.pages.index.messages.checking_permission';
 
+      this.permissionGranted = await this.checkUserPermission();
       if (this.permissionGranted) {
-        this.message = "ready for scan";
+        this.showGrantPermissionButton = false;
+        this.messageTranslationKey = 'setup.pages.index.messages.ready_for_scan';
+
+        // prepare the barcode scanner
+        BarcodeScanner.prepare();
       }
 
-      // prepare the barcode scanner
-      BarcodeScanner.prepare();
       return;
     }
 
@@ -82,7 +87,7 @@ export class IndexPage implements OnInit, OnDestroy {
 
   async startScanning(): Promise<void> {
     this.scanActive = true;
-    this.message = 'starting the QR scanning ...';
+    this.messageTranslationKey = 'setup.pages.index.messages.start_scanning';
 
     // start the scanning
     const scanResult = await BarcodeScanner.startScan({
@@ -101,23 +106,23 @@ export class IndexPage implements OnInit, OnDestroy {
 
       // check if we have any valid content
       if (!model.serverUrl || !model.clientId) {
-        this.message = "invalid QR code value, please scan the QR code on the Client Setup page.";
+        this.messageTranslationKey = 'setup.pages.index.messages.invalid_qr_value';
         return;
       }
 
       // dispatch the configuration action
       this.store.dispatch(SettingsStoreActions.ConfigureClient({ data: model }));
 
-      this.message = 'done...';
+      this.messageTranslationKey = 'setup.pages.index.messages.done';
       return;
     }
 
-    this.message = "failed to read the QR code, please try again.";
+    this.messageTranslationKey = 'setup.pages.index.messages.failed_to_read_qr_value';
   }
 
-  async checkUserPermission(): Promise<boolean> {
+  async checkUserPermission(force: boolean = false): Promise<boolean> {
     // check if user already granted permission
-    const status = await BarcodeScanner.checkPermission({ force: false });
+    const status = await BarcodeScanner.checkPermission({ force });
 
     // user granted permission
     if (status.granted) {
@@ -125,8 +130,9 @@ export class IndexPage implements OnInit, OnDestroy {
     }
 
     // user denied permission
-    if (status.denied) {
-      this.message = "you have denied the camera permission, please enable the permission form the setting.";
+    // (restricted & unknown) probably means the permission has been denied (ios only)
+    if (status.denied || status.restricted || status.unknown) {
+      this.messageTranslationKey = 'setup.pages.index.messages.permission_denied';
       this.showOpenSettingsButton = true;
       return false;
     }
@@ -138,12 +144,12 @@ export class IndexPage implements OnInit, OnDestroy {
         message: "allow camera permission to enable the QR code scanner",
         buttons: [
           {
-            text: 'No',
+            text: "NO",
             role: 'cancel',
           },
           {
-            text: 'Ok',
-            role: 'ok',
+            text: "OK",
+            role: 'accept',
           }
         ]
       });
@@ -154,35 +160,21 @@ export class IndexPage implements OnInit, OnDestroy {
       // get the result on dismiss
       const dismissResult = await alertResult.onDidDismiss();
       if (dismissResult.role == "cancel") {
-        this.message = "you have canceled the request, the camera permission is required to scan the QR";
+        this.messageTranslationKey = "setup.pages.index.messages.permission_request_canceled";
         this.showGrantPermissionButton = true;
         return false;
       }
     }
 
-    // probably means the permission has been denied (ios only)
-    if (status.restricted || status.unknown) {
-      return false;
-    }
-
-    // user has not denied permission but the user also has not yet granted the permission
-    const statusRequest = await BarcodeScanner.checkPermission({ force: true });
-    if (statusRequest.asked) {
-      // system requested the user for permission during this call
-      // only possible when force set to true
-    }
-
-    if (statusRequest.granted) {
-      // the user did grant the permission now
-      return true;
-    }
-
     // user did not grant the permission, so he must have declined the request
-    return false;
+    return await this.checkUserPermission(true);
   }
 
-  grantPermission() {
-    BarcodeScanner.checkPermission({ force: true });
+  async grantPermissionAsync() {
+    this.permissionGranted = await this.checkUserPermission();
+    if (this.permissionGranted) {
+      this.showGrantPermissionButton = false;
+    }
   }
 
   openSettingPage() {
@@ -200,14 +192,12 @@ export class IndexPage implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern(/^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/)
       ]),
-      clientName: this.fb.control(''),
-      clientDescription: this.fb.control(''),
     });
   }
 
   submit(): void {
     if (!this.configurationForm.valid) {
-      this.message = "invalid form value, please enter a valid values.";
+      this.messageTranslationKey = 'setup.pages.index.messages.invalid_setup_form_value';
       return;
     }
 
@@ -215,7 +205,7 @@ export class IndexPage implements OnInit, OnDestroy {
 
     // check if we have any valid content
     if (!model.serverUrl || !model.clientId) {
-      this.message = "invalid form value, please enter a valid values.";
+      this.messageTranslationKey = 'setup.pages.index.messages.invalid_setup_form_value';
       return;
     }
 

@@ -1,5 +1,31 @@
 {
-    "messages": "Messages",
-    "preferences": "Preferences",
-    "about": "About"
+    "pages": {
+        "index": {
+            "page_title": "Setup",
+            "labels": {
+                "heading": "Client application configuration",
+                "config_description": "first create an app on your server, and then scan the qr code to configure this client instance.",
+                "server_url": "Server Url",
+                "client_id": "Client Id"
+            },
+            "actions": {
+                "start_scan": "start scanning",
+                "open_settings": "open settings",
+                "grant_permission": "grant permission",
+                "configure": "configure"
+            },
+            "messages": {
+                "done": "done.",
+                "ready_for_scan": "ready for scan",
+                "invalid_setup_form_value": "invalid form value, please enter a valid values.",
+                "permission_request_canceled": "you have canceled the request, the camera permission is required to scan the QR",
+                "camera_permission_required": "the camera permission is required to scan the QR, please allow the permission to continue the configuration.",
+                "checking_permission": "checking camera permission ...",
+                "start_scanning": "starting the QR scanning ...",
+                "invalid_qr_value": "invalid QR code value, please scan the QR code on the Client Setup page.",
+                "failed_to_read_qr_value": "failed to read the QR code, please try again.",
+                "permission_denied": "you have denied the camera permission, please enable the permission form the setting."
+            }
+        }
+    }
 }
