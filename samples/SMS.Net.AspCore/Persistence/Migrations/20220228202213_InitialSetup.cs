@@ -24,32 +24,15 @@ namespace SMS.Net.AspCore.Migrations
                     Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConnectionId = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RavenSmsClients", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "RavenSmsClientPhoneNumber",
-                columns: table => new
-                {
-                    PhoneNumber = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClientId = table.Column<string>(type: "varchar(17)", maxLength: 17, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RavenSmsClientPhoneNumber", x => x.PhoneNumber);
-                    table.ForeignKey(
-                        name: "FK_RavenSmsClientPhoneNumber_RavenSmsClients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "RavenSmsClients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -60,6 +43,7 @@ namespace SMS.Net.AspCore.Migrations
                     Id = table.Column<string>(type: "varchar(17)", maxLength: 17, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreateOn = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    SentOn = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
                     Priority = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Body = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
@@ -87,21 +71,47 @@ namespace SMS.Net.AspCore.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RavenSmsClientPhoneNumber_ClientId",
-                table: "RavenSmsClientPhoneNumber",
-                column: "ClientId");
+            migrationBuilder.CreateTable(
+                name: "RavenSmsMessageSendAttempt",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(17)", maxLength: 17, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Date = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Errors = table.Column<string>(type: "varchar(4000)", maxLength: 4000, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MessageId = table.Column<string>(type: "varchar(17)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RavenSmsMessageSendAttempt", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RavenSmsMessageSendAttempt_RavenSmsMessages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "RavenSmsMessages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RavenSmsMessages_ClientId",
                 table: "RavenSmsMessages",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RavenSmsMessageSendAttempt_MessageId",
+                table: "RavenSmsMessageSendAttempt",
+                column: "MessageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RavenSmsClientPhoneNumber");
+                name: "RavenSmsMessageSendAttempt");
 
             migrationBuilder.DropTable(
                 name: "RavenSmsMessages");

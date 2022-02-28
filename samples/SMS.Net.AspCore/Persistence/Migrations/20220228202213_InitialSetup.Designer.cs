@@ -11,8 +11,8 @@ using SMS.Net.Persistence;
 namespace SMS.Net.AspCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220214211041_AdedConnectionIdToClient")]
-    partial class AdedConnectionIdToClient
+    [Migration("20220228202213_InitialSetup")]
+    partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,11 @@ namespace SMS.Net.AspCore.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -52,24 +57,6 @@ namespace SMS.Net.AspCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RavenSmsClients");
-                });
-
-            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClientPhoneNumber", b =>
-                {
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasMaxLength(17)
-                        .HasColumnType("varchar(17)");
-
-                    b.HasKey("PhoneNumber");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("RavenSmsClientPhoneNumber");
                 });
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
@@ -105,6 +92,9 @@ namespace SMS.Net.AspCore.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
+                    b.Property<DateTimeOffset>("SentOn")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -122,13 +112,34 @@ namespace SMS.Net.AspCore.Migrations
                     b.ToTable("RavenSmsMessages");
                 });
 
-            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClientPhoneNumber", b =>
+            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessageSendAttempt", b =>
                 {
-                    b.HasOne("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", null)
-                        .WithMany("PhoneNumbers")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Id")
+                        .HasMaxLength(17)
+                        .HasColumnType("varchar(17)");
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Errors")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("MessageId")
+                        .IsRequired()
+                        .HasColumnType("varchar(17)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.ToTable("RavenSmsMessageSendAttempt");
                 });
 
             modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
@@ -142,9 +153,20 @@ namespace SMS.Net.AspCore.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsClient", b =>
+            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessageSendAttempt", b =>
                 {
-                    b.Navigation("PhoneNumbers");
+                    b.HasOne("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", "Message")
+                        .WithMany("SendAttempts")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+                });
+
+            modelBuilder.Entity("SMS.Net.Channel.RavenSMS.Entities.RavenSmsMessage", b =>
+                {
+                    b.Navigation("SendAttempts");
                 });
 #pragma warning restore 612, 618
         }
