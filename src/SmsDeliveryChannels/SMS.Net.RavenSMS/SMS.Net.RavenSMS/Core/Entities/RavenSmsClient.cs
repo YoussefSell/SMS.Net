@@ -13,7 +13,6 @@ public class RavenSmsClient
         CreatedOn = DateTimeOffset.Now;
         Id = Generator.GenerateUniqueId("clt");
         Status = RavenSmsClientStatus.RequireSetup;
-        PhoneNumbers = new HashSet<RavenSmsClientPhoneNumber>();
     }
 
     /// <summary>
@@ -47,7 +46,7 @@ public class RavenSmsClient
     public string? ConnectionId { get; set; }
 
     /// <summary>
-    /// the phone numbers associated with this client
+    /// the phone number associated with this client
     /// </summary>
-    public IEnumerable<RavenSmsClientPhoneNumber> PhoneNumbers { get; set; }
+    public string PhoneNumber { get; set; } = default!;
 }

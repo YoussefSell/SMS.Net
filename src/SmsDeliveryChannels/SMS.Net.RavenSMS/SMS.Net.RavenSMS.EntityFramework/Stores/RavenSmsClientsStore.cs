@@ -7,12 +7,12 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 {
     /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllAsync()
-        => _clients.Include(e => e.PhoneNumbers).ToArrayAsync();
+        => _clients.ToArrayAsync();
 
     /// <inheritdoc/>
     public async Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter)
     {
-        var query = _clients.Include(e => e.PhoneNumbers).AsQueryable();
+        var query = _clients.AsQueryable();
 
         // apply the filter & the orderBy
         query = SetFilter(query, filter);
@@ -41,8 +41,7 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 
     /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
-        => _clients.AsNoTracking().Join(_context.Set<RavenSmsClientPhoneNumber>(), e => e.Id, e => e.ClientId, (client, phoneNumberData) => new { client, phoneNumberData })
-            .AnyAsync(q => q.phoneNumberData.PhoneNumber == phoneNumber.ToString());
+        => _clients.AsNoTracking().AnyAsync(q => q.PhoneNumber == phoneNumber.ToString());
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByIdAsync(string clientId)
@@ -54,9 +53,7 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber)
-        => _clients.Join(_context.Set<RavenSmsClientPhoneNumber>(), e => e.Id, e => e.ClientId, (client, phoneNumberData) => new { client, phoneNumberData })
-            .Where(q => q.phoneNumberData.PhoneNumber == phoneNumber.ToString())
-            .Select(e => e.client)
+        => _clients.Where(q => q.PhoneNumber == phoneNumber.ToString())
             .FirstOrDefaultAsync();
 
     /// <inheritdoc/>
@@ -108,7 +105,7 @@ public partial class RavenSmsClientsStore
         _clients = _context.Set<RavenSmsClient>();
     }
 
-    private IQueryable<RavenSmsClient> SetFilter(IQueryable<RavenSmsClient> query, RavenSmsClientsFilter filter)
+    private static IQueryable<RavenSmsClient> SetFilter(IQueryable<RavenSmsClient> query, RavenSmsClientsFilter filter)
     {
         if (!string.IsNullOrEmpty(filter.SearchQuery))
             query = query.Where(e => 
@@ -120,13 +117,7 @@ public partial class RavenSmsClientsStore
             query = query.Where(e => filter.Status == e.Status);
 
         if (filter.phoneNumbers is not null && filter.phoneNumbers.Any())
-        {
-            var join = _clients.Join(_context.Set<RavenSmsClientPhoneNumber>(),
-                e => e.Id, e => e.ClientId, (client, phoneNumber) => new { client, phoneNumber });
-
-            query = join.Where(e => filter.phoneNumbers.Contains(e.phoneNumber.PhoneNumber))
-                .Select(e => e.client);
-        }
+            query = query.Where(e => filter.phoneNumbers.Contains(e.PhoneNumber));
 
         return query;
     }

@@ -22,7 +22,7 @@ public partial class ClientIndexPageModel
                 client.Id,
                 name = client.Name,
                 status = client.Status,
-                phoneNumbers = client.PhoneNumbers.Select(number => number.PhoneNumber).ToArray(),
+                phoneNumber = client.PhoneNumber,
             }),
         });
     }

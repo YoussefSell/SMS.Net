@@ -20,14 +20,11 @@ public class RavenSmsClientEntityConfiguration : IEntityTypeConfiguration<RavenS
         builder.Property(e => e.ConnectionId)
             .HasMaxLength(250);
 
+        builder.Property(e => e.PhoneNumber)
+            .HasMaxLength(20);
+
         builder.Property(e => e.Status)
             .HasConversion(new EnumToStringConverter<RavenSmsClientStatus>())
             .HasMaxLength(20);
-
-        builder.HasMany(e => e.PhoneNumbers)
-            .WithOne()
-            .HasForeignKey(e => e.ClientId)
-            .IsRequired(true)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

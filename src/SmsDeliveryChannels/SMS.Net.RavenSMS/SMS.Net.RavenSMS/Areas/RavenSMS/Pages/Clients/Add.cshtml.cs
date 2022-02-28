@@ -1,4 +1,6 @@
-﻿namespace SMS.Net.RavenSMS.Pages;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SMS.Net.RavenSMS.Pages;
 
 /// <summary>
 /// the Clients add page
@@ -19,24 +21,22 @@ public partial class ClientsAddPageModel
         /// <summary>
         /// Get or set for the client.
         /// </summary>
+        [Required]
+        [MaxLength(150)]
         public string Name { get; set; } = default!;
 
         /// <summary>
         /// Get or set a description for the client.
         /// </summary>
-        public string Description { get; set; } = default!;
+        [MaxLength(300)]
+        public string? Description { get; set; } = default!;
 
         /// <summary>
         /// the phone numbers associated with this client
         /// </summary>
-        public string? PhoneNumbers { get; set; }
-
-        /// <summary>
-        /// get the list of phone numbers from the <see cref="PhoneNumbers"/> property
-        /// </summary>
-        /// <returns>a list of phone numbers</returns>
-        public IEnumerable<string> GetPhoneNumbers()
-            => (PhoneNumbers ?? string.Empty).Split(',').Where(e => !string.IsNullOrEmpty(e));
+        [Required]
+        [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$")]
+        public string PhoneNumber { get; set; } = default!;
     }
 }
 
@@ -53,10 +53,8 @@ public partial class ClientsAddPageModel : BasePageModel
             var client = new RavenSmsClient
             {
                 Name = Input.Name,
-                Description = Input.Description,
-                PhoneNumbers = Input.GetPhoneNumbers()
-                    .Select(number => new RavenSmsClientPhoneNumber() { PhoneNumber = number })
-                    .ToArray(),
+                PhoneNumber = Input.PhoneNumber,
+                Description = Input.Description ?? string.Empty,
             };
 
             // add the client

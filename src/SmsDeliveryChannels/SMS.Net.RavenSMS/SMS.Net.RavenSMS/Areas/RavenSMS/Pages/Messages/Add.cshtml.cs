@@ -97,9 +97,7 @@ public partial class MessagesAddPageModel
         {
             client.Id,
             client.Name,
-            PhoneNumbers = client.PhoneNumbers
-                .Select(e => e.PhoneNumber)
-                .ToArray(),
+            client.PhoneNumber,
         });
 
         // return json result instance
