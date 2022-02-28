@@ -52,123 +52,138 @@
 <script src="~/js/vendor.jquery.validation.min.js"></script>
 <script src="~/js/clients.add.page.min.js"></script>
 <script>
-      const phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    const phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/;
 
-      // init the list of phone numbers
-      let phoneNumbers = [];
+    // init the list of phone numbers
+    let phoneNumbers = [];
 
-      // populate pre-defined numbers for the request
-      @foreach (var d in Model.Input.GetPhoneNumbers())
-      {
-      @:phoneNumbers.push("@Html.Raw(d)");
-      }
+    // populate pre-defined numbers for the request
+    @foreach (var d in Model.Input.GetPhoneNumbers())
+    {
+    @:phoneNumbers.push("@Html.Raw(d)");
+    }
 
-      // render the phone numbers
-      renderPhoneNumbers();
+    // render the phone numbers
+    renderPhoneNumbers();
 
-      // add form submission logic
-      $("form").submit(function(e){
-          // get the form instance & prevent the default
-          var $form = $(this);
+    // add form submission logic
+    $("form").submit(function(e){
+        // get the form instance & prevent the default
+        var $form = $(this);
 
-          // prevent the form from submitting if no phone number is configured
-          if (phoneNumbers.length <= 0) {
-              setPhoneNumberToInvalid("phone numbers list is empty");
-              return false;
-          }
+        // prevent the form from submitting if no phone number is configured
+        if (phoneNumbers.length <= 0) {
+            setPhoneNumberToInvalid("phone numbers list is empty");
+            return false;
+        }
 
-          // append the phone numbers
-          $form.append(`<input type="hidden" name="Input.PhoneNumbers" value="${phoneNumbers}" />`);
-      });
+        // append the phone numbers
+        $form.append(`<input type="hidden" name="Input.PhoneNumbers" value="${phoneNumbers}" />`);
+    });
 
-      function onAddPhoneNumber() {
-          // select the phone number input
-          let $phoneNumberInput = $('#client-add-phone-number');
-          let phoneNumber = $phoneNumberInput.val();
+    async function onAddPhoneNumber() {
+        // select the phone number input
+        let $phoneNumberInput = $('#client-add-phone-number');
+        let phoneNumber = $phoneNumberInput.val();
 
-          // if the phone number value is empty just return
-          if (phoneNumber == '' || phoneNumber == undefined) {
-              setPhoneNumberToInvalid("you must supply a valid phone number value");
-              return;
-          }
+        // if the phone number value is empty just return
+        if (phoneNumber == '' || phoneNumber == undefined) {
+            setPhoneNumberToInvalid("you must supply a valid phone number value");
+            return;
+        }
 
-          // check if the value is for a valid phone number
-          if (!phoneNumberRegex.test(phoneNumber)) {
-              setPhoneNumberToInvalid("you must supply a valid phone number value");
-              return;
-          }
+        // check if the value is for a valid phone number
+        if (!phoneNumberRegex.test(phoneNumber)) {
+            setPhoneNumberToInvalid("you must supply a valid phone number value");
+            return;
+        }
 
-          // if the phone number is already exist return
-          if (phoneNumbers.includes(phoneNumber)) {
-              setPhoneNumberToInvalid("the given phone number already exist!");
-              return;
-          }
+        // if the phone number is already exist return
+        if (phoneNumbers.includes(phoneNumber)) {
+            setPhoneNumberToInvalid("the given phone number already exist!");
+            return;
+        }
 
-          // add the phone number to the list
-          appendPhoneNumber(phoneNumber);
+        // check if the phone number exist
+        const checkResult = await IsPhoneNumberExistAsync(phoneNumber);
+        if (checkResult.exist){
+            setPhoneNumberToInvalid("the given phone number already used!");
+            return;
+        }
 
-          // save the phone number
-          phoneNumbers.push(phoneNumber);
+        // add the phone number to the list
+        appendPhoneNumber(phoneNumber);
 
-          // clear the input
-          console.log(typeof phoneNumber)
-          $phoneNumberInput.val('');
-      }
+        // save the phone number
+        phoneNumbers.push(phoneNumber);
 
-      function appendPhoneNumber(phone_number){
-          // select the phone numbers list
-          var $clientsSelect = $("#phone-numbers-list");
+        // clear the input
+        $phoneNumberInput.val('');
+    }
 
-          // append the phone number
-          $clientsSelect.append(`
-          <li class="list-group-item d-flex justify-content-between align-items-center" onclick="removePhoneNumber('${phone_number}')">
-              ${phone_number}
-              <i class="far fa-trash-alt" style="color:red; cursor:pointer;"></i>
-          </li>
-          `);
-      }
+    function appendPhoneNumber(phone_number){
+        // select the phone numbers list
+        var $clientsSelect = $("#phone-numbers-list");
 
-      function renderPhoneNumbers() {
-          // select the phone numbers list
-          var $clientsSelect = $("#phone-numbers-list");
+        // append the phone number
+        $clientsSelect.append(`
+        <li class="list-group-item d-flex justify-content-between align-items-center" onclick="removePhoneNumber('${phone_number}')">
+            ${phone_number}
+            <i class="far fa-trash-alt" style="color:red; cursor:pointer;"></i>
+        </li>
+        `);
+    }
 
-          // empty the list
-          $clientsSelect.empty();
+    function renderPhoneNumbers() {
+        // select the phone numbers list
+        var $clientsSelect = $("#phone-numbers-list");
 
-          // append phone numbers
-          $.each(phoneNumbers, function (){
-              if (phoneNumberRegex.test(this)) {
-                  appendPhoneNumber(this);
-              }
-          });
-      }
+        // empty the list
+        $clientsSelect.empty();
 
-      function removePhoneNumber(phone_number) {
-          var index = phoneNumbers.indexOf(phone_number);
+        // append phone numbers
+        $.each(phoneNumbers, function (){
+            if (phoneNumberRegex.test(this)) {
+                appendPhoneNumber(this);
+            }
+        });
+    }
 
-          if (index > -1) {
-              phoneNumbers.splice(index, 1);
-          }
+    function removePhoneNumber(phone_number) {
+        var index = phoneNumbers.indexOf(phone_number);
 
-          renderPhoneNumbers();
-      }
+        if (index > -1) {
+            phoneNumbers.splice(index, 1);
+        }
 
-      function setPhoneNumberToInvalid(error_message){
-          $('#client-add-phone-number').addClass('is-invalid');
-          $('#client-add-phone-number-error-viewer').removeClass('field-validation-valid');
-          $('#client-add-phone-number-error-viewer').addClass('field-validation-error');
-          $('#client-add-phone-number-error-viewer').empty();
-          $('#client-add-phone-number-error-viewer').append(`<div id="client-add-phone-number-error" class="is-invalid">${error_message}</div>`);
-      }
+        renderPhoneNumbers();
+    }
 
-      $(function () {
-          // get the form settings
-          var validatorSettings = $.data($('#add-client-form')[0], 'validator').settings;
+    function setPhoneNumberToInvalid(error_message){
+        $('#client-add-phone-number').addClass('is-invalid');
+        $('#client-add-phone-number-error-viewer').removeClass('field-validation-valid');
+        $('#client-add-phone-number-error-viewer').addClass('field-validation-error');
+        $('#client-add-phone-number-error-viewer').empty();
+        $('#client-add-phone-number-error-viewer').append(`<div id="client-add-phone-number-error" class="is-invalid">${error_message}</div>`);
+    }
 
-          // override the settings
-          validatorSettings.onkeyup = false;
-          validatorSettings.errorElement = "div";
-          validatorSettings.errorClass = "is-invalid";
-      });
+    function IsPhoneNumberExistAsync(phone_number) {
+        return $.ajax({
+            url: `/ravenSMS/clients/add/?handler=PhoneNumberExist&phoneNumber=${phone_number}`,
+            data: {
+                 phoneNumber: phone_number
+             }
+        })
+    }
+
+    $(function () {
+        // get the form settings
+        var validatorSettings = $.data($('#add-client-form')[0], 'validator').settings;
+
+        // override the settings
+        validatorSettings.onkeyup = false;
+        validatorSettings.errorElement = "div";
+        validatorSettings.errorClass = "is-invalid";
+    });
 </script>
 }
