@@ -1,7 +1,8 @@
 ﻿@page
 @model SMS.Net.RavenSMS.Pages.PreferencesIndexPageModel
 @{
-    ViewData["page_title"] = "Manage preferences";
+    ViewData[ViewDataKeys.PageTitle] =  "Manage preferences";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.PreferencesPage;
 }
 
 <h1>

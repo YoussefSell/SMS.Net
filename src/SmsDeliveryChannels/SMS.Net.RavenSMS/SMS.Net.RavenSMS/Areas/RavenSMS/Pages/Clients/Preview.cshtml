@@ -1,7 +1,8 @@
 ﻿@page "{id}"
 @model SMS.Net.RavenSMS.Pages.ClientSetupPageModel
 @{
-    ViewData["page_title"] = "Client Preview";
+    ViewData[ViewDataKeys.PageTitle] = "Client Preview";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.ClientPreviewPage;
 }
 
 @if (Model.Client is not null)

@@ -1,7 +1,8 @@
 ﻿@page
 @model SMS.Net.RavenSMS.Pages.MessagesIndexPageModel
 @{
-    ViewData["page_title"] = "Messages";
+    ViewData[ViewDataKeys.PageTitle] = "Messages";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.MessagesIndexPage;
 }
 
 <div class="app-content pt-3 p-md-3 p-lg-4">

@@ -1,7 +1,8 @@
 ﻿@page
 @model SMS.Net.RavenSMS.Pages.MessagesAddPageModel
 @{
-    ViewData["page_title"] = "Compose Message";
+    ViewData[ViewDataKeys.PageTitle] = "Compose Message";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.MessagesAddPage;
 }
 
 <div class="app-content pt-3 p-md-3 p-lg-4">

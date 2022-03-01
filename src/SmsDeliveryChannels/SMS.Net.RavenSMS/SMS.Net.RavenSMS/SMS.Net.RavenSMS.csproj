@@ -28,8 +28,4 @@
     <ProjectReference Include="..\..\..\DependencyInjection\SMS.Net.DependencyInjection\SMS.Net.DependencyInjection.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Constants\" />
-  </ItemGroup>
-
 </Project>
