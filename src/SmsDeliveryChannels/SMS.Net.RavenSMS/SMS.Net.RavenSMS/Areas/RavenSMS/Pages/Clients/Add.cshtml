@@ -2,6 +2,7 @@
 @model SMS.Net.RavenSMS.Pages.ClientsAddPageModel
 @{
     ViewData["page_title"] = "Client registration";
+    ViewData["selected_page"] = "clients.add";
 }
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -53,8 +54,6 @@
         validatorSettings.onkeyup = false;
         validatorSettings.errorElement = "div";
         validatorSettings.errorClass = "is-invalid";
-
-        console.log(validatorSettings);
     });
 </script>
 }
