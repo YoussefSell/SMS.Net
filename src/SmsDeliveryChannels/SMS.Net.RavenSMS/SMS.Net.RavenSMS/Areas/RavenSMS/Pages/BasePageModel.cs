@@ -34,4 +34,17 @@ public class BasePageModel : PageModel
 
         return name;
     }
+
+    protected string BuildClientQrCodeContent(RavenSmsClient client)
+    {
+        // build the json model
+        var jsonModel = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            clientId = client.Id,
+            serverUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}",
+        });
+
+        // convert the json model to a base64 string
+        return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonModel));
+    }
 }

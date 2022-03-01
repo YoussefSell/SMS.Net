@@ -127,6 +127,17 @@ gulp.task('js-app-pages-clients-setup', function () {
 		.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-clients-preview', function () {
+	return gulp.src([
+		'Assets/src/js/libs/qrcode.min.js',
+		'Assets/src/js/pages/clients/preview.js',
+	])
+		.pipe(sourcemaps.init())
+		.pipe(concat('clients.preview.page.min.js'))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('Assets/js'));
+});
+
 // runner
 gulp.task('default', gulp.series(gulp.parallel([
 	// default
@@ -153,4 +164,5 @@ gulp.task('default', gulp.series(gulp.parallel([
 	'js-app-pages-clients-add',
 	'js-app-pages-clients-index',
 	'js-app-pages-clients-setup',
+	'js-app-pages-clients-preview',
 ])));

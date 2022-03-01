@@ -38,15 +38,7 @@ public partial class ClientSetupPageModel
             return Page();
         }
 
-        // build the json model
-        var jsonModel = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            clientId = Client.Id,
-            serverUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}",
-        });
-
-        // convert the json model to a base64 string
-        QrCodeText = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonModel));
+        QrCodeText = BuildClientQrCodeContent(Client);
 
         return Page();
     }

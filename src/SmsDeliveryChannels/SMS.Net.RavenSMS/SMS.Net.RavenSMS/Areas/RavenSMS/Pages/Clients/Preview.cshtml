@@ -1,27 +1,85 @@
 ﻿@page "{id}"
-@model SMS.Net.RavenSMS.Pages.ClientSetupPageModel
+@model SMS.Net.RavenSMS.Pages.ClientsPreviewPage
 @{
     ViewData[ViewDataKeys.PageTitle] = "Client Preview";
     ViewData[ViewDataKeys.SelectedPage] = PageId.ClientPreviewPage;
 }
 
-@if (Model.Client is not null)
-{
-    <div class="app-content pt-3 p-md-3 p-lg-4">
-        <div class="container-xl">
-            <h1 class="app-page-title">Client details @Model.Client.Name</h1>
-            <hr class="mb-4">
-            <div class="row g-4 settings-section">
-                <div class="app-card app-card-settings shadow-sm p-4">
-                    <div class="app-card-body">
-                        <form id="add-client-form" class="settings-form" method="post">
-                            
-
-                        </form>
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <h1 class="app-page-title">Client Preview</h1>
+        <div class="row g-4 settings-section">
+            <div class="app-card app-card-settings shadow-sm p-4">
+                <div class="row">
+                    @*form*@
+                    <div class="col-sm" style="margin-bottom: 20px">
+                        <div class="app-card-body">
+                            <form id="update-client-form" class="settings-form" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <!-- Client name -->
+                                <div class="mb-3">
+                                    <label asp-for="Input.ClientId" class="form-label">Client Id</label>
+                                    <input asp-for="Input.ClientId" class="form-control" readonly>
+                                </div>
+                                <!-- Client name -->
+                                <div class="mb-3">
+                                    <label asp-for="Input.Name" class="form-label">Name</label>
+                                    <input asp-for="Input.Name" class="form-control" placeholder="client app name">
+                                    <span asp-validation-for="Input.Name" class="invalid-feedback"></span>
+                                </div>
+                                <!-- Client description -->
+                                <div class="mb-3">
+                                    <label asp-for="Input.Description" class="form-label">Description</label>
+                                    <textarea asp-for="Input.Description" class="form-control" placeholder="client app description" style="height: 100px"></textarea>
+                                    <span asp-validation-for="Input.Description" class="invalid-feedback"></span>
+                                </div>
+                                <!-- Client phone number -->
+                                <div class="mb-3">
+                                    <label asp-for="Input.PhoneNumber" class="form-label">Phone number</label>
+                                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="client app phone number">
+                                    <span asp-validation-for="Input.PhoneNumber" class="invalid-feedback"></span>
+                                </div>
+                                <!-- Send action -->
+                                <button type="submit" class="btn app-btn-primary">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                    @*QR code*@
+                    <div class="col-sm-auto d-flex flex-column justify-content-md-center align-items-center">
+                        <div id="qrcode"></div>
+                        <div style="max-width: 300px; margin-top: 15px">
+                            if you want to reconnect the client app, just re-scan the QR code
+                        </div>
                     </div>
                 </div>
             </div>
-            <hr class="my-4">
         </div>
+        <hr class="my-4">
     </div>
+</div>
+
+@section scripts {
+<script src="~/js/vendor.jquery.validation.min.js"></script>
+<script src="~/js/clients.preview.page.min.js"></script>
+<script>
+    $(function () {
+        // setup qr code
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "@Model.QrCodeText",
+            width: 300,
+            height: 300,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        // get the form settings
+        var validatorSettings = $.data($('#update-client-form')[0], 'validator').settings;
+
+        // override the settings
+        validatorSettings.onkeyup = false;
+        validatorSettings.errorElement = "div";
+        validatorSettings.errorClass = "is-invalid";
+    });
+</script>
 }

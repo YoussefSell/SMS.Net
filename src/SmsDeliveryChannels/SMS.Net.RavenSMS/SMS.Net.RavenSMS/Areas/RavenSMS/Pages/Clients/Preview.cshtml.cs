@@ -11,9 +11,45 @@ public partial class ClientsPreviewPage
     public string? Message { get; set; }
 
     /// <summary>
+    /// the client qr code test
+    /// </summary>
+    public string? QrCodeText { get; set; } = default!;
+
+    /// <summary>
     /// Get or set the client to setup.
     /// </summary>
-    public RavenSmsClient? Client { get; set; }
+    public ClientsUpdatePageModelInput Input { get; set; }
+
+    /// <summary>
+    /// the page model input
+    /// </summary>
+    public class ClientsUpdatePageModelInput
+    {
+        /// <summary>
+        /// the id of the clients
+        /// </summary>
+        public string ClientId { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set for the client.
+        /// </summary>
+        [Required]
+        [MaxLength(150)]
+        public string Name { get; set; } = default!;
+
+        /// <summary>
+        /// Get or set a description for the client.
+        /// </summary>
+        [MaxLength(300)]
+        public string? Description { get; set; } = default!;
+
+        /// <summary>
+        /// the phone numbers associated with this client
+        /// </summary>
+        [Required]
+        [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$")]
+        public string PhoneNumber { get; set; } = default!;
+    }
 }
 
 /// <summary>
@@ -33,7 +69,15 @@ public partial class ClientsPreviewPage
             return Page();
         }
 
-        Client = client;
+        Input = new ClientsUpdatePageModelInput
+        {
+            Name = client.Name,
+            ClientId = client.Id,
+            Description = client.Description,
+            PhoneNumber = client.PhoneNumber,
+        };
+
+        QrCodeText = BuildClientQrCodeContent(client);
 
         return Page();
     }
@@ -53,5 +97,6 @@ public partial class ClientsPreviewPage : BasePageModel
         : base(localizer, logger)
     {
         _manager = ravenSmsManager;
+        Input = new ClientsUpdatePageModelInput();
     }
 }
