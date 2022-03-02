@@ -25,7 +25,9 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 
     /// <inheritdoc/>
     public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
-        => _messages.FirstOrDefaultAsync(message => message.Id == messageId);
+        => _messages.Include(e => e.Client)
+            .Include(m => m.SendAttempts)
+            .FirstOrDefaultAsync(message => message.Id == messageId);
 
     /// <inheritdoc/>
     public Task<RavenSmsMessage[]> GetAllAsync()
