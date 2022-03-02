@@ -62,27 +62,9 @@
 </div>
 
 @section scripts {
+<script>
+    const qr_content = "@Model.QrCodeText";
+</script>
 <script src="~/js/vendor.jquery.validation.min.js"></script>
 <script src="~/js/clients.preview.page.min.js"></script>
-<script>
-    $(function () {
-        // setup qr code
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "@Model.QrCodeText",
-            width: 300,
-            height: 300,
-            colorDark : "#000000",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
-        });
-
-        // get the form settings
-        var validatorSettings = $.data($('#update-client-form')[0], 'validator').settings;
-
-        // override the settings
-        validatorSettings.onkeyup = false;
-        validatorSettings.errorElement = "div";
-        validatorSettings.errorClass = "is-invalid";
-    });
-</script>
 }

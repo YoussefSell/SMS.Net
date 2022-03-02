@@ -54,15 +54,8 @@
 }
 
 @section scripts {
-<script src="~/js/clients.setup.page.min.js"></script>
 <script>
-    var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: "@Model.QrCodeText",
-        width: 300,
-        height: 300,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+    const qr_content = "@Model.QrCodeText";
 </script>
+<script src="~/js/clients.setup.page.min.js"></script>
 }
