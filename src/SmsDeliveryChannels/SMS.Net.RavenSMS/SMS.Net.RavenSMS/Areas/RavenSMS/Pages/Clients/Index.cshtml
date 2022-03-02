@@ -116,8 +116,14 @@
             <td style="max-width:150px" class="cell">${client.id}</td>
             <td class="cell"><span class="truncate">${client.name}</span></td>
             <td class="cell">${GetStatusSpan(client.status)}</td>
-            <td class="cell"><a class="btn-sm app-btn-secondary" href="Clients/Preview/${client.id}">View</a>`
+            <td class="cell">`;
 
+        // add the preview page if the client has been configured
+        if (client.status != 3) {
+            markup += `<a class="btn-sm app-btn-secondary" href="Clients/Preview/${client.id}">View</a>`;
+        }
+
+        // add the setup page id the client is not configured
         if (client.status == 3) {
             markup += `<a class="btn-sm app-btn-secondary ms-2" href="Clients/Setup/${client.id}">Setup</a>`;
         }

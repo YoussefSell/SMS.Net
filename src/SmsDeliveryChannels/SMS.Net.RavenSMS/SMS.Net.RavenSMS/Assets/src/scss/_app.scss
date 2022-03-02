@@ -549,6 +549,26 @@
 	}
 }
 
+.back-btn {
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	padding: 10px 16px;
+	font-size: 18px;
+	line-height: 1.33;
+	border-radius: 25px;
+}
+
+.page-title {
+	display: flex;
+	margin-bottom: 5px;
+}
+
+.page-title > h1 {
+	font-size: 1.5rem;
+	font-weight: bolder;
+	line-height: 1.7;
+}
 
 // X-Large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { 	
