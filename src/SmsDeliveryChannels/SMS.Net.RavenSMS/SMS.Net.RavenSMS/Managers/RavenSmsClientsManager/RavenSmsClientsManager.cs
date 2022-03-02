@@ -6,6 +6,10 @@
 public partial class RavenSmsClientsManager
 {
     /// <inheritdoc/>
+    public Task<long> ClientsCountAsync()
+        => _clientsStore.ClientsCountAsync();
+
+    /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllClientsAsync()
         => _clientsStore.GetAllAsync();
 

@@ -1,12 +1,28 @@
-﻿using System.Globalization;
-
-namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
 
 /// <summary>
 /// the store implementation for <see cref="IRavenSmsMessagesStore"/>
 /// </summary>
 public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 {
+    /// <inheritdoc/>
+    public async Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync()
+    {
+        var result = await _messages.GroupBy(e => e.Status)
+            .Select(grouping => new
+            {
+                grouping.Key,
+                Count = grouping.Count()
+            })
+            .ToDictionaryAsync(e => e.Key, e => e.Count);
+
+        return (
+            result.TryGetValue(RavenSmsMessageStatus.Sent, out var totalSent) ? totalSent : 0,
+            result.TryGetValue(RavenSmsMessageStatus.Failed, out var totalFailed) ? totalFailed : 0,
+            result.TryGetValue(RavenSmsMessageStatus.Queued, out var totalQueued) ? totalQueued : 0
+        );
+    }
+
     /// <inheritdoc/>
     public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
         => _messages.FirstOrDefaultAsync(message => message.Id == messageId);
@@ -44,7 +60,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 
         return (data, rowsCount);
     }
-
+    
     /// <inheritdoc/>
     public async Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message)
     {
@@ -101,10 +117,10 @@ public partial class RavenSmsMessagesStore
         if (!string.IsNullOrEmpty(filter.SearchQuery))
             query = query.Where(e => EF.Functions.Like(e.Body, $"%{filter.SearchQuery}%"));
 
-        if (!string.IsNullOrEmpty(filter.StartDate) && DateTimeOffset.TryParseExact(filter.StartDate, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate))
+        if (!string.IsNullOrEmpty(filter.StartDate) && DateTimeOffset.TryParseExact(filter.StartDate, _dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var startDate))
             query = query.Where(e => e.CreateOn.Date >= startDate.Date);
 
-        if (!string.IsNullOrEmpty(filter.EndDate) && DateTimeOffset.TryParseExact(filter.EndDate, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var endDate))
+        if (!string.IsNullOrEmpty(filter.EndDate) && DateTimeOffset.TryParseExact(filter.EndDate, _dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var endDate))
             query = query.Where(e => e.CreateOn.Date <= endDate.Date);
 
         if (filter.Priority.HasValue)
@@ -115,9 +131,6 @@ public partial class RavenSmsMessagesStore
 
         if (filter.To is not null && filter.To.Any())
             query = query.Where(e => filter.To.Contains((string)e.To));
-
-        if (filter.From is not null && filter.From.Any())
-            query = query.Where(e => filter.From.Contains((string)e.From));
 
         if (filter.Clients is not null && filter.Clients.Any())
             query = query.Where(e => filter.Clients.Contains(e.ClientId));

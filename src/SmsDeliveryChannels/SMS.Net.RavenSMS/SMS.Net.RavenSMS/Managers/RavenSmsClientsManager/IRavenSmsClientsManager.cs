@@ -6,6 +6,12 @@
 public interface IRavenSmsClientsManager
 {
     /// <summary>
+    /// get the clients count
+    /// </summary>
+    /// <returns>total count of the clients</returns>
+    Task<long> ClientsCountAsync();
+
+    /// <summary>
     /// check if there is any client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number instance.</param>

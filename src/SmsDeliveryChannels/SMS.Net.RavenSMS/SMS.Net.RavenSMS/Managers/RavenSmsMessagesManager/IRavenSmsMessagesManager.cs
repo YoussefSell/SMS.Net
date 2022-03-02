@@ -6,6 +6,12 @@
 public interface IRavenSmsMessagesManager
 {
     /// <summary>
+    /// get the messages count, returns the total of messages sent, failed, and in the queue
+    /// </summary>
+    /// <returns>the messages count</returns>
+    Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync();
+
+    /// <summary>
     /// get the list of all messages
     /// </summary>
     /// <param name="filter">the filter used to retrieve the messages.</param>

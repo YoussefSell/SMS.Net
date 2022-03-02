@@ -16,7 +16,7 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
         {
             // check if there is any client registered with the given "FROM" phone number
             var client = await _clientsManager.FindClientByPhoneNumberAsync(message.From);
-            if (client is not null)
+            if (client is null)
             {
                 return SmsSendingResult.Failure(Name)
                     .AddError(new SmsSendingError(
@@ -25,7 +25,7 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
             }
 
             // create the raven SMS message
-            var ravenSmsMessage = CreateMessage(message);
+            var ravenSmsMessage = CreateMessage(message, client.Id);
 
             // get the delay data if any
             var delayData = message.ChannelData.GetData(CustomChannelData.Delay);
@@ -97,12 +97,12 @@ public partial class RavenSmsDeliveryChannel
     /// </summary>
     /// <param name="message">the <see cref="SmsMessage"/> instance</param>
     /// <returns>an instance of <see cref="RavenSmsMessage"/> class</returns>
-    public static RavenSmsMessage CreateMessage(SmsMessage message) 
+    public static RavenSmsMessage CreateMessage(SmsMessage message, string clientId) 
         => new()
         {
             To = message.To,
+            ClientId = clientId,
             Body = message.Body,
-            From = message.From,
             Priority = message.Priority,
         };
 }

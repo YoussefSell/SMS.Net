@@ -60,7 +60,7 @@ public static class RavenSmsHubExtensions
         {
             await hub.Clients.Client(client.ConnectionId).SendAsync("sendSmsMessage", new
             {
-                from = message.From.ToString(),
+                from = client.PhoneNumber,
                 createdOn = message.CreateOn,
                 to = message.To.ToString(),
                 sentOn = message.SentOn,

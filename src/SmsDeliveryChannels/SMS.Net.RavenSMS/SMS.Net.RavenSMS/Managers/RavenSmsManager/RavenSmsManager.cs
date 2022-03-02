@@ -13,7 +13,7 @@ public partial class RavenSmsManager : IRavenSmsManager
             throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
 
         // get the client associated with the given from number
-        var client = await _clientsManagers.FindClientByPhoneNumberAsync(message.From);
+        var client = await _clientsManagers.FindClientByIdAsync(message.ClientId);
         if (client is null)
             throw new RavenSmsMessageSendingFailedException("client_not_found_by_phone");
 

@@ -6,6 +6,12 @@
 public interface IRavenSmsClientsStore
 {
     /// <summary>
+    /// get the clients count
+    /// </summary>
+    /// <returns>total count of the clients</returns>
+    Task<long> ClientsCountAsync();
+
+    /// <summary>
     /// get the list of all registered clients.
     /// </summary>
     /// <returns>the list of clients.</returns>
@@ -37,7 +43,7 @@ public interface IRavenSmsClientsStore
     /// find a client by connection Id
     /// </summary>
     /// <param name="connectionId">the connection Id</param>
-    /// <returns>the client asscoiated with the given connection Id</returns>
+    /// <returns>the client associated with the given connection Id</returns>
     Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId);
 
     /// <summary>

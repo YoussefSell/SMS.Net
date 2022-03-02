@@ -35,13 +35,5 @@ public class RavenSmsMessageEntityConfiguration : IEntityTypeConfiguration<Raven
                 value => new PhoneNumber(value)
             )
             .HasMaxLength(20);
-
-        builder.Property(e => e.From)
-            .HasConversion
-            (
-                entity => entity.ToString(),
-                value => new PhoneNumber(value)
-            )
-            .HasMaxLength(20);
     }
 }

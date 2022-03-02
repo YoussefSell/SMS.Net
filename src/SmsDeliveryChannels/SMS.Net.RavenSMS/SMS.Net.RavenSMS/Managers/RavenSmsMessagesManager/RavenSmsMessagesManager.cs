@@ -6,6 +6,10 @@
 public partial class RavenSmsMessagesManager
 {
     /// <inheritdoc/>
+    public Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync()
+        => _messagesStore.MessagesCountsAsync();
+
+    /// <inheritdoc/>
     public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter)
         => _messagesStore.GetAllAsync(filter);
 

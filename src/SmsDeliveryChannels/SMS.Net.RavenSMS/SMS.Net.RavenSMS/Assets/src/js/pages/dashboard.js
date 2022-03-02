@@ -1,6 +1,5 @@
 ﻿'use strict';
 
-/* Chart.js docs: https://www.chartjs.org/ */
 window.chartColors = {
 	green: '#75c181',
 	gray: '#a9b5c9',
