@@ -47,11 +47,6 @@ public class RavenSmsMessage
     public PhoneNumber To { get; set; } = default!;
 
     /// <summary>
-    /// Get or set the phone number used to send the SMS message from it.
-    /// </summary>
-    public PhoneNumber From { get; set; } = default!;
-
-    /// <summary>
     /// Get or set the id of the queue job associated with this message.
     /// </summary>
     public string? JobQueueId { get; set; }

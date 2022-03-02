@@ -21,7 +21,6 @@ public partial class MessagesIndexPageModel
             {
                 message.Id,
                 to = message.To.ToString(),
-                from = message.From.ToString(),
                 message.Status,
                 date = message.CreateOn,
                 client = new

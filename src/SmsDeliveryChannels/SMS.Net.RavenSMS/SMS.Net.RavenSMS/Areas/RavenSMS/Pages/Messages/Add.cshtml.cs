@@ -32,11 +32,6 @@ public partial class MessagesAddPageModel : BasePageModel
         public string To { get; set; } = default!;
 
         /// <summary>
-        /// Get or set the phone number used to send the SMS message from it.
-        /// </summary>
-        public string From { get; set; } = default!;
-
-        /// <summary>
         /// Get or set the id of the client used to send this message.
         /// </summary>
         public string Client { get; set; } = default!;
@@ -62,7 +57,6 @@ public partial class MessagesAddPageModel
             {
                 To = Input.To,
                 Body = Input.Body,
-                From = Input.From,
                 ClientId = Input.Client,
                 Priority = Input.Priority,
                 Status = RavenSmsMessageStatus.Created,
