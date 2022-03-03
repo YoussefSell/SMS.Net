@@ -85,10 +85,20 @@
                                             <ul class="timeline">
                                                 @foreach (var attempt in Model.SmsMessage.SendAttempts)
                                                 {
-                                                    <li class="event" data-date="@attempt.Date.ToString("yyyy/MM/dd HH:mm:ss")">
-                                                        <h3>Attempt - @attempt.Status</h3>
-                                                        <p>an attempt.</p>
-                                                    </li>
+                                                    if (attempt.Status == SendAttemptStatus.Failed)
+                                                    {
+                                                        <li class="event" data-date="@attempt.Date.ToString("yyyy/MM/dd HH:mm:ss")">
+                                                            <h3>Attempt - @attempt.Status</h3>
+                                                            <p>an attempt.</p>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="event" data-date="@attempt.Date.ToString("yyyy/MM/dd HH:mm:ss")">
+                                                            <h3>Attempt - @attempt.Status</h3>
+                                                            <p>an attempt.</p>
+                                                        </li>
+                                                    }
                                                 }
                                             </ul>
                                         </div>
