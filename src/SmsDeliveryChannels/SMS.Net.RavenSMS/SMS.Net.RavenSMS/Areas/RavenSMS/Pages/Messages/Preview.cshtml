@@ -80,14 +80,28 @@
                             <div class="col-md-12">
                                 <p>Sending history:</p>
                                 <ul class="cbp_tmtimeline">
-                                    <li>
-                                        <time class="cbp_tmtime" datetime="2017-11-04T03:45"><span>03:45 AM</span> <span>Today</span></time>
-                                        <div class="cbp_tmicon bg-info"><i class="fas fa-envelope"></i></div>
-                                        <div class="cbp_tmlabel">
-                                            <h2><a href="javascript:void(0);">Art Ramadani</a> <span>posted a status update</span></h2>
-                                            <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
-                                        </div>
-                                    </li>
+                                    @foreach (var attempt in @Model.SmsMessage.SendAttempts)
+                                    {
+                                        <li>
+                                            <time class="cbp_tmtime">
+                                                <span>@attempt.Date.ToString("dd/MM/yyy")</span>
+                                                <span>@attempt.Date.ToString("hh:mm tt")</span>
+                                            </time>
+                                            <div class="cbp_tmicon bg-info"><i class="fas fa-envelope"></i></div>
+                                            <div class="cbp_tmlabel">
+                                                @if (@attempt.Status == SendAttemptStatus.Failed)
+                                                {
+                                                    <h2><a href="javascript:void(0);">Art Ramadani</a> <span>posted a status update</span></h2>
+                                                    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
+                                                }
+                                                else
+                                                {
+                                                    <h2><a href="javascript:void(0);">Art Ramadani</a> <span>posted a status update</span></h2>
+                                                    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
+                                                }
+                                            </div>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
