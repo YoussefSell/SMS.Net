@@ -87,19 +87,38 @@
                                                 <span>@attempt.Date.ToString("dd/MM/yyy")</span>
                                                 <span>@attempt.Date.ToString("hh:mm tt")</span>
                                             </time>
-                                            <div class="cbp_tmicon bg-info"><i class="fas fa-envelope"></i></div>
-                                            <div class="cbp_tmlabel">
-                                                @if (@attempt.Status == SendAttemptStatus.Failed)
-                                                {
-                                                    <h2><a href="javascript:void(0);">Art Ramadani</a> <span>posted a status update</span></h2>
-                                                    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
-                                                }
-                                                else
-                                                {
+
+                                            @if (@attempt.Status == SendAttemptStatus.Failed)
+                                            {
+                                                <div class="cbp_tmicon bg-danger"><i class="fas fa-envelope"></i></div>
+                                                <div class="cbp_tmlabel">
+                                                    <h2><span>Sending attempt failed</span></h2>
+                                                    <p>
+                                                        an attempt to send the message has failed,
+                                                        here are a list of errors associated with this failure:
+                                                    </p>
+                                                    <div>
+                                                        <ul>
+                                                            @foreach (var error in @attempt.Errors)
+                                                            {
+                                                                <li class="mb-1">
+                                                                    <b>Error code</b>: @error.Code <br />
+                                                                    <b>Error message</b>: @error.Message <br />
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="cbp_tmicon bg-success"><i class="fas fa-envelope"></i></div>
+                                                <div class="cbp_tmlabel">
                                                     <h2><span>Sending attempt succeeded</span></h2>
                                                     <p>the message has been sent successfully.</p>
-                                                }
-                                            </div>
+                                                </div>
+                                            }
+
                                         </li>
                                     }
                                 </ul>
