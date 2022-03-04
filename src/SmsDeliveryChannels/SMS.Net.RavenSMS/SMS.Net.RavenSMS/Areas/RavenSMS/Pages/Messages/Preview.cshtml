@@ -78,32 +78,17 @@
                     <div class="app-card app-card-settings shadow-sm p-4">
                         <div class="app-card-body">
                             <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Sending history</h6>
-                                        <div id="content">
-                                            <ul class="timeline">
-                                                @foreach (var attempt in Model.SmsMessage.SendAttempts)
-                                                {
-                                                    if (attempt.Status == SendAttemptStatus.Failed)
-                                                    {
-                                                        <li class="event failure" data-date="@attempt.Date.ToString("yyyy/MM/dd HH:mm:ss")">
-                                                            <h3>Failed Attempt</h3>
-                                                            <p>an attempt to send the message has been failed, here is a list of errors associated with this attempt failure:</p>
-                                                        </li>
-                                                    }
-                                                    else
-                                                    {
-                                                        <li class="event success" data-date="@attempt.Date.ToString("yyyy/MM/dd HH:mm:ss")">
-                                                            <h3>Attempt - @attempt.Status</h3>
-                                                            <p>an attempt.</p>
-                                                        </li>
-                                                    }
-                                                }
-                                            </ul>
+                                <p>Sending history:</p>
+                                <ul class="cbp_tmtimeline">
+                                    <li>
+                                        <time class="cbp_tmtime" datetime="2017-11-04T03:45"><span>03:45 AM</span> <span>Today</span></time>
+                                        <div class="cbp_tmicon bg-info"><i class="fas fa-envelope"></i></div>
+                                        <div class="cbp_tmlabel">
+                                            <h2><a href="javascript:void(0);">Art Ramadani</a> <span>posted a status update</span></h2>
+                                            <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
                                         </div>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -115,130 +100,230 @@
 
 @section styles{
 <style>
-    body {
-        margin-top: 20px;
-    }
-
-    .timeline {
-        border-left: 3px solid #727cf5;
-        border-bottom-right-radius: 4px;
-        border-top-right-radius: 4px;
-        margin: 0 auto;
-        letter-spacing: 0.2px;
-        position: relative;
-        line-height: 1.4em;
-        font-size: 1.03em;
-        padding: 0px;
+    .cbp_tmtimeline {
+        margin: 0;
+        padding: 0;
         list-style: none;
-        text-align: left;
-        max-width: 40%;
+        position: relative
     }
 
-    .timeline .success {
-        background: rgba(114, 245, 124, 0.09);
-    }
+        .cbp_tmtimeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #eee;
+            left: 20%;
+            margin-left: -6px
+        }
 
-    .timeline .failure {
-        background: rgba(255, 0, 0, 0.08);
-    }
+        .cbp_tmtimeline > li {
+            position: relative
+        }
 
-    @@media (max-width: 767px) {
-        .timeline {
-            max-width: 98%;
-            padding: 25px;
+            .cbp_tmtimeline > li:first-child .cbp_tmtime span.large {
+                color: #444;
+                font-size: 17px !important;
+                font-weight: 700
+            }
+
+            .cbp_tmtimeline > li:first-child .cbp_tmicon {
+                background: #fff;
+                color: #666
+            }
+
+            .cbp_tmtimeline > li:nth-child(odd) .cbp_tmtime span:last-child {
+                color: #444;
+                font-size: 13px
+            }
+
+            .cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel {
+                background: #f0f1f3
+            }
+
+                .cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel:after {
+                    border-right-color: #f0f1f3
+                }
+
+            .cbp_tmtimeline > li .empty span {
+                color: #777
+            }
+
+            .cbp_tmtimeline > li .cbp_tmtime {
+                display: block;
+                width: 23%;
+                padding-right: 70px;
+                position: absolute
+            }
+
+                .cbp_tmtimeline > li .cbp_tmtime span {
+                    display: block;
+                    text-align: right
+                }
+
+                    .cbp_tmtimeline > li .cbp_tmtime span:first-child {
+                        font-size: 15px;
+                        color: #3d4c5a;
+                        font-weight: 700
+                    }
+
+                    .cbp_tmtimeline > li .cbp_tmtime span:last-child {
+                        font-size: 14px;
+                        color: #444
+                    }
+
+            .cbp_tmtimeline > li .cbp_tmlabel {
+                margin: 0 0 15px 25%;
+                background: #f0f1f3;
+                padding: 1.2em;
+                position: relative;
+                border-radius: 5px
+            }
+
+                .cbp_tmtimeline > li .cbp_tmlabel:after {
+                    right: 100%;
+                    border: solid transparent;
+                    content: " ";
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    pointer-events: none;
+                    border-right-color: #f0f1f3;
+                    border-width: 10px;
+                    top: 10px
+                }
+
+                .cbp_tmtimeline > li .cbp_tmlabel blockquote {
+                    font-size: 16px
+                }
+
+                .cbp_tmtimeline > li .cbp_tmlabel .map-checkin {
+                    border: 5px solid rgba(235, 235, 235, 0.2);
+                    -moz-box-shadow: 0px 0px 0px 1px #ebebeb;
+                    -webkit-box-shadow: 0px 0px 0px 1px #ebebeb;
+                    box-shadow: 0px 0px 0px 1px #ebebeb;
+                    background: #fff !important
+                }
+
+                .cbp_tmtimeline > li .cbp_tmlabel h2 {
+                    margin: 0px;
+                    padding: 0 0 10px 0;
+                    line-height: 26px;
+                    font-size: 16px;
+                    font-weight: normal
+                }
+
+                    .cbp_tmtimeline > li .cbp_tmlabel h2 a {
+                        font-size: 15px
+                    }
+
+                        .cbp_tmtimeline > li .cbp_tmlabel h2 a:hover {
+                            text-decoration: none
+                        }
+
+                    .cbp_tmtimeline > li .cbp_tmlabel h2 span {
+                        font-size: 15px
+                    }
+
+                .cbp_tmtimeline > li .cbp_tmlabel p {
+                    color: #444
+                }
+
+            .cbp_tmtimeline > li .cbp_tmicon {
+                width: 40px;
+                height: 40px;
+                speak: none;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                text-transform: none;
+                font-size: 1.4em;
+                line-height: 40px;
+                -webkit-font-smoothing: antialiased;
+                position: absolute;
+                color: #fff;
+                background: #46a4da;
+                border-radius: 50%;
+                box-shadow: 0 0 0 5px #f5f5f6;
+                text-align: center;
+                left: 20%;
+                top: 0;
+                margin: 0 0 0 -25px
+            }
+
+    @@media screen and (max-width: 992px) and (min-width: 768px) {
+        .cbp_tmtimeline > li .cbp_tmtime {
+            padding-right: 60px
         }
     }
 
-    .timeline h1 {
-        font-weight: 300;
-        font-size: 1.4em;
-    }
-
-    .timeline h2,
-    .timeline h3 {
-        font-weight: 600;
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-
-    .timeline .event {
-        border-bottom: 1px dashed #e8ebf1;
-        padding-bottom: 25px;
-        margin-bottom: 25px;
-        position: relative;
-    }
-
-    @@media (max-width: 767px) {
-        .timeline .event {
-            padding-top: 30px;
+    @@media screen and (max-width: 65.375em) {
+        .cbp_tmtimeline > li .cbp_tmtime span:last-child {
+            font-size: 12px
         }
     }
 
-    .timeline .event:last-of-type {
-        padding-bottom: 0;
-        margin-bottom: 0;
-        border: none;
-    }
+    @@media screen and (max-width: 47.2em) {
+        .cbp_tmtimeline:before {
+            display: none
+        }
 
-    .timeline .event:before,
-    .timeline .event:after {
-        position: absolute;
-        display: block;
-        top: 0;
-    }
+        .cbp_tmtimeline > li .cbp_tmtime {
+            width: 100%;
+            position: relative;
+            padding: 0 0 20px 0
+        }
 
-    .timeline .event:before {
-        left: -207px;
-        content: attr(data-date);
-        text-align: right;
-        font-weight: 100;
-        font-size: 0.9em;
-        min-width: 120px;
-    }
+            .cbp_tmtimeline > li .cbp_tmtime span {
+                text-align: left
+            }
 
-    @@media (max-width: 767px) {
-        .timeline .event:before {
-            left: 0px;
-            text-align: left;
+        .cbp_tmtimeline > li .cbp_tmlabel {
+            margin: 0 0 30px 0;
+            padding: 1em;
+            font-weight: 400;
+            font-size: 95%
+        }
+
+            .cbp_tmtimeline > li .cbp_tmlabel:after {
+                right: auto;
+                left: 20px;
+                border-right-color: transparent;
+                border-bottom-color: #f5f5f6;
+                top: -20px
+            }
+
+        .cbp_tmtimeline > li .cbp_tmicon {
+            position: relative;
+            float: right;
+            left: auto;
+            margin: -64px 5px 0 0px
+        }
+
+        .cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel:after {
+            border-right-color: transparent;
+            border-bottom-color: #f5f5f6
         }
     }
 
-    .timeline .event:after {
-        -webkit-box-shadow: 0 0 0 3px #727cf5;
-        box-shadow: 0 0 0 3px #727cf5;
-        left: -55.8px;
-        background: #fff;
-        border-radius: 50%;
-        height: 9px;
-        width: 9px;
-        content: "";
-        top: 5px;
+    .bg-green {
+        background-color: #50d38a !important;
+        color: #fff;
     }
 
-    @@media (max-width: 767px) {
-        .timeline .event:after {
-            left: -31.8px;
-        }
+    .bg-blush {
+        background-color: #ff758e !important;
+        color: #fff;
     }
 
-    .rtl .timeline {
-        border-left: 0;
-        text-align: right;
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 4px;
-        border-top-left-radius: 4px;
-        border-right: 3px solid #727cf5;
+    .bg-orange {
+        background-color: #ffc323 !important;
+        color: #fff;
     }
 
-        .rtl .timeline .event::before {
-            left: 0;
-            right: -170px;
-        }
-
-        .rtl .timeline .event::after {
-            left: 0;
-            right: -55.8px;
-        }
+    .bg-info {
+        background-color: #2CA8FF !important;
+    }
 </style>
 }
