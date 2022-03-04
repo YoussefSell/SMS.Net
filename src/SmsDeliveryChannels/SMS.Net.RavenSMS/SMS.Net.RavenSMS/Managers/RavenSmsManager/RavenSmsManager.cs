@@ -33,10 +33,7 @@ public partial class RavenSmsManager : IRavenSmsManager
             attempt.Status = SendAttemptStatus.Failed;
             message.Status = RavenSmsMessageStatus.Failed;
 
-            attempt.Errors = new List<ResultError>(sendResult.Errors)
-            {
-                new ResultError(sendResult.Message, sendResult.Code),
-            };
+            attempt.AddError(sendResult.Code, sendResult.Message);
         }
 
         await _messagesManager.UpdateAsync(message);
