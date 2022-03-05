@@ -31,7 +31,7 @@ public partial class MessagesPreviewPageModel
         if (string.IsNullOrEmpty(id))
             return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
 
-        var message = await _manager.FindByIdAsync(id);
+        var message = await _messagesManager.FindByIdAsync(id);
         if (message is null)
         {
             Message = $"Couldn't find a client with the Id: {id}";
@@ -43,6 +43,22 @@ public partial class MessagesPreviewPageModel
 
         return Page();
     }
+
+    public async Task<JsonResult> OnGetResendAsync([FromRoute] string? id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return new JsonResult(new { success = false, message = "the message id is null" });
+
+        var message = await _messagesManager.FindByIdAsync(id);
+        if (message is null)
+            return new JsonResult(new { success = false, message = "the message not found" });
+
+        var queueResult = await _manager.QueueMessageAsync(message);
+        if (queueResult.IsSuccess())
+            return new JsonResult(new { success = true });
+
+        return new JsonResult(new { success = false, message = queueResult.Message });
+    }
 }
 
 /// <summary>
@@ -50,14 +66,17 @@ public partial class MessagesPreviewPageModel
 /// </summary>
 public partial class MessagesPreviewPageModel : BasePageModel
 {
-    private readonly IRavenSmsMessagesManager _manager;
+    private readonly IRavenSmsManager _manager;
+    private readonly IRavenSmsMessagesManager _messagesManager;
 
     public MessagesPreviewPageModel(
+        IRavenSmsManager manager,
         IRavenSmsMessagesManager ravenSmsManager,
         IStringLocalizer<MessagesAddPageModel> localizer,
         ILogger<MessagesAddPageModel> logger)
         : base(localizer, logger)
     {
-        _manager = ravenSmsManager;
+        _manager = manager;
+        _messagesManager = ravenSmsManager;
     }
 }
