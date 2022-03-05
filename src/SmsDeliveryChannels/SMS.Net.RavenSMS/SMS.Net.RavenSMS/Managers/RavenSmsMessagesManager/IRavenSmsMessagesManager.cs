@@ -19,6 +19,13 @@ public interface IRavenSmsMessagesManager
     Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter);
 
     /// <summary>
+    /// check if the message already exist
+    /// </summary>
+    /// <param name="messageId">the id of the message</param>
+    /// <returns>true if exist, false if not</returns>
+    Task<bool> IsMessageExistAsync(string messageId);
+
+    /// <summary>
     /// get the list of all messages
     /// </summary>
     /// <returns>list of all messages</returns>
@@ -32,16 +39,9 @@ public interface IRavenSmsMessagesManager
     Task<RavenSmsMessage?> FindByIdAsync(string messageId);
 
     /// <summary>
-    /// save the given message.
+    /// the message exist an update will be performed, if not the message will be added.
     /// </summary>
     /// <param name="message">the message to be saved</param>
     /// <returns>the operation result</returns>
     Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message);
-
-    /// <summary>
-    /// update the given message.
-    /// </summary>
-    /// <param name="message">the message to be updated</param>
-    /// <returns>the operation result</returns>
-    Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message);
 }

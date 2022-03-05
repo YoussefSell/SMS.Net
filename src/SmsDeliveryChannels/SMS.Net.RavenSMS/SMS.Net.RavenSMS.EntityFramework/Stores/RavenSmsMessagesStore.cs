@@ -64,7 +64,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     }
     
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message)
+    public async Task<Result<RavenSmsMessage>> AddAsync(RavenSmsMessage message)
     {
         try
         {
@@ -96,6 +96,10 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
                 .WithErrors(ex);
         }
     }
+
+    /// <inheritdoc/>
+    public Task<bool> IsMessageExistAsync(string messageId)
+        => _messages.AsNoTracking().AnyAsync(message => message.Id == messageId);
 }
 
 /// <summary>

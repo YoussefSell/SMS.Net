@@ -36,7 +36,7 @@ public partial class RavenSmsManager : IRavenSmsManager
             attempt.AddError(sendResult.Code, sendResult.Message);
         }
 
-        await _messagesManager.UpdateAsync(message);
+        await _messagesManager.SaveAsync(message);
 
         if (sendResult.IsFailure())
             throw new RavenSmsMessageSendingFailedException(sendResult.Code);

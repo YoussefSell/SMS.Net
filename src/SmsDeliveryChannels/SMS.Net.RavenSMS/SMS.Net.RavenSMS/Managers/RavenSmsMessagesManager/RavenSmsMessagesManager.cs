@@ -13,6 +13,14 @@ public partial class RavenSmsMessagesManager
     public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter)
         => _messagesStore.GetAllAsync(filter);
 
+    /// <summary>
+    /// check if the message already exist
+    /// </summary>
+    /// <param name="messageId">the id of the message</param>
+    /// <returns>true if exist, false if not</returns>
+    public Task<bool> IsMessageExistAsync(string messageId)
+        => _messagesStore.IsMessageExistAsync(messageId);
+
     /// <inheritdoc/>
     public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
         => _messagesStore.FindByIdAsync(messageId);
@@ -22,8 +30,13 @@ public partial class RavenSmsMessagesManager
         => _messagesStore.GetAllAsync();
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message)
-        => _messagesStore.SaveAsync(message);
+    public async Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message)
+    {
+        if (await _messagesStore.IsMessageExistAsync(message.Id))
+            return await _messagesStore.UpdateAsync(message);
+
+        return await _messagesStore.AddAsync(message);
+    }
 
     /// <inheritdoc/>
     public Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message)

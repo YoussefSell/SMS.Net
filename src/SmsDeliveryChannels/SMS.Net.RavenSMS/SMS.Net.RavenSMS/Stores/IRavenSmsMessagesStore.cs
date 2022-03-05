@@ -10,7 +10,7 @@ public interface IRavenSmsMessagesStore
     /// </summary>
     /// <returns>the messages count</returns>
     Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync();
-    
+
     /// <summary>
     /// get the list of all messages that match the given filter.
     /// </summary>
@@ -25,6 +25,13 @@ public interface IRavenSmsMessagesStore
     Task<RavenSmsMessage[]> GetAllAsync();
 
     /// <summary>
+    /// check if the message exist by id
+    /// </summary>
+    /// <param name="messageId">the id of the message</param>
+    /// <returns>true if exist, false if not</returns>
+    Task<bool> IsMessageExistAsync(string messageId);
+
+    /// <summary>
     /// find the message with the given id.
     /// </summary>
     /// <param name="messageId">the id of the message</param>
@@ -36,7 +43,7 @@ public interface IRavenSmsMessagesStore
     /// </summary>
     /// <param name="message">the message to be saved</param>
     /// <returns>the operation result</returns>
-    Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message);
+    Task<Result<RavenSmsMessage>> AddAsync(RavenSmsMessage message);
 
     /// <summary>
     /// update the given message.
