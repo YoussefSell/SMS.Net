@@ -46,8 +46,8 @@
             <a class="flex-sm-fill text-sm-center nav-link active" value="-1" data-bs-toggle="tab" >All</a>
             <a class="flex-sm-fill text-sm-center nav-link" value="0" data-bs-toggle="tab">Created</a>
             <a class="flex-sm-fill text-sm-center nav-link" value="1" data-bs-toggle="tab">Queued</a>
-            <a class="flex-sm-fill text-sm-center nav-link" value="2" data-bs-toggle="tab">Sent</a>
-            <a class="flex-sm-fill text-sm-center nav-link" value="3" data-bs-toggle="tab">Failed</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="3" data-bs-toggle="tab">Sent</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="2" data-bs-toggle="tab">Failed</a>
         </nav>
 
         <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -114,19 +114,22 @@
     loadData();
 
     function loadData() {
+        const requestData = {
+            pageIndex: 1,
+            pageSize: 5,
+            searchQuery: $("#search-query").val(),
+            endDate: endDate.format('yyyy-MM-DDTHH:mm:ssZ'),
+            startDate: startDate.format('yyyy-MM-DDTHH:mm:ssZ'),
+            Status: $('nav#messages-status a.active').attr('value'),
+            to: [],
+            from: [],
+            clients: [],
+        };
+        console.log(requestData);
+
         $.ajax({
             url: '/ravenSMS/messages/index/?handler=Messages',
-            data: {
-                pageIndex: 1,
-                pageSize: 5,
-                searchQuery: $("#search-query").val(),
-                endDate: endDate.format('yyyy-MM-DDTHH:mm:ssZ'),
-                startDate: startDate.format('yyyy-MM-DDTHH:mm:ssZ'),
-                Status: $('nav#messages-status a.active').attr('value'),
-                to: [],
-                from: [],
-                clients: [],
-            },
+            data: requestData,
             success: function (result)
             {
                 // save the result
