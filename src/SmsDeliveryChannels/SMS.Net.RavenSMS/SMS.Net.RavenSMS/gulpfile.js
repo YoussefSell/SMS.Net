@@ -38,6 +38,18 @@ gulp.task('css-app', function () {
 	.pipe(gulp.dest('Assets/css/'));
 });
 
+// message pages css
+gulp.task('css-app-pages-messages-preview', function () {
+	return gulp.src([
+		'node_modules/jquery-toast-plugin/dist/jquery.toast.min.css',
+		'Assets/src/scss/pages/messages/preview.page.scss',
+	])
+	.pipe(sass())
+	.pipe(concat('messages.preview.page.min.css'))
+	.pipe(minifyCSS())
+	.pipe(gulp.dest('Assets/css/'));
+});
+
 // js
 gulp.task('js-vendor', function(){
 	return gulp.src([
@@ -84,6 +96,7 @@ gulp.task('js-app-pages-dashboard', function () {
 	.pipe(gulp.dest('Assets/js'));
 });
 
+// the message management pages
 gulp.task('js-app-pages-messages-add', function () {
 	return gulp.src(['Assets/src/js/pages/messages/add.js'])
 	.pipe(sourcemaps.init())
@@ -100,6 +113,18 @@ gulp.task('js-app-pages-messages-index', function () {
 		.pipe(gulp.dest('Assets/js'));
 });
 
+gulp.task('js-app-pages-messages-preview', function () {
+	return gulp.src([
+		'node_modules/jquery-toast-plugin/dist/jquery.toast.min.js',
+		'Assets/src/js/pages/messages/preview.js',
+	])
+		.pipe(sourcemaps.init())
+		.pipe(concat('messages.preview.page.min.js'))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('Assets/js'));
+});
+
+// the clients management pages
 gulp.task('js-app-pages-clients-index', function () {
 	return gulp.src(['Assets/src/js/pages/clients/index.js'])
 		.pipe(sourcemaps.init())
@@ -147,6 +172,10 @@ gulp.task('default', gulp.series(gulp.parallel([
 	'css-vendor',
 	'css-app',
 
+	// pages styles
+	// messages
+	'css-app-pages-messages-preview',
+
 	// js tasks
 	'js-app',
 	'js-vendor',
@@ -159,6 +188,7 @@ gulp.task('default', gulp.series(gulp.parallel([
 	// messages
 	'js-app-pages-messages-add',
 	'js-app-pages-messages-index',
+	'js-app-pages-messages-preview',
 
 	// clients
 	'js-app-pages-clients-add',
