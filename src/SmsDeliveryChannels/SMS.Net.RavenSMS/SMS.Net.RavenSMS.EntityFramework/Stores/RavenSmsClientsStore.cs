@@ -93,6 +93,10 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
                 .WithErrors(ex);
         }
     }
+
+    /// <inheritdoc/>
+    public Task<bool> IsExistClientAsync(string clientId)
+        => _clients.AnyAsync(c => c.Id == clientId);
 }
 
 /// <summary>
