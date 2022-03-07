@@ -58,7 +58,7 @@ public partial class ClientsAddPageModel : BasePageModel
             };
 
             // add the client
-            var result = await _clientsManager.CreateClientAsync(client);
+            var result = await _clientsManager.SaveClientAsync(client);
             if (result.IsSuccess())
             {
                 // client added successfully

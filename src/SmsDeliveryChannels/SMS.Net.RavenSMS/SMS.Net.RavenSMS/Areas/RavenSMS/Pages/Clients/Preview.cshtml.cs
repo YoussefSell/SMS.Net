@@ -88,7 +88,15 @@ public partial class ClientsPreviewPage
 
         if (ModelState.IsValid)
         {
-            // add the update logic
+            clientInDatabase.Name = Input.Name;
+            clientInDatabase.PhoneNumber = Input.PhoneNumber;
+            clientInDatabase.Description = Input.Description ?? string.Empty;
+
+            var updateResult = await _manager.SaveClientAsync(clientInDatabase);
+            if (updateResult.IsSuccess())
+            {
+                // send a web-socket event to the client about the update
+            }
         }
 
         BuildInputModel(clientInDatabase);
