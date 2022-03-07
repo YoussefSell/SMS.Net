@@ -20,11 +20,11 @@ public interface IRavenSmsClientsManager
     Task<bool> AnyClientAsync(PhoneNumber phoneNumber);
 
     /// <summary>
-    /// create a new ravenSMS client.
+    /// create a new ravenSMS client if not exist, if exist the client will be updated.
     /// </summary>
-    /// <param name="model">the model used to create the client</param>
+    /// <param name="model">client model instance</param>
     /// <returns>the operation result</returns>
-    Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model);
+    Task<Result<RavenSmsClient>> SaveClientAsync(RavenSmsClient model);
 
     /// <summary>
     /// find the client with the given Id.

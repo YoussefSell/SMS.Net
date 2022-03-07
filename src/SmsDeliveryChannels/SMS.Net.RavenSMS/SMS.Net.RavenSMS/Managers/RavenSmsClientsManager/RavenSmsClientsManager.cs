@@ -30,8 +30,12 @@ public partial class RavenSmsClientsManager
         => _clientsStore.FindByPhoneNumberAsync(phoneNumber);
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsClient>> CreateClientAsync(RavenSmsClient model)
-        => _clientsStore.SaveAsync(model);
+    public async Task<Result<RavenSmsClient>> SaveClientAsync(RavenSmsClient model)
+    {
+        return await _clientsStore.IsExistClientAsync(model.Id)
+            ? await _clientsStore.UpdateAsync(model)
+            : await _clientsStore.SaveAsync(model);
+    }
 
     /// <inheritdoc/>
     public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
