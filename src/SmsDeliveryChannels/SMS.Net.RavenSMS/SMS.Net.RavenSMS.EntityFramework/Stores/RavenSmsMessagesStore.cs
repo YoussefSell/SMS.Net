@@ -121,7 +121,10 @@ public partial class RavenSmsMessagesStore
     private static IQueryable<RavenSmsMessage> SetFilter(IQueryable<RavenSmsMessage> query, RavenSmsMessageFilter filter)
     {
         if (!string.IsNullOrEmpty(filter.SearchQuery))
-            query = query.Where(e => EF.Functions.Like(e.Body, $"%{filter.SearchQuery}%"));
+            query = query.Where(e =>
+                EF.Functions.Like(e.Body, $"%{filter.SearchQuery}%") ||
+                EF.Functions.Like(e.Client.PhoneNumber, $"%{filter.SearchQuery}%")
+            );
 
         if (!string.IsNullOrEmpty(filter.StartDate) && DateTimeOffset.TryParseExact(filter.StartDate, _dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var startDate))
             query = query.Where(e => e.CreateOn.Date >= startDate.Date);
