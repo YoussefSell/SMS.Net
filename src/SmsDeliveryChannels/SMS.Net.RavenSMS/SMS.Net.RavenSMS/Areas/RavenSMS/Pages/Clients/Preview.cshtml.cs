@@ -18,6 +18,7 @@ public partial class ClientsPreviewPage
     /// <summary>
     /// Get or set the client to setup.
     /// </summary>
+    [BindProperty]
     public ClientsUpdatePageModelInput Input { get; set; }
 
     /// <summary>
@@ -69,15 +70,28 @@ public partial class ClientsPreviewPage
             return Page();
         }
 
-        Input = new ClientsUpdatePageModelInput
-        {
-            Name = client.Name,
-            ClientId = client.Id,
-            Description = client.Description,
-            PhoneNumber = client.PhoneNumber,
-        };
+        BuildInputModel(client);
 
-        QrCodeText = BuildClientQrCodeContent(client);
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync([FromRoute] string? id)
+    {
+        // if the id is null redirect to the clients list to select a client
+        if (string.IsNullOrEmpty(id))
+            return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
+
+        // get the client by the id, if not exist, redirect to the clients list to select an existed client
+        var clientInDatabase = await _manager.FindClientByIdAsync(id);
+        if (clientInDatabase is null)
+            return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
+
+        if (ModelState.IsValid)
+        {
+            // add the update logic
+        }
+
+        BuildInputModel(clientInDatabase);
 
         return Page();
     }
@@ -98,5 +112,18 @@ public partial class ClientsPreviewPage : BasePageModel
     {
         _manager = ravenSmsManager;
         Input = new ClientsUpdatePageModelInput();
+    }
+
+    private void BuildInputModel(RavenSmsClient client)
+    {
+        Input = new ClientsUpdatePageModelInput
+        {
+            Name = client.Name,
+            ClientId = client.Id,
+            Description = client.Description,
+            PhoneNumber = client.PhoneNumber,
+        };
+
+        QrCodeText = BuildClientQrCodeContent(client);
     }
 }
