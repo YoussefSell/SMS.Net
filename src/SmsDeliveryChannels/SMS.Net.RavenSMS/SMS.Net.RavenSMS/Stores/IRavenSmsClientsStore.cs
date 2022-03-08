@@ -73,4 +73,11 @@ public interface IRavenSmsClientsStore
     /// <param name="client">the client to be updated</param>
     /// <returns>the operation result</returns>
     Task<Result<RavenSmsClient>> UpdateAsync(RavenSmsClient client);
+
+    /// <summary>
+    /// delete the client.
+    /// </summary>
+    /// <param name="client">the client instance</param>
+    /// <returns>the operation result</returns>
+    Task<Result> DeleteClientAsync(RavenSmsClient client);
 }

@@ -46,6 +46,10 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
         => _clients.AsNoTracking().AnyAsync(q => q.PhoneNumber == phoneNumber.ToString());
+    
+    /// <inheritdoc/>
+    public Task<bool> IsExistClientAsync(string clientId)
+        => _clients.AnyAsync(c => c.Id == clientId);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByIdAsync(string clientId)
@@ -95,8 +99,21 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     }
 
     /// <inheritdoc/>
-    public Task<bool> IsExistClientAsync(string clientId)
-        => _clients.AnyAsync(c => c.Id == clientId);
+    public async Task<Result> DeleteClientAsync(RavenSmsClient client)
+    {
+        try
+        {
+            var entity = _clients.Remove(client);
+            await _context.SaveChangesAsync();
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure<RavenSmsClient>()
+                .WithMessage("Failed to update the client, an exception has been accrued")
+                .WithErrors(ex);
+        }
+    }
 }
 
 /// <summary>
