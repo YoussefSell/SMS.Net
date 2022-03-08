@@ -43,7 +43,8 @@
                                     <span asp-validation-for="Input.PhoneNumber" class="invalid-feedback"></span>
                                 </div>
                                 <!-- Send action -->
-                                <button type="submit" class="btn app-btn-primary">Update</button>
+                                <button type="submit" class="btn app-btn-primary" asp-page-handler="UpdateClient">Update</button>
+                                <button type="submit" class="btn app-btn-secondary" asp-page-handler="DeleteClient">Delete</button>
                             </form>
                         </div>
                     </div>

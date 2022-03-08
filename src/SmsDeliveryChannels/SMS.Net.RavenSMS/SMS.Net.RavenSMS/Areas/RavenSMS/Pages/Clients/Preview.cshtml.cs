@@ -50,11 +50,6 @@ public partial class ClientsPreviewPage
         [
             Required,
             RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$"),
-            PageRemote(
-                HttpMethod = "get",
-                PageHandler = "PhoneNumberExist",
-                ErrorMessage = "the given phone number already used by another client app."
-            )
         ]
         public string PhoneNumber { get; set; } = default!;
     }
@@ -81,7 +76,7 @@ public partial class ClientsPreviewPage
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync([FromRoute] string? id)
+    public async Task<IActionResult> OnPostUpdateClientAsync([FromRoute] string? id)
     {
         // if the id is null redirect to the clients list to select a client
         if (string.IsNullOrEmpty(id))
@@ -98,7 +93,7 @@ public partial class ClientsPreviewPage
             return Page();
         }
 
-        if (await _manager.AnyClientAsync(Input.PhoneNumber))
+        if (!clientInDatabase.PhoneNumber.Equals(Input.PhoneNumber) && await _manager.AnyClientAsync(Input.PhoneNumber))
         {
             ModelState.AddModelError("", "the given phone number already used by another client app.");
             BuildInputModel(clientInDatabase);
@@ -113,6 +108,30 @@ public partial class ClientsPreviewPage
         if (updateResult.IsSuccess())
         {
             // send a web-socket event to the client about the update
+        }
+
+        BuildInputModel(clientInDatabase);
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostDeleteClient([FromRoute] string? id)
+    {
+        // if the id is null redirect to the clients list to select a client
+        if (string.IsNullOrEmpty(id))
+            return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
+
+        // get the client by the id, if not exist, redirect to the clients list to select an existed client
+        var clientInDatabase = await _manager.FindClientByIdAsync(id);
+        if (clientInDatabase is null)
+            return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
+
+        // delete the client
+        var deleteResult = await _manager.DeleteClientAsync(clientInDatabase.Id);
+        if (deleteResult.IsSuccess())
+        {
+            // ToDo: send a disconnect command to the client app
+
+            return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
         }
 
         BuildInputModel(clientInDatabase);
