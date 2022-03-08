@@ -51,6 +51,30 @@ public class RavenSmsHub : Hub
 
 public static class RavenSmsHubExtensions
 {
+    public static async Task<Result> UpdateClientInfosync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client)
+    {
+        if (client.ConnectionId is null)
+            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
+
+        try
+        {
+            await hub.Clients.Client(client.ConnectionId).SendAsync("updateClientInfo", new
+            {
+                id = client.Id,
+                name = client.Name,
+                description = client.Description,
+                phoneNumber = client.PhoneNumber,
+            });
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure()
+                .WithErrors(ex);
+        }
+    }
+
     public static async Task<Result> SendSmsMessageAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, RavenSmsMessage message)
     {
         if (client.ConnectionId is null)
@@ -68,6 +92,24 @@ public static class RavenSmsHubExtensions
                 content = message.Body,
                 id = message.Id,
             });
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure()
+                .WithErrors(ex);
+        }
+    }
+
+    public static async Task<Result> ForceDisconnectAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, string reason)
+    {
+        if (client.ConnectionId is null)
+            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
+
+        try
+        {
+            await hub.Clients.Client(client.ConnectionId).SendAsync("forceDisconnect", reason);
 
             return Result.Success();
         }
