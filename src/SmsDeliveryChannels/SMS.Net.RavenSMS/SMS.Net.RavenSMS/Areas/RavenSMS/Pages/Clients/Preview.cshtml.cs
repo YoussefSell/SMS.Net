@@ -107,7 +107,8 @@ public partial class ClientsPreviewPage
         var updateResult = await _manager.SaveClientAsync(clientInDatabase);
         if (updateResult.IsSuccess())
         {
-            // send a web-socket event to the client about the update
+            // instruct the client app to update the client info
+            await _hubContext.UpdateClientInfosync(clientInDatabase);
         }
 
         BuildInputModel(clientInDatabase);
@@ -129,8 +130,10 @@ public partial class ClientsPreviewPage
         var deleteResult = await _manager.DeleteClientAsync(clientInDatabase.Id);
         if (deleteResult.IsSuccess())
         {
-            // ToDo: send a disconnect command to the client app
+            // force the client to disconnect
+            await _hubContext.ForceDisconnectAsync(clientInDatabase, "client_deleted");
 
+            // redirect to the clients list page
             return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
         }
 
@@ -151,13 +154,16 @@ public partial class ClientsPreviewPage
 public partial class ClientsPreviewPage : BasePageModel
 {
     private readonly IRavenSmsClientsManager _manager;
+    private readonly IHubContext<RavenSmsHub> _hubContext;
 
     public ClientsPreviewPage(
+        IHubContext<RavenSmsHub> hubContext,
         IRavenSmsClientsManager ravenSmsManager,
         IStringLocalizer<ClientsPreviewPage> localizer,
         ILogger<ClientsPreviewPage> logger)
         : base(localizer, logger)
     {
+        _hubContext = hubContext;
         _manager = ravenSmsManager;
         Input = new ClientsUpdatePageModelInput();
     }
