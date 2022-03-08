@@ -38,6 +38,24 @@ public partial class RavenSmsClientsManager
     }
 
     /// <inheritdoc/>
+    public async Task<Result> DeleteClientAsync(string clientId)
+    {
+        var client = await _clientsStore.FindByIdAsync(clientId).ConfigureAwait(false);
+        if (client is null)
+        {
+            return Result.Failure()
+                .WithMessage("there is no client with the given id")
+                .WithCode(ResultCode.NotFound);
+        }
+
+        return await DeleteClientAsync(client);
+    }
+
+    /// <inheritdoc/>
+    public Task<Result> DeleteClientAsync(RavenSmsClient client)
+        => _clientsStore.DeleteClientAsync(client);
+
+    /// <inheritdoc/>
     public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
     {
         // set the client id

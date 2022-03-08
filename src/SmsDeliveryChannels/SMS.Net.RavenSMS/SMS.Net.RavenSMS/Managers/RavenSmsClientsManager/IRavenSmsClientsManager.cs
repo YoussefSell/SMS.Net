@@ -67,4 +67,11 @@ public interface IRavenSmsClientsManager
     /// <param name="connectionId">the connection Id</param>
     /// <returns>task</returns>
     Task ClientDisconnectedAsync(string connectionId);
+
+    /// <summary>
+    /// delete the client with the given Id
+    /// </summary>
+    /// <param name="clientId">the id of the client</param>
+    /// <returns>the operation result</returns>
+    Task<Result> DeleteClientAsync(string clientId);
 }
