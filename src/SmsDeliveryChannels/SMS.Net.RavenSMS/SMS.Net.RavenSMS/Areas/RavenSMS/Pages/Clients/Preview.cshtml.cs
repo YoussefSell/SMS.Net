@@ -47,8 +47,15 @@ public partial class ClientsPreviewPage
         /// <summary>
         /// the phone numbers associated with this client
         /// </summary>
-        [Required]
-        [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$")]
+        [
+            Required,
+            RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$"),
+            PageRemote(
+                HttpMethod = "get",
+                PageHandler = "PhoneNumberExist",
+                ErrorMessage = "the given phone number already used by another client app."
+            )
+        ]
         public string PhoneNumber { get; set; } = default!;
     }
 }
@@ -71,7 +78,6 @@ public partial class ClientsPreviewPage
         }
 
         BuildInputModel(client);
-
         return Page();
     }
 
@@ -86,22 +92,37 @@ public partial class ClientsPreviewPage
         if (clientInDatabase is null)
             return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            clientInDatabase.Name = Input.Name;
-            clientInDatabase.PhoneNumber = Input.PhoneNumber;
-            clientInDatabase.Description = Input.Description ?? string.Empty;
+            BuildInputModel(clientInDatabase);
+            return Page();
+        }
 
-            var updateResult = await _manager.SaveClientAsync(clientInDatabase);
-            if (updateResult.IsSuccess())
-            {
-                // send a web-socket event to the client about the update
-            }
+        if (await _manager.AnyClientAsync(Input.PhoneNumber))
+        {
+            ModelState.AddModelError("", "the given phone number already used by another client app.");
+            BuildInputModel(clientInDatabase);
+            return Page();
+        }
+
+        clientInDatabase.Name = Input.Name;
+        clientInDatabase.PhoneNumber = Input.PhoneNumber;
+        clientInDatabase.Description = Input.Description ?? string.Empty;
+
+        var updateResult = await _manager.SaveClientAsync(clientInDatabase);
+        if (updateResult.IsSuccess())
+        {
+            // send a web-socket event to the client about the update
         }
 
         BuildInputModel(clientInDatabase);
-
         return Page();
+    }
+
+    public async Task<JsonResult> OnGetPhoneNumberExistAsync([FromQuery(Name = "Input.PhoneNumber")] string phoneNumber)
+    {
+        // return json result instance
+        return new JsonResult(!await _manager.AnyClientAsync(phoneNumber));
     }
 }
 

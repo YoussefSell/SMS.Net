@@ -14,8 +14,7 @@ public class ApplicationDbContext : DbContext, IRavenSmsDbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql(ConnectionString, serverVersion: ServerVersion.AutoDetect(ConnectionString))
-            .LogTo(Console.WriteLine);
+        => optionsBuilder.UseMySql(ConnectionString, serverVersion: ServerVersion.AutoDetect(ConnectionString));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) 
         => modelBuilder.ApplyRavenSmsEntityConfiguration();

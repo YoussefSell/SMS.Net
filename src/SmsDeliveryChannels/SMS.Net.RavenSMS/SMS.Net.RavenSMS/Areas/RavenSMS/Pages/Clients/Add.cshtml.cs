@@ -34,8 +34,15 @@ public partial class ClientsAddPageModel
         /// <summary>
         /// the phone numbers associated with this client
         /// </summary>
-        [Required]
-        [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$")]
+        [
+            Required,
+            RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$"),
+            PageRemote(
+                HttpMethod = "get",
+                PageHandler = "PhoneNumberExist",
+                ErrorMessage = "the given phone number already used by another client app."
+            )
+        ]
         public string PhoneNumber { get; set; } = default!;
     }
 }
@@ -49,6 +56,12 @@ public partial class ClientsAddPageModel : BasePageModel
     {
         if (ModelState.IsValid)
         {
+            if (await _clientsManager.AnyClientAsync(Input.PhoneNumber))
+            {
+                ModelState.AddModelError("", "the given phone number already used by another client app.");
+                return Page();
+            }
+
             // create message instance
             var client = new RavenSmsClient
             {
@@ -71,13 +84,10 @@ public partial class ClientsAddPageModel : BasePageModel
         return Page();
     }
 
-    public async Task<JsonResult> OnGetPhoneNumberExistAsync(string phoneNumber)
+    public async Task<JsonResult> OnGetPhoneNumberExistAsync([FromQuery(Name = "Input.PhoneNumber")] string phoneNumber)
     {
         // return json result instance
-        return new JsonResult(new
-        {
-            exist = await _clientsManager.AnyClientAsync(phoneNumber)
-        });
+        return new JsonResult(!await _clientsManager.AnyClientAsync(phoneNumber));
     }
 }
 
