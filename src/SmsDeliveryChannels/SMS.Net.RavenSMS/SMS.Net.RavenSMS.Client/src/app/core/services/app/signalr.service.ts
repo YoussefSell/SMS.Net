@@ -42,6 +42,7 @@ export class SignalRService {
         return this.hubConnection.start();
     }
 
+
     // init the server connection
     public initConnection(serverUrl: string, clientId: string): Promise<void> {
         // 1- build the connection hub
@@ -51,21 +52,30 @@ export class SignalRService {
         return this.startConnectionAsync();
     }
 
+    /**
+     * check if the hub is connected to the server
+     * @returns true if connected false if not
+     */
+    public isConnected(): boolean {
+        return this.hubConnection ? this.hubConnection.state === HubConnectionState.Connected : false;
+
+    }
+
     /** Registers a handler that will be invoked when the connection is closed.
      *
      * @param {Function} callback The handler that will be invoked when the connection is closed. Optionally receives a single argument containing the error that caused the connection to close (if any).
      */
-    onclose(callback: (error?: Error) => void): void {
+    public onclose(callback: (error?: Error) => void): void {
         this.hubConnection.onclose(callback);
     }
 
     /**
-     * send the on client connected command
+     * send the command to persist the connection id for this client
      * @param clientId the id of the client app
      */
-    public async sendOnConnectedEvent$(clientId: string): Promise<void> {
+    public async sendPersistClientConnectionEvent$(clientId: string): Promise<void> {
         if (this.hubConnection.state == HubConnectionState.Connected) {
-            await this.hubConnection.send('clientConnectedAsync', clientId, true);
+            await this.hubConnection.send('PersistClientConnectionAsync', clientId, true);
         }
     }
 
@@ -96,6 +106,16 @@ export class SignalRService {
     public onForceDisconnectionEvent(handler: (reason: DisconnectionReason) => void): void {
         if (this.hubConnection) {
             this.hubConnection.on('forceDisconnect', handler);
+        }
+    }
+
+    /**
+    * register an event handler to handle client connected event
+    * @param handler the handler to be executed when the event is triggered
+    */
+    public onClientConnectedEvent(handler: () => void): void {
+        if (this.hubConnection) {
+            this.hubConnection.on('clientConnected', handler);
         }
     }
 }
