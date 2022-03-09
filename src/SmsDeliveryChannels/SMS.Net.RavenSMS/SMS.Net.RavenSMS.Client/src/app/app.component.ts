@@ -45,15 +45,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this._store.dispatch(StorePersistenceActions.PersistStore());
       }
     });
-  }
 
-  async ngOnInit(): Promise<void> {
+    // add a listener on the network state
     Network.addListener('networkStatusChange', status => {
       this._store.dispatch(RootActions.UpdateNetworkConnectionStatus({
         newStatus: status.connected ? DeviceNetworkStatus.ONLINE : DeviceNetworkStatus.OFFLINE
       }));
     });
+  }
 
+  async ngOnInit(): Promise<void> {
     this._subSink.sink = this._store.select(UIStoreSelectors.StateSelector)
       .subscribe(state => {
         this.dark = state.darkMode;
@@ -62,14 +63,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
-        if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
+        // save the client info
+        if (this._clientIdentification == null) {
           this._clientIdentification = state.appIdentification;
-          this.setupSignalR(state);
-          return;
         }
 
-        // here the app is not configured yet, redirect to the setup page
-        this.redirectToSetupPage();
+        // check if the app is connected or not, 
+        // if not init the configuration for connection
+        if (!this._signalRService.isConnected()) {
+
+          // check if we have a server & client info to establish a connection
+          if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
+            this.setupSignalR(state.serverInfo?.serverUrl, state.appIdentification?.clientId);
+            return;
+          }
+
+          // here the app is not configured yet, redirect to the setup page
+          this.redirectToSetupPage();
+        }
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
@@ -77,7 +88,6 @@ export class AppComponent implements OnInit, OnDestroy {
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
           await this.presentToast("you have been connected to the server successfully", 3000);
-          setTimeout(async () => { await this._signalRService.sendOnConnectedEvent$(this._clientIdentification.clientId) }, 5000);
           return;
         }
 
@@ -111,12 +121,10 @@ export class AppComponent implements OnInit, OnDestroy {
     Network.removeAllListeners();
   }
 
-  private setupSignalR(state: State) {
+  private setupSignalR(serverUrl: string, clientId: string) {
     // init the connection
-    this._signalRService.initConnection(state.serverInfo?.serverUrl, state.appIdentification?.clientId)
-      .then(() => {
-        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
-      })
+    this._signalRService.initConnection(serverUrl, clientId)
+      .then(() => console.log("init connection ..."))
       .catch(async (error) => {
         console.error('server connection failed', error);
         this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
@@ -135,15 +143,24 @@ export class AppComponent implements OnInit, OnDestroy {
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
     });
 
-    // register the handler for the send message event
+    // register the handler for the client info updated event
     this._signalRService.onClientInfoUpdatedEvent((clientInfo) => {
       console.log("onClientInfoUpdatedEvent", clientInfo);
       this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo }));
     });
 
-    // register the handler for the send message event
+    // register the handler for the force disconnect event
     this._signalRService.onForceDisconnectionEvent((reason) => {
       console.log("onForceDisconnectionEvent", reason);
+    });
+
+    // register the handler for the force disconnect event
+    this._signalRService.onClientConnectedEvent(async () => {
+      if (this._clientIdentification.clientId) {
+        console.log("onClientConnectedEvent");
+        await this._signalRService.sendPersistClientConnectionEvent$(this._clientIdentification.clientId);
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
+      }
     });
   }
 
