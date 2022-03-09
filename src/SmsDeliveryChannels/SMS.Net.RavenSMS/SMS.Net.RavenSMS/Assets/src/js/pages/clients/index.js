@@ -45,13 +45,11 @@ function loadData() {
 }
 
 function buildTableRow(client) {
-    const clientDate = moment(client.date);
-
     let markup = `<tr>
-            <td style="max-width:150px" class="cell">${client.id}</td>
-            <td class="cell"><span class="truncate">${client.name}</span></td>
-            <td class="cell">${GetStatusSpan(client.status)}</td>
-            <td class="cell">`;
+        <td style="max-width:150px" class="cell">${client.id}</td>
+        <td class="cell"><span class="truncate">${client.name}</span></td>
+        <td class="cell">${GetStatusSpan(client.status)}</td>
+        <td class="cell fit">`;
 
     // add the preview page if the client has been configured
     if (client.status != 3) {
@@ -63,7 +61,10 @@ function buildTableRow(client) {
         markup += `<a class="btn-sm app-btn-secondary ms-2" href="Clients/Setup/${client.id}">Setup</a>`;
     }
 
-    return markup += "</td></tr>";
+    // add delete button
+    markup += `<button class="btn-sm app-btn-secondary ms-2" onClick="deleteClient('${client.id}')">Delete</button></td></tr>`;
+
+    return markup;
 }
 
 function SetPagination(rowsCount, pageIndex, pageSize) {
@@ -103,4 +104,30 @@ function GetStatusSpan(status) {
         case 2: return `<span class="badge bg-danger">Disconnected</span>`
         default: return `<span class="badge bg-danger">Require setup</span>`
     }
+}
+
+function deleteClient(clientId) {
+    $.get('/ravenSMS/clients/index/?handler=RemoveClient&clientId=' + clientId)
+        .done(function (result) {
+            if (result.isSuccess) {
+                $.toast({
+                    heading: 'Success',
+                    text: 'client has been deleted successfully.',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'success'
+                });
+
+                loadData();
+                return;
+            }
+
+            $.toast({
+                heading: 'Failed to resend',
+                text: '<p>failed to delete the client, error message:<br/>' + result.error + '</p>',
+                showHideTransition: 'fade',
+                position: 'top-right',
+                icon: 'error'
+            });
+        });
 }

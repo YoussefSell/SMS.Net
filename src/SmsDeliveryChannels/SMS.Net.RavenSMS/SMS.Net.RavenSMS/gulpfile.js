@@ -20,6 +20,7 @@ gulp.task('images', function () {
 // css
 gulp.task('css-vendor', function () {
 	return gulp.src([
+		'node_modules/jquery-toast-plugin/dist/jquery.toast.min.css',
 		'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
 	])
 	.pipe(sass())
@@ -41,7 +42,6 @@ gulp.task('css-app', function () {
 // message pages css
 gulp.task('css-app-pages-messages-preview', function () {
 	return gulp.src([
-		'node_modules/jquery-toast-plugin/dist/jquery.toast.min.css',
 		'Assets/src/scss/pages/messages/preview.page.scss',
 	])
 	.pipe(sass())
@@ -126,11 +126,14 @@ gulp.task('js-app-pages-messages-preview', function () {
 
 // the clients management pages
 gulp.task('js-app-pages-clients-index', function () {
-	return gulp.src(['Assets/src/js/pages/clients/index.js'])
-		.pipe(sourcemaps.init())
-		.pipe(concat('clients.index.page.min.js'))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('Assets/js'));
+	return gulp.src([
+		'node_modules/jquery-toast-plugin/dist/jquery.toast.min.js',
+		'Assets/src/js/pages/clients/index.js',
+	])
+	.pipe(sourcemaps.init())
+	.pipe(concat('clients.index.page.min.js'))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest('Assets/js'));
 });
 
 gulp.task('js-app-pages-clients-add', function () {
