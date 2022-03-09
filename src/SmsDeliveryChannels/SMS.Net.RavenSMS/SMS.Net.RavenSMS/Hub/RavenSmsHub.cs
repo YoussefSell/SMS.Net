@@ -18,7 +18,14 @@ public class RavenSmsHub : Hub
         await _clientsManager.ClientDisconnectedAsync(Context.ConnectionId);
     }
 
-    public async Task ClientConnectedAsync(string clientId, bool forceConnection)
+    public override async Task OnConnectedAsync()
+    {
+        // send an event to the client app to indicate that the connection has been established
+        // because we don't have a way to get this info from the client app
+        await Clients.Caller.SendAsync("ClientConnected");
+    }
+
+    public async Task PersistClientConnectionAsync(string clientId, bool forceConnection)
     {
         // get the client associated with the given id
         var client = await _clientsManager.FindClientByIdAsync(clientId);
@@ -46,6 +53,15 @@ public class RavenSmsHub : Hub
         // attach the client to the current connection
         _logger.LogInformation("connecting client with Id: {clientId}, connection Id: {connectionId}", client.Id, Context.ConnectionId);
         await _clientsManager.ClientConnectedAsync(client, Context.ConnectionId);
+
+        // send the command to update the client info
+        await Clients.Caller.SendAsync("updateClientInfo", new
+        {
+            clientId = client.Id,
+            clientName = client.Name,
+            clientDescription = client.Description,
+            clientPhoneNumber = client.PhoneNumber,
+        });
     }
 }
 
@@ -130,7 +146,8 @@ public static class RavenSmsHubExtensions
                     .WithMessage("the client connection id is null or empty")
                     .WithCode("invalid_client_connection_id");
 
-            await hub.Clients.Client(client.ConnectionId).SendAsync("forceDisconnect", reason);
+            await hub.Clients.Client(client.ConnectionId)
+                .SendAsync("forceDisconnect", reason);
 
             return Result.Success();
         }
