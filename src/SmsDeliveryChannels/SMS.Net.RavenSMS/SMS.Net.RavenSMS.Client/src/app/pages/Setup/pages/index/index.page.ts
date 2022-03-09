@@ -1,22 +1,21 @@
 import { SettingsStoreActions, SettingsStoreSelectors } from 'src/app/store/settings-store';
 import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IQrContentModel } from 'src/app/core/models';
 import { AlertController } from '@ionic/angular';
 import { RootStoreState } from 'src/app/store';
 import { Capacitor } from '@capacitor/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'page-setup-index',
   templateUrl: 'index.page.html',
   styleUrls: ['index.page.scss'],
 })
-export class IndexPage implements OnInit, OnDestroy {
+export class IndexPage {
 
   subsink = new SubSink();
 
@@ -36,10 +35,12 @@ export class IndexPage implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private alert: AlertController,
     private store: Store<RootStoreState.State>,
-    private translationService: TranslocoService,
-  ) { }
+  ) {
+    // get the platform
+    this.platform = Capacitor.getPlatform();
+  }
 
-  ngOnInit(): void {
+  ionViewDidEnter(): void {
     this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(async state => {
         if (state.serverInfo?.serverUrl && state.appIdentification?.clientId) {
@@ -53,7 +54,7 @@ export class IndexPage implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  ionViewDidLeave(): void {
     this.subsink.unsubscribe();
 
     if (this.platform != 'web') {
@@ -62,8 +63,7 @@ export class IndexPage implements OnInit, OnDestroy {
   }
 
   async initialize(): Promise<void> {
-    // get the platform
-    this.platform = Capacitor.getPlatform();
+
 
     // this code is only relevant if we are not previewing in a web browser
     if (this.platform != 'web') {
