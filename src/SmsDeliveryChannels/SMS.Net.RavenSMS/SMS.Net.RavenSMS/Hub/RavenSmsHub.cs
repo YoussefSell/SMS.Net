@@ -67,10 +67,10 @@ public static class RavenSmsHubExtensions
 
             await hub.Clients.Client(client.ConnectionId).SendAsync("updateClientInfo", new
             {
-                id = client.Id,
-                name = client.Name,
-                description = client.Description,
-                phoneNumber = client.PhoneNumber,
+                clientId = client.Id,
+                clientName = client.Name,
+                clientDescription = client.Description,
+                clientPhoneNumber = client.PhoneNumber,
             });
 
             return Result.Success();

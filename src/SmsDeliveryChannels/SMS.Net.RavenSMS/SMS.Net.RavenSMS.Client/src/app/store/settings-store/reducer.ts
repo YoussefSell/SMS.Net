@@ -51,6 +51,7 @@ export const MainReducer = createReducer<State>(
                 clientId: action.data.clientId,
                 clientName: "",
                 clientDescription: "",
+                clientPhoneNumber: "",
             },
             serverInfo: {
                 status: ServerStatus.ONLINE,

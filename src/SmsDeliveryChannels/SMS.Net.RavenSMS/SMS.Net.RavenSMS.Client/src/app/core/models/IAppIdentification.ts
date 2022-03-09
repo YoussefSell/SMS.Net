@@ -16,4 +16,9 @@ export interface IAppIdentification {
      * the simple description of the client application
      */
     clientDescription: string;
+
+    /**
+     * the client phone number
+     */
+    clientPhoneNumber: string;
 }

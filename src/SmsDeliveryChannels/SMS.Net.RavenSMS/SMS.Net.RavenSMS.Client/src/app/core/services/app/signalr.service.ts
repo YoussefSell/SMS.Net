@@ -1,4 +1,6 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { IAppIdentification, IMessages } from '../../models';
+import { DisconnectionReason } from '../../constants/enums';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -71,9 +73,29 @@ export class SignalRService {
      * register an event handler to handle send message requests
      * @param handler the handler to be executed when the event is triggered
      */
-    public onSendMessageEvent(handler: (...args: any[]) => void): void {
+    public onSendMessageEvent(handler: (message: IMessages) => void): void {
         if (this.hubConnection) {
             this.hubConnection.on('sendSmsMessage', handler);
+        }
+    }
+
+    /**
+    * register an event handler to handle the client info updated request
+    * @param handler the handler to be executed when the event is triggered
+    */
+    public onClientInfoUpdatedEvent(handler: (clientInfo: IAppIdentification) => void): void {
+        if (this.hubConnection) {
+            this.hubConnection.on('updateClientInfo', handler);
+        }
+    }
+
+    /**
+    * register an event handler to handle disconnection event
+    * @param handler the handler to be executed when the event is triggered
+    */
+    public onForceDisconnectionEvent(handler: (reason: DisconnectionReason) => void): void {
+        if (this.hubConnection) {
+            this.hubConnection.on('forceDisconnect', handler);
         }
     }
 }
