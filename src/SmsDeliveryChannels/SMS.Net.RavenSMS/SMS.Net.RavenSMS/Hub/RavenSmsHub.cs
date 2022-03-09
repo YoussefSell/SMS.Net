@@ -53,11 +53,18 @@ public static class RavenSmsHubExtensions
 {
     public static async Task<Result> UpdateClientInfosync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client)
     {
-        if (client.ConnectionId is null)
-            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
-
         try
         {
+            if (client.Status != RavenSmsClientStatus.Connected)
+                return Result.Failure()
+                    .WithMessage("the client is not connected")
+                    .WithCode("client_disconnected");
+
+            if (client.ConnectionId is null)
+                return Result.Failure()
+                    .WithMessage("the client connection id is null or empty")
+                    .WithCode("invalid_client_connection_id");
+
             await hub.Clients.Client(client.ConnectionId).SendAsync("updateClientInfo", new
             {
                 id = client.Id,
@@ -77,11 +84,18 @@ public static class RavenSmsHubExtensions
 
     public static async Task<Result> SendSmsMessageAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, RavenSmsMessage message)
     {
-        if (client.ConnectionId is null)
-            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
-
         try
         {
+            if (client.Status != RavenSmsClientStatus.Connected)
+                return Result.Failure()
+                    .WithMessage("the client is not connected")
+                    .WithCode("client_disconnected");
+
+            if (client.ConnectionId is null)
+                return Result.Failure()
+                    .WithMessage("the client connection id is null or empty")
+                    .WithCode("invalid_client_connection_id");
+
             await hub.Clients.Client(client.ConnectionId).SendAsync("sendSmsMessage", new
             {
                 from = client.PhoneNumber,
@@ -104,11 +118,18 @@ public static class RavenSmsHubExtensions
 
     public static async Task<Result> ForceDisconnectAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, string reason)
     {
-        if (client.ConnectionId is null)
-            throw new ArgumentNullException($"{nameof(client)}.{nameof(client.ConnectionId)}");
-
         try
         {
+            if (client.Status != RavenSmsClientStatus.Connected)
+                return Result.Failure()
+                    .WithMessage("the client is not connected")
+                    .WithCode("client_disconnected");
+
+            if (client.ConnectionId is null)
+                return Result.Failure()
+                    .WithMessage("the client connection id is null or empty")
+                    .WithCode("invalid_client_connection_id");
+
             await hub.Clients.Client(client.ConnectionId).SendAsync("forceDisconnect", reason);
 
             return Result.Success();
