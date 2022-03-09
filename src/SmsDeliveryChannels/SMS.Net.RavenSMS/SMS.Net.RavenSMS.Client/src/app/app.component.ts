@@ -1,7 +1,7 @@
 import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
 import { AlertController, ToastController } from '@ionic/angular';
-import { SettingsStoreSelectors } from './store/settings-store';
+import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
 import { IAppIdentification, IMessages } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
@@ -131,8 +131,19 @@ export class AppComponent implements OnInit, OnDestroy {
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent((message: IMessages) => {
       // this._smsService.sendSmsAsync(message.to, message.content);
-      console.log("send message", message);
+      console.log("onSendMessageEvent", message);
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
+    });
+
+    // register the handler for the send message event
+    this._signalRService.onClientInfoUpdatedEvent((clientInfo) => {
+      console.log("onClientInfoUpdatedEvent", clientInfo);
+      this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo }));
+    });
+
+    // register the handler for the send message event
+    this._signalRService.onForceDisconnectionEvent((reason) => {
+      console.log("onForceDisconnectionEvent", reason);
     });
   }
 
