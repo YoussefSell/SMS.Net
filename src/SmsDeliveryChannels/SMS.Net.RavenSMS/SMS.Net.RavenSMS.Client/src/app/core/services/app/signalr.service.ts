@@ -42,7 +42,6 @@ export class SignalRService {
         return this.hubConnection.start();
     }
 
-
     // init the server connection
     public initConnection(serverUrl: string, clientId: string): Promise<void> {
         // 1- build the connection hub

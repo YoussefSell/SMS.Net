@@ -85,6 +85,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
       .subscribe(async (status) => {
+        // if the status is unknown we can't do anything
+        if (status === ServerStatus.UNKNOWN) {
+          return;
+        }
+
+        console.log('=> server connection online', status == ServerStatus.ONLINE)
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
           await this.presentToast("you have been connected to the server successfully", 3000);
@@ -100,6 +106,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
       .subscribe(async status => {
+        // if the status is unknown we can't do anything
+        if (status === DeviceNetworkStatus.UNKNOWN) {
+          return;
+        }
+
         if (status == DeviceNetworkStatus.OFFLINE) {
           this._networkAlert = await this._alertController.create({
             backdropDismiss: false,
@@ -124,40 +135,40 @@ export class AppComponent implements OnInit, OnDestroy {
   private setupSignalR(serverUrl: string, clientId: string) {
     // init the connection
     this._signalRService.initConnection(serverUrl, clientId)
-      .then(() => console.log("init connection ..."))
+      .then(() => console.log("=> init connection ..."))
       .catch(async (error) => {
-        console.error('server connection failed', error);
+        console.error('=> server connection failed', error);
         this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
       });
 
     // register the event for on close
     this._signalRService.onclose(async (error) => {
-      console.error('server connection failed', error);
+      console.error('=> server connection failed', error);
       this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
     });
 
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent((message: IMessages) => {
       // this._smsService.sendSmsAsync(message.to, message.content);
-      console.log("onSendMessageEvent", message);
+      console.log("=> onSendMessageEvent", message);
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
     });
 
     // register the handler for the client info updated event
     this._signalRService.onClientInfoUpdatedEvent((clientInfo) => {
-      console.log("onClientInfoUpdatedEvent", clientInfo);
+      console.log("=> onClientInfoUpdatedEvent", clientInfo);
       this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo }));
     });
 
     // register the handler for the force disconnect event
     this._signalRService.onForceDisconnectionEvent((reason) => {
-      console.log("onForceDisconnectionEvent", reason);
+      console.log("=> onForceDisconnectionEvent", reason);
     });
 
     // register the handler for the force disconnect event
     this._signalRService.onClientConnectedEvent(async () => {
       if (this._clientIdentification.clientId) {
-        console.log("onClientConnectedEvent");
+        console.log("=> onClientConnectedEvent");
         await this._signalRService.sendPersistClientConnectionEvent$(this._clientIdentification.clientId);
         this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
       }
