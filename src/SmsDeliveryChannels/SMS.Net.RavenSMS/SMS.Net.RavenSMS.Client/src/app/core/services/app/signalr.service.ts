@@ -57,7 +57,6 @@ export class SignalRService {
      */
     public isConnected(): boolean {
         return this.hubConnection ? this.hubConnection.state === HubConnectionState.Connected : false;
-
     }
 
     /** Registers a handler that will be invoked when the connection is closed.
@@ -66,6 +65,22 @@ export class SignalRService {
      */
     public onclose(callback: (error?: Error) => void): void {
         this.hubConnection.onclose(callback);
+    }
+
+    /** Registers a handler that will be invoked when the connection successfully reconnects.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection successfully reconnects.
+     */
+    public onreconnected(callback: (connectionId?: string) => void): void {
+        this.hubConnection.onreconnected(callback);
+    }
+
+    /** Registers a handler that will be invoked when the connection starts reconnecting.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection starts reconnecting. Optionally receives a single argument containing the error that caused the connection to start reconnecting (if any).
+     */
+    public onreconnecting(callback: (error?: Error) => void): void {
+        this.hubConnection.onreconnecting(callback);
     }
 
     /**
