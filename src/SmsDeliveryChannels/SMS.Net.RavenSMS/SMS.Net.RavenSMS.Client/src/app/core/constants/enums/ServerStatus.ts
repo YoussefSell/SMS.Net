@@ -3,6 +3,11 @@
  */
 export enum ServerStatus {
     /**
+     * the server connection status is unknown.
+     */
+    UNKNOWN,
+
+    /**
      * the server is up and running
      */
     ONLINE,
