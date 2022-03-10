@@ -147,6 +147,14 @@ export class AppComponent implements OnInit, OnDestroy {
       this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
     });
 
+    // register the event for on close
+    this._signalRService.onreconnecting(async (error) => {
+      if (error) {
+        console.error('=> on reconnecting failed', error);
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+      }
+    });
+
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent((message: IMessages) => {
       // this._smsService.sendSmsAsync(message.to, message.content);
