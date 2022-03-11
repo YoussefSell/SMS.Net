@@ -5,7 +5,6 @@ import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-s
 import { IAppIdentification, IMessages } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
-import { State } from './store/settings-store/state';
 import { TranslocoService } from '@ngneat/transloco';
 import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-root',
   template: `
-  <ion-app [class.dark-theme]="dark">
+  <ion-app [class.dark-theme]="_dark">
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-app>
   `,
@@ -25,10 +24,11 @@ import { SubSink } from 'subsink';
 export class AppComponent implements OnInit, OnDestroy {
 
   _subSink = new SubSink();
+
+  _dark: boolean = false;
   _serverAlert: HTMLIonAlertElement | null = null;
   _networkAlert: HTMLIonAlertElement | null = null;
   _clientIdentification: IAppIdentification | null = null;
-  dark: boolean = false;
 
   constructor(
     private _router: Router,
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this._subSink.sink = this._store.select(UIStoreSelectors.StateSelector)
       .subscribe(state => {
-        this.dark = state.darkMode;
+        this._dark = state.darkMode;
         this._translationService.setActiveLang(state.language);
       });
 
