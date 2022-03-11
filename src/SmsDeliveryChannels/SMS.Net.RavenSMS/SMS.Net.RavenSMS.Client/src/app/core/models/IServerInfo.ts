@@ -8,9 +8,4 @@ export interface IServerInfo {
      * the server url
      */
     serverUrl: string;
-
-    /**
-     * the status of the server
-     */
-    status: ServerStatus;
 }

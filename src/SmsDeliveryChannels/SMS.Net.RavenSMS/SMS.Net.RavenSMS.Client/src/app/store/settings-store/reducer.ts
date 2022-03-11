@@ -19,15 +19,6 @@ export const MainReducer = createReducer<State>(
     initialState,
 
     // check the actions
-    on(Actions.UpdateServerStatus, (state, action): State => {
-        return {
-            ...state,
-            serverInfo: {
-                ...state.serverInfo,
-                status: action.newStatus
-            },
-        };
-    }),
     on(Actions.UpdateServerInfo, (state, action): State => {
         return {
             ...state,
@@ -54,7 +45,6 @@ export const MainReducer = createReducer<State>(
                 clientPhoneNumber: "",
             },
             serverInfo: {
-                status: ServerStatus.ONLINE,
                 serverUrl: action.data.serverUrl,
             }
         };

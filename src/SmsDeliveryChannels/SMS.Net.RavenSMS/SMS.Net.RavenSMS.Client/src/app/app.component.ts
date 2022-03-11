@@ -92,7 +92,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
-          await this.presentToast("you have been connected to the server successfully", 3000);
+          this._serverAlert = null;
+          await this.presentToast("you have been connected to the server successfully", 1000);
           return;
         }
 
@@ -117,6 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (status == DeviceNetworkStatus.ONLINE) {
           await this._networkAlert?.dismiss();
+          this._networkAlert = null;
           return;
         }
 

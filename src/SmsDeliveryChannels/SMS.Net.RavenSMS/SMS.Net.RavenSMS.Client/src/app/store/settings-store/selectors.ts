@@ -9,11 +9,6 @@ export const StateSelector = createSelector(
   (state: State) => state
 );
 
-export const ServerStatusSelector = createSelector(
-  featureStateSelector,
-  (state: State) => state.serverInfo.status
-);
-
 export const ServerInfoSelector = createSelector(
   featureStateSelector,
   (state: State) => state.serverInfo
