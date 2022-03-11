@@ -90,10 +90,14 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        console.log('=> server connection online', status == ServerStatus.ONLINE)
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
           await this.presentToast("you have been connected to the server successfully", 3000);
+          return;
+        }
+
+        // check if the server alert is already presented.
+        if (this._serverAlert) {
           return;
         }
 
@@ -111,16 +115,21 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        if (status == DeviceNetworkStatus.OFFLINE) {
-          this._networkAlert = await this._alertController.create({
-            backdropDismiss: false,
-            message: "you have been disconnected, please check your internet connection."
-          });
-          await this._networkAlert.present();
+        if (status == DeviceNetworkStatus.ONLINE) {
+          await this._networkAlert?.dismiss();
           return;
         }
 
-        await this._networkAlert?.dismiss();
+        // check if the network alert is already presented.
+        if (this._networkAlert) {
+          return;
+        }
+
+        this._networkAlert = await this._alertController.create({
+          backdropDismiss: false,
+          message: "you have been disconnected, please check your internet connection."
+        });
+        await this._networkAlert.present();
       });
 
     // check current network status
