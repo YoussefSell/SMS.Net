@@ -16,4 +16,4 @@ export const UpdateServerStatus = createAction(StoreActionTypes.UPDATE_SERVER_ST
 
 export const ConfigureClient = createAction(StoreActionTypes.CONFIGURE_CLIENT, props<{ data: IQrContentModel }>());
 export const UpdateServerInfo = createAction(StoreActionTypes.UPDATE_SERVER_INFO, props<{ data: IServerInfo }>());
-export const UpdateClientAppIdentification = createAction(StoreActionTypes.UPDATE_SERVER_STATUS, props<{ data: IAppIdentification }>());
+export const UpdateClientAppIdentification = createAction(StoreActionTypes.UPDATE_CLIENT_APP_IDENTIFICATION, props<{ data: IAppIdentification }>());
