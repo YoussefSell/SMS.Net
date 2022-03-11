@@ -8,12 +8,14 @@
             "3": "Enviado"
         },
         "networkStatus": {
-            "0": "En línea",
-            "1": "Desconectado"
+            "0": "Desconocido",
+            "1": "En línea",
+            "2": "Desconectado"
         },
         "serverStatus": {
-            "0": "En línea",
-            "1": "Desconectado"
+            "0": "Desconocido",
+            "1": "En línea",
+            "2": "Desconectado"
         }
     },
     "languages": {

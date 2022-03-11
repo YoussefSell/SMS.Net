@@ -8,12 +8,14 @@
             "3": "Envoyé"
         },
         "networkStatus": {
-            "0": "En ligne",
-            "1": "Hors ligne"
+            "0": "Inconnu",
+            "1": "En ligne",
+            "2": "Hors ligne"
         },
         "serverStatus": {
-            "0": "En ligne",
-            "1": "Hors ligne"
+            "0": "Inconnu",
+            "1": "En ligne",
+            "2": "Hors ligne"
         }
     },
     "languages": {

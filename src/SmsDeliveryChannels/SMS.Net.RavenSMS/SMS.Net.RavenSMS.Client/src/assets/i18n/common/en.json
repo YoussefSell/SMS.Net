@@ -8,12 +8,14 @@
             "3": "Sent"
         },
         "networkStatus": {
-            "0": "Online",
-            "1": "Offline"
+            "0": "Unknown",
+            "1": "Online",
+            "2": "Offline"
         },
         "serverStatus": {
-            "0": "Online",
-            "1": "Offline"
+            "0": "Unknown",
+            "1": "Online",
+            "2": "Offline"
         }
     },
     "languages": {
