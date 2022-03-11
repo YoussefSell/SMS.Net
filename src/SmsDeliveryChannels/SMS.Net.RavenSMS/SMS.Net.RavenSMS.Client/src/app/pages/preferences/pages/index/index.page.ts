@@ -12,10 +12,13 @@ import { TranslocoService } from '@ngneat/transloco';
   templateUrl: 'index.page.html',
   styleUrls: ['index.page.scss']
 })
-export class IndexPage implements OnInit {
+export class IndexPage {
 
-  subsink = new SubSink();
-  settingsForm: FormGroup;
+  _subsink = new SubSink();
+  _settingsForm: FormGroup;
+
+  _serverInfo: IServerInfo | null = null;
+  _appIdentification: IAppIdentification | null = null;
 
   _languages: { value: string; label: string }[] = [];
 
@@ -24,59 +27,51 @@ export class IndexPage implements OnInit {
     private store: Store<RootStoreState.State>,
     private translationService: TranslocoService,
   ) {
-    this.settingsForm = this.fb
+    this._settingsForm = this.fb
       .group({
         darkMode: this.fb.control(false),
         language: this.fb.control(''),
-        clientId: this.fb.control(''),
-        serverURL: this.fb.control(''),
-        clientName: this.fb.control(''),
-        serverStatus: this.fb.control(''),
-        clientDescription: this.fb.control(''),
       });
   }
 
-  ngOnInit(): void {
-    this.subsink.sink = this.translationService.selectTranslateObject('languages', {}, 'common')
+  ionViewDidEnter(): void {
+    this._subsink.sink = this.translationService.selectTranslateObject('languages', {}, 'common')
       .subscribe(translationObj => {
         this._languages = Object.keys(translationObj)
           .map(key => ({ value: key, label: translationObj[key] }));
       });
 
-    this.subsink.sink = this.settingsForm.get('darkMode').valueChanges
+    this._subsink.sink = this._settingsForm.get('darkMode').valueChanges
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateDarkMode({ value }))
       });
 
-    this.subsink.sink = this.settingsForm.get('language').valueChanges
+    this._subsink.sink = this._settingsForm.get('language').valueChanges
       .subscribe(value => {
         this.store.dispatch(UIStoreActions.updateLanguage({ value }))
       });
 
-    this.subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
+    this._subsink.sink = this.store.select(UIStoreSelectors.StateSelector)
       .subscribe(state => {
-        this.initializeForm(state.appIdentification, state.serverInfo);
-      });
-
-    this.subsink.sink = this.store.select(UIStoreSelectors.StateSelector)
-      .subscribe(state => {
-        const darkModeControl = this.settingsForm.get('darkMode');
+        const darkModeControl = this._settingsForm.get('darkMode');
         if (darkModeControl.value !== state.darkMode) {
           darkModeControl.setValue(state.darkMode);
         }
 
-        const languageControl = this.settingsForm.get('language');
+        const languageControl = this._settingsForm.get('language');
         if (languageControl.value !== state.language) {
           languageControl.setValue(state.language);
         }
       });
+
+    this._subsink.sink = this.store.select(SettingsStoreSelectors.StateSelector)
+      .subscribe(state => {
+        this._serverInfo = state.serverInfo;
+        this._appIdentification = state.appIdentification;
+      });
   }
 
-  initializeForm(appIdentification: IAppIdentification, serverInfo: IServerInfo): void {
-    this.settingsForm.get('clientId').setValue(appIdentification.clientId);
-    this.settingsForm.get('clientName').setValue(appIdentification.clientName);
-    this.settingsForm.get('clientDescription').setValue(appIdentification.clientDescription);
-    this.settingsForm.get('serverURL').setValue(serverInfo.serverUrl);
-    this.settingsForm.get('serverStatus').setValue(serverInfo.status);
+  ionViewDidLeave(): void {
+    this._subsink.unsubscribe();
   }
 }
