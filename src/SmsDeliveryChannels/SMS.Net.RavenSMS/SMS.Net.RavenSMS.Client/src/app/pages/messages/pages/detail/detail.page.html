@@ -11,6 +11,10 @@
   <ion-content>
     <div *ngIf="_message" class="ion-padding">
       <p>
+        {{translate('messages.pages.details.labels.message_id')}}: <br />
+        {{_message.id}}
+      </p>
+      <p>
         {{translate('messages.pages.details.labels.message_content')}}: <br />
         {{_message.content}}
       </p>

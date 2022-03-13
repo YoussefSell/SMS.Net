@@ -14,6 +14,7 @@
         "details": {
             "page_title": "Detalles del mensaje",
             "labels": {
+                "message_id": "Id",
                 "message_content": "Contenido",
                 "message_status": "Estado",
                 "message_to": "Para",
