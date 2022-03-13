@@ -4,11 +4,17 @@ public class RavenSmsHub : Hub
 {
     private readonly ILogger _logger;
     private readonly IRavenSmsClientsManager _clientsManager;
+    private readonly IRavenSmsMessagesManager _messagesManager;
 
-    public RavenSmsHub(IRavenSmsClientsManager manager, ILogger<RavenSmsHub> logger)
+    public RavenSmsHub(
+        IRavenSmsMessagesManager messagesManager,
+        IRavenSmsClientsManager manager, 
+        ILogger<RavenSmsHub> logger
+    )
     {
         _logger = logger;
         _clientsManager = manager;
+        _messagesManager = messagesManager;
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -62,6 +68,27 @@ public class RavenSmsHub : Hub
             clientDescription = client.Description,
             clientPhoneNumber = client.PhoneNumber,
         });
+    }
+
+    public async Task UpdateMessageStatusAsync(string messageId, RavenSmsMessageStatus status, string error)
+    {
+        var message = await _messagesManager.FindByIdAsync(messageId);
+        if (message is null)
+            return;
+
+        var attempt = new RavenSmsMessageSendAttempt { Status = SendAttemptStatus.Sent };
+
+        message.Status = status;
+        message.SentOn = DateTimeOffset.UtcNow;
+        message.SendAttempts.Add(attempt);
+
+        if (status == RavenSmsMessageStatus.Failed)
+        {
+            attempt.Status = SendAttemptStatus.Failed;
+            attempt.AddError(error, "failed to send the sms message, check that your phone has a SIM card with credits to send the messages");
+        }
+
+        await _messagesManager.SaveAsync(message);
     }
 }
 

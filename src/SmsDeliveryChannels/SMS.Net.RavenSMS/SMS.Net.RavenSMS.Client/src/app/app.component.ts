@@ -174,12 +174,16 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!result.isSuccess) {
         message = {
           ...message,
+          sentOn: new Date(),
           status: MessageStatus.Failed,
         };
       }
 
       // insert the message
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
+
+      // update the status of the message on the server
+      this._signalRService.sendUpdateMessageStatusEventAsync(message.id, message.status, result.error);
     });
 
     // register the handler for the client info updated event

@@ -1,6 +1,6 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { IAppIdentification, IMessages } from '../../models';
-import { DisconnectionReason } from '../../constants/enums';
+import { DisconnectionReason, MessageStatus } from '../../constants/enums';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -30,7 +30,12 @@ export class SignalRService {
 
         // build the connection hub
         this.hubConnection = new HubConnectionBuilder()
-            .withAutomaticReconnect()
+            .withAutomaticReconnect([
+                100, 200, 400, 800,
+                1000, 1200, 1400, 1800,
+                2000, 2200, 2400, 2800,
+                3000, 3200, 3400, 3800,
+            ])
             .withUrl(url)
             .build();
     }
@@ -81,6 +86,12 @@ export class SignalRService {
      */
     public onreconnecting(callback: (error?: Error) => void): void {
         this.hubConnection.onreconnecting(callback);
+    }
+
+    async sendUpdateMessageStatusEventAsync(messageId: string, status: MessageStatus, error: string) {
+        if (this.hubConnection.state == HubConnectionState.Connected) {
+            await this.hubConnection.send('UpdateMessageStatusAsync', messageId, status, error);
+        }
     }
 
     /**

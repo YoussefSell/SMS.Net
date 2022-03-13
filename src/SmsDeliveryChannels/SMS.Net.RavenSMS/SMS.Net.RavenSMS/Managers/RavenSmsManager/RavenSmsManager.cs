@@ -20,20 +20,21 @@ public partial class RavenSmsManager : IRavenSmsManager
         if (client.Status != RavenSmsClientStatus.Connected)
             throw new RavenSmsMessageSendingFailedException("client_not_connected");
 
-        // create an attempt recored & update message status
-        var attempt = new RavenSmsMessageSendAttempt { Status = SendAttemptStatus.Sent };
-        message.Status = RavenSmsMessageStatus.Sent;
-        message.SentOn = DateTimeOffset.UtcNow;
-        message.SendAttempts.Add(attempt);
-
         // send the SMS message command to the client
         var sendResult = await _clientConnector.SendSmsMessageAsync(client, message);
         if (sendResult.IsFailure())
         {
-            attempt.Status = SendAttemptStatus.Failed;
-            message.Status = RavenSmsMessageStatus.Failed;
-
+            // if we failed to send the message to the client we need to record this failed attempt
+            // create an attempt recored & update message status
+            var attempt = new RavenSmsMessageSendAttempt { Status = SendAttemptStatus.Failed };
+            
+            // add the error to the attempt
             attempt.AddError(sendResult.Code, sendResult.Message);
+
+            // update the message status
+            message.SendAttempts.Add(attempt);
+            message.SentOn = DateTimeOffset.UtcNow;
+            message.Status = RavenSmsMessageStatus.Failed;
         }
 
         await _messagesManager.SaveAsync(message);
