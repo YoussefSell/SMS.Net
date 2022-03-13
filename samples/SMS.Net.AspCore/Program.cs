@@ -9,18 +9,17 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ionic-cors",
-        builder => builder
-        //.WithOrigins(
-        //    "http://localhost",
-        //    "ionic://localhost",
-        //    "capacitor://localhost",
-        //    "http://localhost:8100", 
-        //    "http://192.168.1.99:8100",
-        //    "http://192.168.1.102:8100"
-        //)
-        .AllowAnyOrigin()
+        builder => builder.WithOrigins(
+            "http://localhost",
+            "ionic://localhost",
+            "capacitor://localhost",
+            "http://localhost:8100", 
+            "http://192.168.1.99:8100",
+            "http://192.168.1.102:8100"
+        )
         .AllowAnyMethod()
-        .AllowAnyHeader());
+        .AllowAnyHeader()
+        .AllowCredentials());
 });
 
 // Add Hangfire services.
@@ -59,15 +58,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.Use((context, next) =>
-{
-    return next();
-});
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors("ionic-cors");
 
 app.UseAuthorization();
 
