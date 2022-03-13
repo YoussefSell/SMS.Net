@@ -1,5 +1,5 @@
 import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
-import { DeviceNetworkStatus, ServerStatus } from './core/constants/enums';
+import { DeviceNetworkStatus, MessageStatus, ServerStatus } from './core/constants/enums';
 import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
 import { IAppIdentification, IMessages } from './core/models';
@@ -167,9 +167,18 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     // register the handler for the send message event
-    this._signalRService.onSendMessageEvent((message: IMessages) => {
-      // this._smsService.sendSmsAsync(message.to, message.content);
-      console.log("=> onSendMessageEvent", message);
+    this._signalRService.onSendMessageEvent(async (message: IMessages) => {
+      var result = await this._smsService.sendSmsAsync(message.to, message.content);
+
+      // if the message sending failed we need to update the status of the message
+      if (!result.isSuccess) {
+        message = {
+          ...message,
+          status: MessageStatus.Failed,
+        };
+      }
+
+      // insert the message
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
     });
 
