@@ -2,7 +2,7 @@ import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, 
 import { DeviceNetworkStatus, MessageStatus, ServerStatus } from './core/constants/enums';
 import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
-import { IAppIdentification, IMessages } from './core/models';
+import { IAppIdentification, IMessages, IServerInfo } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
 import { TranslocoService } from '@ngneat/transloco';
@@ -28,6 +28,8 @@ export class AppComponent implements OnInit, OnDestroy {
   _dark: boolean = false;
   _serverAlert: HTMLIonAlertElement | null = null;
   _networkAlert: HTMLIonAlertElement | null = null;
+
+  _serverInfo: IServerInfo | null = null;
   _clientIdentification: IAppIdentification | null = null;
 
   constructor(
@@ -63,10 +65,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this._subSink.sink = this._store.select(SettingsStoreSelectors.StateSelector)
       .subscribe(state => {
-        // save the client info
-        if (this._clientIdentification == null) {
-          this._clientIdentification = state.appIdentification;
-        }
+        // save the client & server info
+        this._serverInfo = state.serverInfo;
+        this._clientIdentification = state.appIdentification;
 
         // check if the app is connected or not, 
         // if not init the configuration for connection
@@ -79,34 +80,23 @@ export class AppComponent implements OnInit, OnDestroy {
           }
 
           // here the app is not configured yet, redirect to the setup page
-          this.redirectToSetupPage();
+          this._router.navigateByUrl('/setup');
         }
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.ServerConnectionSelector)
       .subscribe(async (status) => {
-        // if the status is unknown we can't do anything
-        if (status === ServerStatus.UNKNOWN) {
-          return;
+        // if the server is offline we need to notify the user
+        if (status === ServerStatus.OFFLINE || status == ServerStatus.RECONNECTING) {
+          await this.presentDisconnectedAlert(status);
         }
 
+        // we are connected to the server, remove the alert if any, and show the success toast
         if (status == ServerStatus.ONLINE) {
           await this._serverAlert?.dismiss();
           this._serverAlert = null;
           await this.presentToast("you have been connected to the server successfully", 1000);
-          return;
         }
-
-        // check if the server alert is already presented.
-        if (this._serverAlert) {
-          return;
-        }
-
-        this._serverAlert = await this._alertController.create({
-          backdropDismiss: false,
-          message: "failed to connect to server, make sure the server is up, and try again."
-        });
-        await this._serverAlert.present();
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
@@ -146,23 +136,16 @@ export class AppComponent implements OnInit, OnDestroy {
   private setupSignalR(serverUrl: string, clientId: string) {
     // init the connection
     this._signalRService.initConnection(serverUrl, clientId)
-      .then(() => console.log("=> init connection ..."))
-      .catch(async (error) => {
-        console.error('=> server connection failed', error);
-        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
-      });
+      .catch(async () => this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE })));
 
     // register the event for on close
-    this._signalRService.onclose(async (error) => {
-      console.error('=> server connection failed', error);
-      this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
-    });
+    this._signalRService.onclose(async () =>
+      this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE })));
 
     // register the event for on close
     this._signalRService.onreconnecting(async (error) => {
       if (error) {
-        console.error('=> on reconnecting failed', error);
-        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.OFFLINE }));
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.RECONNECTING }));
       }
     });
 
@@ -187,23 +170,20 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     // register the handler for the client info updated event
-    this._signalRService.onClientInfoUpdatedEvent((clientInfo) => {
-      console.log("=> onClientInfoUpdatedEvent", clientInfo);
-      this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo }));
+    this._signalRService.onClientInfoUpdatedEvent((clientInfo) =>
+      this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo })));
+
+    // register the handler for the force disconnect event
+    this._signalRService.onClientConnectedEvent(async () => {
+      if (this._clientIdentification.clientId) {
+        await this._signalRService.sendPersistClientConnectionEvent$(this._clientIdentification.clientId);
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
+      }
     });
 
     // register the handler for the force disconnect event
     this._signalRService.onForceDisconnectionEvent((reason) => {
       console.log("=> onForceDisconnectionEvent", reason);
-    });
-
-    // register the handler for the force disconnect event
-    this._signalRService.onClientConnectedEvent(async () => {
-      if (this._clientIdentification.clientId) {
-        console.log("=> onClientConnectedEvent");
-        await this._signalRService.sendPersistClientConnectionEvent$(this._clientIdentification.clientId);
-        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
-      }
     });
   }
 
@@ -214,14 +194,53 @@ export class AppComponent implements OnInit, OnDestroy {
     }));
   }
 
-  redirectToSetupPage(): void {
-    this._router.navigateByUrl('/setup');
-  }
-
-  async presentToast(message: string, duration: number | undefined = undefined) {
+  private async presentToast(message: string, duration: number | undefined = undefined) {
     const toast = await this._toastController.create({
       duration: duration, message: message,
     });
     toast.present();
+  }
+
+  private async presentDisconnectedAlert(status: ServerStatus): Promise<void> {
+    // it is not necessary to show the alert if the server info are not set
+    // in this case, the user will be redirected to the setup page, so it is enough to return
+    if (this._serverInfo == null || this._serverInfo == undefined) {
+      return;
+    }
+
+    // hold the state if we should present the alert or it already presented
+    let alreadyPresented = true;
+
+    // check if the server alert is already presented, 
+    // if not we should create an instance
+    if (this._serverAlert == null) {
+      this._serverAlert = await this._alertController.create({ backdropDismiss: false });
+      alreadyPresented = false;
+    }
+
+    if (status == ServerStatus.RECONNECTING) {
+      this._serverAlert.message = "Failed to connect to the server, an automatic reconnection is enabled, try to start the server again.";
+    }
+
+    // if the server is offline we will add the possibility to reconfigure the client
+    if (status == ServerStatus.OFFLINE) {
+      this._serverAlert.message = "failed to connect to server, make sure the server is running, and try again.";
+      this._serverAlert.buttons = [{ text: 're-configure', role: 're_configure' }];
+    }
+
+    if (!alreadyPresented) {
+      await this._serverAlert.present();
+    }
+
+    if (status == ServerStatus.OFFLINE) {
+      var dismissResult = await this._serverAlert.onDidDismiss();
+
+      //if the user choosed to reconfigure the client app, we stop the connection, clear server info & set the status to unknown
+      if (dismissResult.role == 're_configure') {
+        await this._signalRService.stop();
+        this._store.dispatch(SettingsStoreActions.UpdateServerInfo({ data: null }));
+        this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.UNKNOWN }));
+      }
+    }
   }
 }

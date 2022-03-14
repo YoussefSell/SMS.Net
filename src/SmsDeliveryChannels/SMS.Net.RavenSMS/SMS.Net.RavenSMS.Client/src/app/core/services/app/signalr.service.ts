@@ -64,6 +64,14 @@ export class SignalRService {
         return this.hubConnection ? this.hubConnection.state === HubConnectionState.Connected : false;
     }
 
+    /** Stops the connection.
+     *
+     * @returns {Promise<void>} A Promise that resolves when the connection has been successfully terminated, or rejects with an error.
+     */
+    stop(): Promise<void> {
+        return this.hubConnection.stop();
+    }
+
     /** Registers a handler that will be invoked when the connection is closed.
      *
      * @param {Function} callback The handler that will be invoked when the connection is closed. Optionally receives a single argument containing the error that caused the connection to close (if any).
