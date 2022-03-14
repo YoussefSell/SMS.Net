@@ -22,9 +22,7 @@ export const MainReducer = createReducer<State>(
     on(Actions.UpdateServerInfo, (state, action): State => {
         return {
             ...state,
-            serverInfo: {
-                ...action.data
-            },
+            serverInfo: action.data,
         };
     }),
     on(Actions.UpdateClientAppIdentification, (state, action): State => {
