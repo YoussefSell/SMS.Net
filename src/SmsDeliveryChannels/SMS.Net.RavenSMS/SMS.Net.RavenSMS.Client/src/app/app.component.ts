@@ -153,14 +153,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this._signalRService.onSendMessageEvent(async (message: IMessages) => {
       var result = await this._smsService.sendSmsAsync(message.to, message.content);
 
-      // if the message sending failed we need to update the status of the message
-      if (!result.isSuccess) {
-        message = {
-          ...message,
-          sentOn: new Date(),
-          status: MessageStatus.Failed,
-        };
-      }
+      // update message status based on the sending result
+      message = {
+        ...message,
+        sentOn: new Date(),
+        status: result.isSuccess
+          ? MessageStatus.Sent
+          : MessageStatus.Failed,
+      };
 
       // insert the message
       this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
