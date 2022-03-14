@@ -15,5 +15,10 @@ export enum ServerStatus {
     /**
      * the server is down/offline
      */
-    OFFLINE
+    OFFLINE,
+
+    /**
+     * we are trying to reconnect to the server
+     */
+    RECONNECTING,
 }

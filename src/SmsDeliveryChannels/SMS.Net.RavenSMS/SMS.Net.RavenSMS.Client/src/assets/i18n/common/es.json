@@ -15,7 +15,8 @@
         "serverStatus": {
             "0": "Desconocido",
             "1": "En línea",
-            "2": "Desconectado"
+            "2": "Desconectado",
+            "3": "reconectando"
         }
     },
     "languages": {

@@ -15,7 +15,8 @@
         "serverStatus": {
             "0": "Unknown",
             "1": "Online",
-            "2": "Offline"
+            "2": "Offline",
+            "3": "Reconnecting"
         }
     },
     "languages": {

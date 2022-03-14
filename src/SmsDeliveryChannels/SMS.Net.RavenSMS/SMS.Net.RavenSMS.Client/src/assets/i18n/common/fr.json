@@ -15,7 +15,8 @@
         "serverStatus": {
             "0": "Inconnu",
             "1": "En ligne",
-            "2": "Hors ligne"
+            "2": "Hors ligne",
+            "3": "Se reconnecter"
         }
     },
     "languages": {
