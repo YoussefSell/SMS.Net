@@ -15,10 +15,24 @@ public partial class RavenSmsManager : IRavenSmsManager
         // get the client associated with the given from number
         var client = await _clientsManagers.FindClientByIdAsync(message.ClientId);
         if (client is null)
-            throw new RavenSmsMessageSendingFailedException("client_not_found_by_phone");
+        {
+            // recored the error
+            message.AddFailedAttempt("client_not_found_by_phone", "failed to find the client associated with the message");
+            
+            // save the message
+            await _messagesManager.SaveAsync(message);
+            return;
+        }
 
         if (client.Status != RavenSmsClientStatus.Connected)
-            throw new RavenSmsMessageSendingFailedException("client_not_connected");
+        {
+            // recored the error
+            message.AddFailedAttempt("client_not_connected", "the client is not connected");
+
+            // save the message
+            await _messagesManager.SaveAsync(message);
+            return;
+        }
 
         // send the SMS message command to the client
         var sendResult = await _clientConnector.SendSmsMessageAsync(client, message);
@@ -35,12 +49,10 @@ public partial class RavenSmsManager : IRavenSmsManager
             message.SendAttempts.Add(attempt);
             message.SentOn = DateTimeOffset.UtcNow;
             message.Status = RavenSmsMessageStatus.Failed;
+
+            // save the message
+            await _messagesManager.SaveAsync(message);
         }
-
-        await _messagesManager.SaveAsync(message);
-
-        if (sendResult.IsFailure())
-            throw new RavenSmsMessageSendingFailedException(sendResult.Code);
     }
 
     /// <inheritdoc/>

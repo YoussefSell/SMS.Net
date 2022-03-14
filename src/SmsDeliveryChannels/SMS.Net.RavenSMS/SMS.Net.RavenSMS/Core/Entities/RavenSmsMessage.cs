@@ -25,7 +25,7 @@ public class RavenSmsMessage
     /// Get or set the date this message was create on.
     /// </summary>
     public DateTimeOffset CreateOn { get; set; }
-    
+
     /// <summary>
     /// the date the message has been sent
     /// </summary>
@@ -70,4 +70,20 @@ public class RavenSmsMessage
     /// the list of sent attempts associated with this message
     /// </summary>
     public ICollection<RavenSmsMessageSendAttempt> SendAttempts { get; set; }
+
+    /// <summary>
+    /// create a new attempt with failed status, and added it to the list of attempts, also set the sentOn value, and set the message status to failed.
+    /// </summary>
+    /// <param name="code">the error code</param>
+    /// <param name="message">the error message</param>
+    internal void AddFailedAttempt(string code, string message)
+    {
+        var attempt = new RavenSmsMessageSendAttempt { Status = SendAttemptStatus.Failed };
+        attempt.AddError(code, message);
+
+        // update the message status
+        SendAttempts.Add(attempt);
+        SentOn = DateTimeOffset.UtcNow;
+        Status = RavenSmsMessageStatus.Failed;
+    }
 }
