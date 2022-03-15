@@ -7,6 +7,9 @@ public class RavenSmsMessageFilter : FilterOptions
 {
     public RavenSmsMessageFilter()
     {
+        OrderBy = nameof(RavenSmsMessage.SentOn);
+        SortDirection = SortDirection.Descending;
+
         To = new HashSet<string>();
         Clients = new HashSet<string>();
         Status = RavenSmsMessageStatus.None;
