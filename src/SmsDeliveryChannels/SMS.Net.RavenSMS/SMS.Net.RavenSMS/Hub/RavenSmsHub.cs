@@ -37,7 +37,7 @@ public class RavenSmsHub : Hub
         var client = await _clientsManager.FindClientByIdAsync(clientId);
         if (client is null)
         {
-            await Clients.Caller.SendAsync("forceDisconnect", "client_not_found");
+            await Clients.Caller.SendAsync("forceDisconnect", DisconnectionReason.ClientNotFound);
             return;
         }
 
@@ -51,7 +51,7 @@ public class RavenSmsHub : Hub
             // new connection, check if we need to force the connection, or not
             if (!forceConnection)
             {
-                await Clients.Caller.SendAsync("forceDisconnect", "client_already_connected");
+                await Clients.Caller.SendAsync("forceDisconnect", DisconnectionReason.ClientAlreadyConnected);
                 return;
             }
         }

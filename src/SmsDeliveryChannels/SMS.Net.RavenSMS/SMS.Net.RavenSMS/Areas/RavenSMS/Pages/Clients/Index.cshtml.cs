@@ -43,7 +43,7 @@ public partial class ClientIndexPageModel
         if (deleteResult.IsSuccess())
         {
             // force the client to disconnect
-            await _hubContext.ForceDisconnectAsync(clientInDatabase, "client_deleted");
+            await _hubContext.ForceDisconnectAsync(clientInDatabase, DisconnectionReason.ClientDeleted);
 
             // return success result
             return new JsonResult(new { isSuccess = true });

@@ -131,7 +131,7 @@ public partial class ClientsPreviewPage
         if (deleteResult.IsSuccess())
         {
             // force the client to disconnect
-            await _hubContext.ForceDisconnectAsync(clientInDatabase, "client_deleted");
+            await _hubContext.ForceDisconnectAsync(clientInDatabase, DisconnectionReason.ClientDeleted);
 
             // redirect to the clients list page
             return RedirectToPage("/Clients/index", new { area = "RavenSMS" });
