@@ -18,6 +18,12 @@ export enum ServerStatus {
     OFFLINE,
 
     /**
+     * the client application has been forced to disconnect, 
+     * either by reconfiguration or by forcing disconnection from the server.
+     */
+    Disconnected,
+
+    /**
      * we are trying to reconnect to the server
      */
     RECONNECTING,
