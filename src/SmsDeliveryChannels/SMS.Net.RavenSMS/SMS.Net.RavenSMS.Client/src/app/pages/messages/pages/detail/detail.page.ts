@@ -11,7 +11,7 @@ import { MessageStatus } from 'src/app/core/constants/enums';
   styleUrls: ['./detail.page.scss'],
   templateUrl: 'detail.page.html'
 })
-export class DetailPage implements OnDestroy {
+export class DetailPage {
   _subSink = new SubSink();
   _message: IMessages | null = null;
 
@@ -48,7 +48,7 @@ export class DetailPage implements OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  ionViewDidLeave(): void {
     this._store.dispatch(MessagesStoreActions.UnselectMessage());
     this._subSink.unsubscribe();
   }
