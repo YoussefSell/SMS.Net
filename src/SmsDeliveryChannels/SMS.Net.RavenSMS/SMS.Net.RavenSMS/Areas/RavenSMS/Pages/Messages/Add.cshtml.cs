@@ -24,16 +24,21 @@ public partial class MessagesAddPageModel : BasePageModel
         /// <summary>
         /// Get or set the message body.
         /// </summary>
+        [Required]
+        [MaxLength(500)]
         public string Body { get; set; } = default!;
 
         /// <summary>
         /// Get or set the phone numbers of recipients to send the SMS message to.
         /// </summary>
+        [Required]
+        [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$")]
         public string To { get; set; } = default!;
 
         /// <summary>
         /// Get or set the id of the client used to send this message.
         /// </summary>
+        [Required]
         public string Client { get; set; } = default!;
 
         /// <summary>
@@ -52,6 +57,19 @@ public partial class MessagesAddPageModel
     {
         if (ModelState.IsValid)
         {
+            var client = await _clientsManager.FindClientByIdAsync(Input.Client);
+            if (client is null)
+            {
+                ModelState.AddModelError("", "the selected client is not exist.");
+                return Page();
+            }
+
+            if (client.Status != RavenSmsClientStatus.Connected)
+            {
+                ModelState.AddModelError("", "the selected client is not connected.");
+                return Page();
+            }
+
             // create message instance
             var message = new RavenSmsMessage
             {
@@ -84,7 +102,7 @@ public partial class MessagesAddPageModel
     public async Task<JsonResult> OnGetClientsAsync()
     {
         // get the list of all clients
-        var clients = await _clientsManager.GetAllClientsAsync();
+        var clients = await _clientsManager.GetAllConnectedClientsAsync();
 
         // convert the clients to models
         var clientsModels = clients.Select(client => new

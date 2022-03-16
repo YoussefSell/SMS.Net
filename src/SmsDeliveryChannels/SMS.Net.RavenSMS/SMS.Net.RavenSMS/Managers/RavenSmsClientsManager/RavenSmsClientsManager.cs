@@ -10,16 +10,31 @@ public partial class RavenSmsClientsManager
         => _clientsStore.ClientsCountAsync();
 
     /// <inheritdoc/>
+    public Task<bool> AnyClientAsync(string clientId)
+        => _clientsStore.AnyAsync(clientId);
+
+    /// <inheritdoc/>
+    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber)
+        => _clientsStore.AnyAsync(phoneNumber);
+
+    /// <inheritdoc/>
+    public async Task<RavenSmsClient[]> GetAllConnectedClientsAsync()
+    {
+        var clients = await GetAllClientsAsync(new RavenSmsClientsFilter
+        {
+            IgnorePagination = true,
+        });
+
+        return clients.clients;
+    }
+
+    /// <inheritdoc/>
     public Task<RavenSmsClient[]> GetAllClientsAsync()
         => _clientsStore.GetAllAsync();
 
     /// <inheritdoc/>
     public Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter)
         => _clientsStore.GetAllAsync(filter);
-
-    /// <inheritdoc/>
-    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber)
-        => _clientsStore.AnyAsync(phoneNumber);
 
     /// <inheritdoc/>
     public Task<RavenSmsClient?> FindClientByIdAsync(string clientId)
@@ -36,6 +51,10 @@ public partial class RavenSmsClientsManager
             ? await _clientsStore.UpdateAsync(model)
             : await _clientsStore.SaveAsync(model);
     }
+    
+    /// <inheritdoc/>
+    public Task<Result> DeleteClientAsync(RavenSmsClient client)
+        => _clientsStore.DeleteClientAsync(client);
 
     /// <inheritdoc/>
     public async Task<Result> DeleteClientAsync(string clientId)
@@ -52,8 +71,16 @@ public partial class RavenSmsClientsManager
     }
 
     /// <inheritdoc/>
-    public Task<Result> DeleteClientAsync(RavenSmsClient client)
-        => _clientsStore.DeleteClientAsync(client);
+    public async Task ClientDisconnectedAsync(string connectionId)
+    {
+        var client = await _clientsStore.FindByConnectionIdAsync(connectionId);
+        if (client is null)
+            return;
+
+        client.ConnectionId = string.Empty;
+        client.Status = RavenSmsClientStatus.Disconnected;
+        await _clientsStore.UpdateAsync(client);
+    }
 
     /// <inheritdoc/>
     public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
@@ -64,18 +91,6 @@ public partial class RavenSmsClientsManager
 
         // attach the connection id to the client in database
         return await _clientsStore.UpdateAsync(client);
-    }
-
-    /// <inheritdoc/>
-    public async Task ClientDisconnectedAsync(string connectionId)
-    {
-        var client = await _clientsStore.FindByConnectionIdAsync(connectionId);
-        if (client is null)
-            return;
-
-        client.ConnectionId = string.Empty;
-        client.Status = RavenSmsClientStatus.Disconnected;
-        await _clientsStore.UpdateAsync(client);
     }
 }
 

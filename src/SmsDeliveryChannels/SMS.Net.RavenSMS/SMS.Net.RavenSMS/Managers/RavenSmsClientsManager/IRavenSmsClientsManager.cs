@@ -20,6 +20,13 @@ public interface IRavenSmsClientsManager
     Task<bool> AnyClientAsync(PhoneNumber phoneNumber);
 
     /// <summary>
+    /// check if there is any client with the given id.
+    /// </summary>
+    /// <param name="clientId">the id of the client.</param>
+    /// <returns>true if exist, false if not.</returns>
+    Task<bool> AnyClientAsync(string clientId);
+
+    /// <summary>
     /// create a new ravenSMS client if not exist, if exist the client will be updated.
     /// </summary>
     /// <param name="model">client model instance</param>
@@ -39,6 +46,12 @@ public interface IRavenSmsClientsManager
     /// <param name="phoneNumber">the phone number associated with the client to find.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
     Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber);
+
+    /// <summary>
+    /// get the list of all connected clients.
+    /// </summary>
+    /// <returns>the list of clients.</returns>
+    Task<RavenSmsClient[]> GetAllConnectedClientsAsync();
 
     /// <summary>
     /// get the list of all registered clients.

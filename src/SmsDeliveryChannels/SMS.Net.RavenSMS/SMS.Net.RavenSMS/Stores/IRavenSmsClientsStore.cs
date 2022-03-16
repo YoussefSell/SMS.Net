@@ -31,6 +31,13 @@ public interface IRavenSmsClientsStore
     /// <returns>true if exist, false if not.</returns>
     /// <exception cref="ArgumentNullException">if the given phone number instance is null.</exception>
     Task<bool> AnyAsync(PhoneNumber phoneNumber);
+
+    /// <summary>
+    /// check if there is any client with the given id.
+    /// </summary>
+    /// <param name="clientId">the client id.</param>
+    /// <returns>true if exist, false if not.</returns>
+    Task<bool> AnyAsync(string clientId);
     
     /// <summary>
     /// check if a client with the given id exist or not.

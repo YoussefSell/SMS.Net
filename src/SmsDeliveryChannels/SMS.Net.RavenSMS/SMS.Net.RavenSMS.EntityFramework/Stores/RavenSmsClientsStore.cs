@@ -46,7 +46,11 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
     /// <inheritdoc/>
     public Task<bool> AnyAsync(PhoneNumber phoneNumber) 
         => _clients.AsNoTracking().AnyAsync(q => q.PhoneNumber == phoneNumber.ToString());
-    
+
+    /// <inheritdoc/>
+    public Task<bool> AnyAsync(string clientId)
+        => _clients.AsNoTracking().AnyAsync(q => q.Id == clientId);
+
     /// <inheritdoc/>
     public Task<bool> IsExistClientAsync(string clientId)
         => _clients.AnyAsync(c => c.Id == clientId);
