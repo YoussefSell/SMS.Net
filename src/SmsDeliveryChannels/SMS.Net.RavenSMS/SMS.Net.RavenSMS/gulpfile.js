@@ -60,6 +60,7 @@ gulp.task('js-vendor', function(){
 		'node_modules/@fortawesome/fontawesome-free/js/all.min.js',
 	])
 	.pipe(sourcemaps.init())
+	.pipe(uglify())
 	.pipe(concat('vendor.min.js'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('Assets/js'));
@@ -72,6 +73,7 @@ gulp.task('js-vendor-jquery-validation', function () {
 		'node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js',
 	])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('vendor.jquery.validation.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -80,6 +82,7 @@ gulp.task('js-vendor-jquery-validation', function () {
 gulp.task('js-app', function(){
 	return gulp.src(['Assets/src/js/app.js'])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('app.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -91,6 +94,7 @@ gulp.task('js-app-pages-dashboard', function () {
 		'Assets/src/js/pages/dashboard.js',
 	])
 	.pipe(sourcemaps.init())
+	.pipe(uglify())
 	.pipe(concat('dashboard.page.min.js'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('Assets/js'));
@@ -100,6 +104,7 @@ gulp.task('js-app-pages-dashboard', function () {
 gulp.task('js-app-pages-messages-add', function () {
 	return gulp.src(['Assets/src/js/pages/messages/add.js'])
 	.pipe(sourcemaps.init())
+	.pipe(uglify())
 	.pipe(concat('messages.add.page.min.js'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('Assets/js'));
@@ -108,6 +113,7 @@ gulp.task('js-app-pages-messages-add', function () {
 gulp.task('js-app-pages-messages-index', function () {
 	return gulp.src(['Assets/src/js/pages/messages/index.js'])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('messages.index.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -119,6 +125,7 @@ gulp.task('js-app-pages-messages-preview', function () {
 		'Assets/src/js/pages/messages/preview.js',
 	])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('messages.preview.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -131,6 +138,7 @@ gulp.task('js-app-pages-clients-index', function () {
 		'Assets/src/js/pages/clients/index.js',
 	])
 	.pipe(sourcemaps.init())
+	.pipe(uglify())
 	.pipe(concat('clients.index.page.min.js'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('Assets/js'));
@@ -139,6 +147,7 @@ gulp.task('js-app-pages-clients-index', function () {
 gulp.task('js-app-pages-clients-add', function () {
 	return gulp.src(['Assets/src/js/pages/clients/add.js'])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('clients.add.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -150,6 +159,7 @@ gulp.task('js-app-pages-clients-setup', function () {
 			'Assets/src/js/pages/clients/setup.js',
 		])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('clients.setup.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
@@ -161,6 +171,7 @@ gulp.task('js-app-pages-clients-preview', function () {
 		'Assets/src/js/pages/clients/preview.js',
 	])
 		.pipe(sourcemaps.init())
+		.pipe(uglify())
 		.pipe(concat('clients.preview.page.min.js'))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('Assets/js'));
