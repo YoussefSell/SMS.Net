@@ -53,7 +53,6 @@ gulp.task('css-app-pages-messages-preview', function () {
 // js
 gulp.task('js-vendor', function(){
 	return gulp.src([
-		'node_modules/moment/min/moment.min.js',
 		'node_modules/jquery/dist/jquery.min.js',
 		'node_modules/@popperjs/core/dist/umd/popper.min.js',
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
@@ -72,11 +71,11 @@ gulp.task('js-vendor-jquery-validation', function () {
 		'node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js',
 		'node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js',
 	])
-		.pipe(sourcemaps.init())
-		.pipe(uglify())
-		.pipe(concat('vendor.jquery.validation.min.js'))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('Assets/js'));
+	.pipe(sourcemaps.init())
+	.pipe(uglify())
+	.pipe(concat('vendor.jquery.validation.min.js'))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest('Assets/js'));
 });
 
 gulp.task('js-app', function(){
@@ -111,12 +110,15 @@ gulp.task('js-app-pages-messages-add', function () {
 });
 
 gulp.task('js-app-pages-messages-index', function () {
-	return gulp.src(['Assets/src/js/pages/messages/index.js'])
-		.pipe(sourcemaps.init())
-		.pipe(uglify())
-		.pipe(concat('messages.index.page.min.js'))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('Assets/js'));
+	return gulp.src([
+		'node_modules/moment/min/moment.min.js',
+		'Assets/src/js/pages/messages/index.js'
+	])
+	.pipe(sourcemaps.init())
+	.pipe(uglify())
+	.pipe(concat('messages.index.page.min.js'))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest('Assets/js'));
 });
 
 gulp.task('js-app-pages-messages-preview', function () {
