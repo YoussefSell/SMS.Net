@@ -2,7 +2,7 @@ import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, 
 import { DeviceNetworkStatus, DisconnectionReason, MessageStatus, ServerStatus } from './core/constants/enums';
 import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
-import { IAppIdentification, IMessages, IServerInfo } from './core/models';
+import { IAppIdentification, IMessages, IResult, IServerInfo } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalRService, SmsService } from './core/services';
 import { TranslocoService } from '@ngneat/transloco';
@@ -34,10 +34,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private _router: Router,
+    private _alert: AlertController,
+    private _toast: ToastController,
     private _smsService: SmsService,
     private _signalRService: SignalRService,
-    private _alertController: AlertController,
-    private _toastController: ToastController,
     private _store: Store<RootStoreState.State>,
     private _translationService: TranslocoService,
   ) {
@@ -123,7 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this._networkAlert = await this._alertController.create({
+        this._networkAlert = await this._alert.create({
           backdropDismiss: false,
           message: "you have been disconnected, please check your internet connection."
         });
@@ -155,22 +155,41 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent(async (message: IMessages) => {
+      // check for sms permission, if not show an alert to ask the user to allow the permission
+      if (!await this._smsService.HasPermissionAsync()) {
+        const alertResult = await this._alert.create({
+          backdropDismiss: false,
+          header: 'Allow "RavenSMS" to send SMS messages',
+          message: "RavenSMS requires your permission to send SMS messages, please allow the permission in order for app to work.",
+          buttons: [
+            {
+              text: "Accept",
+              role: 'accept',
+            },
+            {
+              text: "Denied",
+              role: 'denied',
+            }
+          ]
+        });
+
+        // show the alert
+        await alertResult.present();
+
+        // get the result on dismiss
+        const dismissResult = await alertResult.onDidDismiss();
+        if (dismissResult.role == "denied") {
+          // update message status based on the sending result
+          this.persistSmsMessage(message, false, 'sms_permission_denied');
+          return;
+        }
+      }
+
+      // send the message
       var result = await this._smsService.sendSmsAsync(message.to, message.content);
 
       // update message status based on the sending result
-      message = {
-        ...message,
-        sentOn: new Date(),
-        status: result.isSuccess
-          ? MessageStatus.Sent
-          : MessageStatus.Failed,
-      };
-
-      // insert the message
-      this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
-
-      // update the status of the message on the server
-      this._signalRService.sendUpdateMessageStatusEventAsync(message.id, message.status, result.error);
+      this.persistSmsMessage(message, result.isSuccess, result.error);
     });
 
     // register the handler for the force disconnect event
@@ -201,6 +220,28 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * save the message to the store and update the status of the message on the server
+   * @param message the message to persist
+   * @param isSuccess if the sending operation has succeed or not
+   * @param errorCode an error code if exist
+   */
+  private persistSmsMessage(message: IMessages, isSuccess: boolean, errorCode?: string): void {
+    message = {
+      ...message,
+      sentOn: new Date(),
+      status: isSuccess
+        ? MessageStatus.Sent
+        : MessageStatus.Failed,
+    };
+
+    // insert the message
+    this._store.dispatch(MessagesStoreActions.InsertMessage({ message: message }));
+
+    // update the status of the message on the server
+    this._signalRService.sendUpdateMessageStatusEventAsync(message.id, message.status, errorCode);
+  }
+
   private async checkCurrentNetworkStatusAsync() {
     const currentNetworkStatus = await Network.getStatus();
     this._store.dispatch(RootActions.UpdateNetworkConnectionStatus({
@@ -209,7 +250,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private async presentToastAsync(message: string, duration: number | undefined = undefined) {
-    const toast = await this._toastController.create({
+    const toast = await this._toast.create({
       duration: duration, message: message,
     });
     toast.present();
@@ -228,7 +269,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // check if the server alert is already presented, 
     // if not we should create an instance
     if (this._serverAlert == null) {
-      this._serverAlert = await this._alertController.create({ backdropDismiss: false });
+      this._serverAlert = await this._alert.create({ backdropDismiss: false });
       alreadyPresented = false;
     }
 
