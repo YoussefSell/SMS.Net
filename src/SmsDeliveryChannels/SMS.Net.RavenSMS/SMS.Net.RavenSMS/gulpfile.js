@@ -53,6 +53,7 @@ gulp.task('css-app-pages-messages-preview', function () {
 // js
 gulp.task('js-vendor', function(){
 	return gulp.src([
+		'node_modules/moment/min/moment.min.js',
 		'node_modules/jquery/dist/jquery.min.js',
 		'node_modules/@popperjs/core/dist/umd/popper.min.js',
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
@@ -111,7 +112,6 @@ gulp.task('js-app-pages-messages-add', function () {
 
 gulp.task('js-app-pages-messages-index', function () {
 	return gulp.src([
-		'node_modules/moment/min/moment.min.js',
 		'Assets/src/js/pages/messages/index.js'
 	])
 	.pipe(sourcemaps.init())
