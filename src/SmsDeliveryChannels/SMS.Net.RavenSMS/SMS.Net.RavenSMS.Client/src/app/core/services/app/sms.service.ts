@@ -8,6 +8,7 @@ export class SmsService {
 
     private sms: SMS;
     private platform: string;
+    private hasPermission: boolean;
 
     constructor() {
         // there is an issue with DI i couldn't 
@@ -16,6 +17,14 @@ export class SmsService {
 
         // get the platform
         this.platform = Capacitor.getPlatform();
+    }
+
+    /**
+     * check if the app has permission to send sms messages.
+     * @returns returns a promise that resolves with a boolean that indicates if we have permission
+     */
+    HasPermissionAsync(): Promise<boolean> {
+        return this.sms.hasPermission();
     }
 
     /**
