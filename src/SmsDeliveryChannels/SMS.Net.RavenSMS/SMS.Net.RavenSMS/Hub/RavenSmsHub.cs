@@ -8,7 +8,7 @@ public class RavenSmsHub : Hub
 
     public RavenSmsHub(
         IRavenSmsMessagesManager messagesManager,
-        IRavenSmsClientsManager manager, 
+        IRavenSmsClientsManager manager,
         ILogger<RavenSmsHub> logger
     )
     {
@@ -85,7 +85,9 @@ public class RavenSmsHub : Hub
         if (status == RavenSmsMessageStatus.Failed)
         {
             attempt.Status = SendAttemptStatus.Failed;
-            attempt.AddError(error, "failed to send the sms message, check that your phone has a SIM card with credits to send the messages");
+            attempt.AddError(error, error.Equals(SmsErrorCodes.SmsPermissionDenied)
+                ? "failed to send the sms message, you need to give the app the permission to send sms message, go to the app settings and check the sms permission"
+                : "failed to send the sms message, check that your phone has a SIM card with credits to send the messages");
         }
 
         await _messagesManager.SaveAsync(message);
