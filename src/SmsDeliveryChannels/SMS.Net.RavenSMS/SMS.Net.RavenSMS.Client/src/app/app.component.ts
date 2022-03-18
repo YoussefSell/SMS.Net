@@ -284,7 +284,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // we only going to present the alter if it not already presented & we are not on the setup page
-    if (!alreadyPresented && this._router.url !== '/setup') {
+    if (!alreadyPresented) {
       await this._serverAlert.present();
     }
 
