@@ -5,25 +5,27 @@ var clients = [];
 $.ajax({
     url: '/ravenSMS/messages/add/?handler=Clients',
 })
-    .done(function (result) {
-        // get the client select
-        var $clientsSelect = $("#Input_Client");
+.done(function (result) {
+    // get the client select
+    var $clientsSelect = $("#Input_Client");
 
-        // populate the select
-        $.each(result, function () {
-            $clientsSelect.append($("<option />").val(this.id).text(this.name));
-        });
-
-        // save the clients list result
-        clients = result;
+    // populate the select
+    $.each(result, function () {
+        $clientsSelect.append($("<option />").val(this.id).text(this.name));
     });
+
+    // save the clients list result
+    clients = result;
+});
 
 function onEnableSheduling(enabled) {
     if (enabled) {
         $("#delivery-date-container").show();
     }
     else {
+        console.log('on hide');
         $("#delivery-date-container").hide();
+        $('#Input_DeliveryDate').val(undefined);
     }
 }
 
