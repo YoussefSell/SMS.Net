@@ -8,7 +8,6 @@ export class SmsService {
 
     private sms: SMS;
     private platform: string;
-    private hasPermission: boolean;
 
     constructor() {
         // there is an issue with DI i couldn't 
