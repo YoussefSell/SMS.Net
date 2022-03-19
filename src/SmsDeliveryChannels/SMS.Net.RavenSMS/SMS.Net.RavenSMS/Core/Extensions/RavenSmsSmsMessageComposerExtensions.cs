@@ -6,7 +6,7 @@
 public static class RavenSmsSmsMessageComposerExtensions
 {
     /// <summary>
-    /// set the delay to wait before sending the message
+    /// set the delay to wait before sending the message.
     /// </summary>
     /// <param name="messageComposer">the message composer instance.</param>
     /// <param name="delay">the Timespan delay.</param>

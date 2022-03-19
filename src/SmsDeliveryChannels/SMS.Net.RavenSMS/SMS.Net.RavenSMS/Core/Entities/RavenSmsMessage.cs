@@ -32,6 +32,11 @@ public class RavenSmsMessage
     public DateTimeOffset? SentOn { get; set; }
 
     /// <summary>
+    /// if the message has been queued, this will be the date & time the message will be sent
+    /// </summary>
+    public DateTimeOffset? DeliverAt { get; set; }
+
+    /// <summary>
     /// Gets or sets the priority of this e-mail message.
     /// </summary>
     public Priority Priority { get; set; }

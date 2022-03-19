@@ -1,7 +1,7 @@
 ﻿namespace SMS.Net.Channel.RavenSMS;
 
 /// <summary>
-/// the RavenSMS client SMS delivery channel
+/// the RavenSMS SMS delivery channel.
 /// </summary>
 public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
 {
@@ -10,12 +10,21 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
         => SendAsync(message).GetAwaiter().GetResult();
 
     /// <inheritdoc/>
-    public async Task<SmsSendingResult> SendAsync(SmsMessage message)
+    public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
     {
         try
         {
+            // if the message is null return failure
+            if (message is null)
+            {
+                return SmsSendingResult.Failure(Name)
+                    .AddError(new SmsSendingError(
+                        code: "message_not_defined",
+                        message: "the given message instance is null"));
+            }
+
             // check if there is any client registered with the given "FROM" phone number
-            var client = await _clientsManager.FindClientByPhoneNumberAsync(message.From);
+            var client = await _clientsManager.FindClientByPhoneNumberAsync(message.From, cancellationToken);
             if (client is null)
             {
                 return SmsSendingResult.Failure(Name)
@@ -32,20 +41,32 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
             if (delayData.IsEmpty())
             {
                 // queue the message for delivery without delay
-                await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage);
+                var queuingResult = await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage, cancellationToken);
+                if (queuingResult.IsSuccess())
+                {
+                    // all done return success result
+                    return SmsSendingResult.Success(Name);
+                }
 
-                // all done return success result
-                return SmsSendingResult.Success(Name);
+                // return the failure error
+                return SmsSendingResult.Failure(Name)
+                    .AddError(queuingResult);
             }
 
             // var get the delay value
             var delay = delayData.GetValue<TimeSpan>();
 
             // queue the message for delivery with a delay
-            await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage, delay);
+            var queuingWithDelayResult = await _ravenSmsManager.QueueMessageAsync(ravenSmsMessage, delay, cancellationToken);
+            if (queuingWithDelayResult.IsSuccess())
+            {
+                // all done return success result
+                return SmsSendingResult.Success(Name);
+            }
 
-            // all done return success result
-            return SmsSendingResult.Success(Name);
+            // return the failure error
+            return SmsSendingResult.Failure(Name)
+                .AddError(queuingWithDelayResult);
         }
         catch (Exception ex)
         {
@@ -75,7 +96,7 @@ public partial class RavenSmsDeliveryChannel
     /// <summary>
     /// create an instance of <see cref="RavenSmsDeliveryChannel"/>
     /// </summary>
-    /// <param name="options">the EDP options instance</param>
+    /// <param name="options">the channel options instance</param>
     /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
     public RavenSmsDeliveryChannel(
         IRavenSmsManager ravenSmsManager,
@@ -97,7 +118,7 @@ public partial class RavenSmsDeliveryChannel
     /// </summary>
     /// <param name="message">the <see cref="SmsMessage"/> instance</param>
     /// <returns>an instance of <see cref="RavenSmsMessage"/> class</returns>
-    public static RavenSmsMessage CreateMessage(SmsMessage message, string clientId) 
+    public static RavenSmsMessage CreateMessage(SmsMessage message, string clientId)
         => new()
         {
             To = message.To,

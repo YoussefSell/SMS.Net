@@ -1,90 +1,106 @@
 ﻿namespace SMS.Net.Channel.RavenSMS.Persistence;
 
 /// <summary>
-/// the repository for managing clients apps.
+/// the store for managing RavenSMS clients data.
 /// </summary>
 public interface IRavenSmsClientsStore
 {
     /// <summary>
-    /// get the clients count
+    /// get the total count of the clients.
     /// </summary>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>total count of the clients</returns>
-    Task<long> ClientsCountAsync();
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<long> GetCountAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// get the list of all registered clients.
+    /// get the list of all clients.
     /// </summary>
-    /// <returns>the list of clients.</returns>
-    Task<RavenSmsClient[]> GetAllAsync();
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
+    /// <returns>a list of all clients.</returns>
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<RavenSmsClient[]> GetAllAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// get the list of all clients
+    /// get the list of clients using a filter with total count of all entities that matches the filter for pagination.
     /// </summary>
-    /// <param name="filter">the filter used to retrieve the messages.</param>
+    /// <param name="filter">the filter used to retrieve the clients.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>the list of messages and total count of rows</returns>
-    Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    /// <exception cref="ArgumentNullException">If the <see cref="RavenSmsClientsFilter"/> is null.</exception>
+    Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// check if there is any client with the given phone number.
     /// </summary>
     /// <param name="phoneNumber">the phone number instance.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>true if exist, false if not.</returns>
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
     /// <exception cref="ArgumentNullException">if the given phone number instance is null.</exception>
-    Task<bool> AnyAsync(PhoneNumber phoneNumber);
+    Task<bool> AnyAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// check if there is any client with the given id.
     /// </summary>
     /// <param name="clientId">the client id.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>true if exist, false if not.</returns>
-    Task<bool> AnyAsync(string clientId);
-    
-    /// <summary>
-    /// check if a client with the given id exist or not.
-    /// </summary>
-    /// <param name="clientId">the id of the client</param>
-    /// <returns>true if exist, false if not.</returns>
-    Task<bool> IsExistClientAsync(string clientId);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<bool> AnyAsync(string clientId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// find the client with the given Id.
     /// </summary>
     /// <param name="clientId">the id of the client to find.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
-    Task<RavenSmsClient?> FindByIdAsync(string clientId);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<RavenSmsClient?> FindByIdAsync(string clientId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// find a client by connection Id
+    /// find a client by connection Id.
     /// </summary>
     /// <param name="connectionId">the connection Id</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>the client associated with the given connection Id</returns>
-    Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// find the client with the given phone number.
     /// </summary>
-    /// <param name="phoneNumber">the phone number associated with the client to find.</param>
+    /// <param name="phoneNumber">the phone number value.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>instance of <see cref="RavenSmsClient"/> found, full if not exist.</returns>
-    Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<RavenSmsClient?> FindByPhoneNumberAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// save the given client.
+    /// save the given client to the underlying store.
     /// </summary>
-    /// <param name="client">the client to be saved</param>
+    /// <param name="client">the client instance to be saved</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>the operation result</returns>
-    Task<Result<RavenSmsClient>> SaveAsync(RavenSmsClient client);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<Result<RavenSmsClient>> CreateAsync(RavenSmsClient client, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// update the given client.
+    /// update the given client in the store.
     /// </summary>
-    /// <param name="client">the client to be updated</param>
+    /// <param name="client">the client instance to be updated</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>the operation result</returns>
-    Task<Result<RavenSmsClient>> UpdateAsync(RavenSmsClient client);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<Result<RavenSmsClient>> UpdateAsync(RavenSmsClient client, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// delete the client.
+    /// delete the client from the store.
     /// </summary>
-    /// <param name="client">the client instance</param>
+    /// <param name="client">the client instance to be delete.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>the operation result</returns>
-    Task<Result> DeleteClientAsync(RavenSmsClient client);
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<Result> DeleteAsync(RavenSmsClient client, CancellationToken cancellationToken = default);
 }

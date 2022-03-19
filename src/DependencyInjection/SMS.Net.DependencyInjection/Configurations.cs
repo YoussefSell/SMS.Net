@@ -12,7 +12,7 @@
         /// add the SMS.Net services and configuration.
         /// </summary>
         /// <param name="serviceCollection">the service collection instant</param>
-        /// <param name="defaultEdpName">name of the default edp to be used.</param>
+        /// <param name="defaultEdpName">name of the default delivery channel to be used.</param>
         public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, string defaultEdpName)
             => AddSMSNet(serviceCollection, options => options.DefaultDeliveryChannel = defaultEdpName);
 

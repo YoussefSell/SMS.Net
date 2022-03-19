@@ -115,7 +115,7 @@ namespace SMS.Net.Channel.Avochato.Test
         public void CreatSmsMessageFromMessage()
         {
             // arrange
-            var edp = new AvochatoSmsDeliveryChannel(null, new AvochatoSmsDeliveryChannelOptions()
+            var channel = new AvochatoSmsDeliveryChannel(null, new AvochatoSmsDeliveryChannelOptions()
             {
                 AuthId = TEST_AUTHID,
                 AuthSecret = TEST_AUTHSECRET,
@@ -128,7 +128,7 @@ namespace SMS.Net.Channel.Avochato.Test
                 .Build();
 
             // act
-            var mailMessage = edp.CreateMessage(message);
+            var mailMessage = channel.CreateMessage(message);
 
             // assert
             Assert.Equal(message.From.ToString(), mailMessage.From);
@@ -140,7 +140,7 @@ namespace SMS.Net.Channel.Avochato.Test
         public void CreatSmsMessageFromMessageWithCustomData()
         {
             // arrange
-            var edp = new AvochatoSmsDeliveryChannel(null, new AvochatoSmsDeliveryChannelOptions()
+            var channel = new AvochatoSmsDeliveryChannel(null, new AvochatoSmsDeliveryChannelOptions()
             {
                 AuthId = TEST_AUTHID,
                 AuthSecret = TEST_AUTHSECRET,
@@ -165,7 +165,7 @@ namespace SMS.Net.Channel.Avochato.Test
             var message = messageComposer.Build();
 
             // act
-            var mailMessage = edp.CreateMessage(message);
+            var mailMessage = channel.CreateMessage(message);
 
             // assert
             Assert.True(mailMessage.MarkAddressed);
@@ -178,7 +178,7 @@ namespace SMS.Net.Channel.Avochato.Test
         public void SendEmail()
         {
             // arrange
-            var edp = new AvochatoSmsDeliveryChannel(null,  new AvochatoSmsDeliveryChannelOptions()
+            var channel = new AvochatoSmsDeliveryChannel(null,  new AvochatoSmsDeliveryChannelOptions()
             {
                 AuthId = TEST_AUTHID,
                 AuthSecret = TEST_AUTHSECRET,
@@ -191,7 +191,7 @@ namespace SMS.Net.Channel.Avochato.Test
                 .Build();
 
             // act
-            var result = edp.Send(message);
+            var result = channel.Send(message);
 
             // assert
             Assert.True(result.IsSuccess);

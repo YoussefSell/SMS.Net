@@ -45,7 +45,7 @@
             // validate the configuration
             configuration.Validate();
 
-            // add the Edp to the SMSs service factory
+            // add the channel to the SMSs service factory
             builder.UseChannel(new TwilioSmsDeliveryChannel(configuration));
 
             return builder;

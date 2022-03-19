@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -17,14 +18,14 @@
             => SendAsync(message).GetAwaiter().GetResult();
 
         /// <inheritdoc/>
-        public async Task<SmsSendingResult> SendAsync(SmsMessage message)
+        public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
         {
             try
             {
                 // init the Avochato client
                 var client = CreateClient();
 
-                // build http request
+                // build HTTP request
                 using var request = new HttpRequestMessage(HttpMethod.Post, new UriBuilder(_options.BaseUrl) { Path = "v1/messages" }.Uri);
 
                 // create the message & build the request json content
@@ -37,7 +38,7 @@
                 request.Content = jsonContent;
 
                 // send the message
-                using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+                using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
 
                 // create the client
                 return BuildResultObject(response);
@@ -68,7 +69,7 @@
         /// <summary>
         /// create an instance of <see cref="AvochatoSmsDeliveryChannel"/>
         /// </summary>
-        /// <param name="options">the edp options instance</param>
+        /// <param name="options">the options instance</param>
         /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
         public AvochatoSmsDeliveryChannel(HttpClient httpClient, AvochatoSmsDeliveryChannelOptions options)
         {
@@ -79,7 +80,7 @@
             options.Validate();
             _options = options;
 
-            // if the http client is null
+            // if the HTTP client is null
             _httpClient = httpClient ?? new HttpClient();
         }
 

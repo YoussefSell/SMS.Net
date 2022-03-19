@@ -176,7 +176,7 @@
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // act
-                service.Send(message, edp_name: null);
+                service.Send(message, channel_name: null);
             });
         }
 
@@ -215,7 +215,7 @@
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // act
-                _ = service.Send(message, edp: null);
+                _ = service.Send(message, channel: null);
             });
         }
 

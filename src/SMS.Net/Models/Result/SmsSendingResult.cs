@@ -126,19 +126,19 @@
         /// <summary>
         /// create an instance of <see cref="SmsSendingResult"/> with a success state.
         /// </summary>
-        /// <param name="edpName">the name of the edp used to send the email.</param>
+        /// <param name="channelName">the name of the channel used to send the email.</param>
         /// <returns>instance of <see cref="SmsSendingResult"/></returns>
-        public static SmsSendingResult Success(string edpName)
-            => new SmsSendingResult(true, edpName);
+        public static SmsSendingResult Success(string channelName)
+            => new SmsSendingResult(true, channelName);
 
         /// <summary>
         /// create an instance of <see cref="SmsSendingResult"/> with a failure state.
         /// </summary>
-        /// <param name="edpName">the name of the edp used to send the email.</param>
+        /// <param name="channelName">the name of the channel used to send the email.</param>
         /// <param name="errors">errors associated with the failure if any.</param>
         /// <returns>instance of <see cref="SmsSendingResult"/></returns>
-        public static SmsSendingResult Failure(string edpName, params SmsSendingError[] errors)
-            => new SmsSendingResult(false, edpName);
+        public static SmsSendingResult Failure(string channelName, params SmsSendingError[] errors)
+            => new SmsSendingResult(false, channelName);
 
         /// <summary>
         /// this static class holds the keys names used in the email sending meta-data

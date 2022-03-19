@@ -13,7 +13,7 @@ public class RavenSmsMessageSendAttempt
     }
     
     /// <summary>
-    /// Get or set the id of the message.
+    /// Get or set the id of the message attempt.
     /// </summary>
     public string Id { get; set; }
 
@@ -33,14 +33,9 @@ public class RavenSmsMessageSendAttempt
     public ICollection<RavenSmsMessageSendAttemptError> Errors { get; set; }
 
     /// <summary>
-    /// the id of the message
+    /// the id of the message associated with this attempt
     /// </summary>
     public string MessageId { get; set; } = default!;
-
-    /// <summary>
-    /// the message
-    /// </summary>
-    public RavenSmsMessage Message { get; set; } = default!;
 
     /// <summary>
     /// add a new error to the list of errors

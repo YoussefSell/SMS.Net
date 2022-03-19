@@ -34,7 +34,7 @@ public partial class DashboradPageModel
     public async Task OnGetAsync()
     {
         (TotalSent, TotalFailed, TotalInQueue) = await _messagesManager.MessagesCountsAsync();
-        TotalClients = await _clientsManager.ClientsCountAsync();
+        TotalClients = await _clientsManager.GetClientsCountAsync();
     }
 }
 

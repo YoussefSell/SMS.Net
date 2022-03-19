@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -17,48 +18,29 @@
             => Send(message, _defaultProvider);
 
         /// <inheritdoc/>
-        public Task<SmsSendingResult> SendAsync(SmsMessage message)
-            => SendAsync(message, _defaultProvider);
-
-        /// <inheritdoc/>
-        public SmsSendingResult Send(SmsMessage message, string edp_name)
+        public SmsSendingResult Send(SmsMessage message, string channel_name)
         {
             // check if the provider name is valid
-            if (edp_name is null)
-                throw new ArgumentNullException(nameof(edp_name));
+            if (channel_name is null)
+                throw new ArgumentNullException(nameof(channel_name));
 
             // check if the provider exist
-            if (!_providers.TryGetValue(edp_name, out ISmsDeliveryChannel provider))
-                throw new SmsDeliveryChannelNotFoundException(edp_name);
+            if (!_providers.TryGetValue(channel_name, out ISmsDeliveryChannel provider))
+                throw new SmsDeliveryChannelNotFoundException(channel_name);
 
             // send the email message
             return Send(message, provider);
         }
 
         /// <inheritdoc/>
-        public Task<SmsSendingResult> SendAsync(SmsMessage message, string edp_name)
-        {
-            // check if the provider name is valid
-            if (edp_name is null)
-                throw new ArgumentNullException(nameof(edp_name));
-
-            // check if the provider exist
-            if (!_providers.TryGetValue(edp_name, out ISmsDeliveryChannel provider))
-                throw new SmsDeliveryChannelNotFoundException(edp_name);
-
-            // send the email message
-            return SendAsync(message, provider);
-        }
-
-        /// <inheritdoc/>
-        public SmsSendingResult Send(SmsMessage message, ISmsDeliveryChannel edp)
+        public SmsSendingResult Send(SmsMessage message, ISmsDeliveryChannel channel)
         {
             // check if given params are not null.
             if (message is null)
                 throw new ArgumentNullException(nameof(message));
 
-            if (edp is null)
-                throw new ArgumentNullException(nameof(edp));
+            if (channel is null)
+                throw new ArgumentNullException(nameof(channel));
 
             // check if the from is null
             CheckMessageFromValue(message);
@@ -66,23 +48,42 @@
             // check if the sending is paused
             if (Options.PauseSending)
             {
-                return SmsSendingResult.Success(edp.Name)
+                return SmsSendingResult.Success(channel.Name)
                     .AddMetaData(SmsSendingResult.MetaDataKeys.SendingPaused, true);
             }
 
             // send the email message
-            return edp.Send(message);
+            return channel.Send(message);
         }
 
         /// <inheritdoc/>
-        public Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsDeliveryChannel edp)
+        public Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
+            => SendAsync(message, _defaultProvider, cancellationToken);
+
+        /// <inheritdoc/>
+        public Task<SmsSendingResult> SendAsync(SmsMessage message, string channel_name, CancellationToken cancellationToken = default)
+        {
+            // check if the provider name is valid
+            if (channel_name is null)
+                throw new ArgumentNullException(nameof(channel_name));
+
+            // check if the provider exist
+            if (!_providers.TryGetValue(channel_name, out ISmsDeliveryChannel provider))
+                throw new SmsDeliveryChannelNotFoundException(channel_name);
+
+            // send the email message
+            return SendAsync(message, provider, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<SmsSendingResult> SendAsync(SmsMessage message, ISmsDeliveryChannel channel, CancellationToken cancellationToken = default)
         {
             // check if given params are not null.
             if (message is null)
                 throw new ArgumentNullException(nameof(message));
 
-            if (edp is null)
-                throw new ArgumentNullException(nameof(edp));
+            if (channel is null)
+                throw new ArgumentNullException(nameof(channel));
 
             // check if the from is null
             CheckMessageFromValue(message);
@@ -90,12 +91,12 @@
             // check if the sending is paused
             if (Options.PauseSending)
             {
-                return Task.FromResult(SmsSendingResult.Success(edp.Name)
+                return Task.FromResult(SmsSendingResult.Success(channel.Name)
                     .AddMetaData("sending_paused", true));
             }
 
             // send the email message
-            return edp.SendAsync(message);
+            return channel.SendAsync(message, cancellationToken);
         }
     }
 

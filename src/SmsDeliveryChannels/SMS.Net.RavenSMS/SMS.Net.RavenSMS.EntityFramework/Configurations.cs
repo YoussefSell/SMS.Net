@@ -11,7 +11,8 @@ public static class Configurations
     /// <param name="builder">the RavenSMS builder instance.</param>
     /// <returns>instance of <see cref="RavenSmsBuilder"/> to enable methods chaining.</returns>
     /// <remarks>
-    /// we assume that you already configured EF core in your project, this package only provide an implementation of stores that uses EF core to store the data.
+    /// we assume that you already configured EF core in your project, 
+    /// this package only provide an implementation of stores that uses EF core to store the data.
     /// </remarks>
     public static RavenSmsBuilder UseEntityFrameworkStores<TContext>(this RavenSmsBuilder builder) 
         where TContext : DbContext, IRavenSmsDbContext

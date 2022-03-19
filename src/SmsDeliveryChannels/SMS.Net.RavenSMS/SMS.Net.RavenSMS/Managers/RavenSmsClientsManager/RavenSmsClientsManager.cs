@@ -6,60 +6,60 @@
 public partial class RavenSmsClientsManager
 {
     /// <inheritdoc/>
-    public Task<long> ClientsCountAsync()
-        => _clientsStore.ClientsCountAsync();
+    public Task<long> GetClientsCountAsync(CancellationToken cancellationToken = default)
+        => _clientsStore.GetCountAsync(cancellationToken);
+    
+    /// <inheritdoc/>
+    public Task<RavenSmsClient[]> GetAllClientsAsync(CancellationToken cancellationToken = default)
+        => _clientsStore.GetAllAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public Task<bool> AnyClientAsync(string clientId)
-        => _clientsStore.AnyAsync(clientId);
-
+    public Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default)
+        => _clientsStore.GetAllAsync(filter, cancellationToken);
+    
     /// <inheritdoc/>
-    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber)
-        => _clientsStore.AnyAsync(phoneNumber);
-
-    /// <inheritdoc/>
-    public async Task<RavenSmsClient[]> GetAllConnectedClientsAsync()
+    public async Task<RavenSmsClient[]> GetAllConnectedClientsAsync(CancellationToken cancellationToken = default)
     {
         var clients = await GetAllClientsAsync(new RavenSmsClientsFilter
         {
             IgnorePagination = true,
-        });
+        }, cancellationToken);
 
         return clients.clients;
     }
 
     /// <inheritdoc/>
-    public Task<RavenSmsClient[]> GetAllClientsAsync()
-        => _clientsStore.GetAllAsync();
+    public Task<bool> AnyClientAsync(string clientId, CancellationToken cancellationToken = default)
+        => _clientsStore.AnyAsync(clientId, cancellationToken);
 
     /// <inheritdoc/>
-    public Task<(RavenSmsClient[] clients, int rowsCount)> GetAllClientsAsync(RavenSmsClientsFilter filter)
-        => _clientsStore.GetAllAsync(filter);
+    public Task<bool> AnyClientAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default)
+        => _clientsStore.AnyAsync(phoneNumber, cancellationToken);
 
     /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindClientByIdAsync(string clientId)
-        => _clientsStore.FindByIdAsync(clientId);
+    public Task<RavenSmsClient?> FindClientByIdAsync(string clientId, CancellationToken cancellationToken = default)
+        => _clientsStore.FindByIdAsync(clientId, cancellationToken);
 
     /// <inheritdoc/>
-    public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber)
-        => _clientsStore.FindByPhoneNumberAsync(phoneNumber);
+    public Task<RavenSmsClient?> FindClientByPhoneNumberAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default)
+        => _clientsStore.FindByPhoneNumberAsync(phoneNumber, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsClient>> SaveClientAsync(RavenSmsClient model)
+    public async Task<Result<RavenSmsClient>> SaveClientAsync(RavenSmsClient model, CancellationToken cancellationToken = default)
     {
-        return await _clientsStore.IsExistClientAsync(model.Id)
-            ? await _clientsStore.UpdateAsync(model)
-            : await _clientsStore.SaveAsync(model);
+        return await _clientsStore.AnyAsync(model.Id, cancellationToken)
+            ? await _clientsStore.UpdateAsync(model, cancellationToken)
+            : await _clientsStore.CreateAsync(model, cancellationToken);
     }
     
     /// <inheritdoc/>
-    public Task<Result> DeleteClientAsync(RavenSmsClient client)
-        => _clientsStore.DeleteClientAsync(client);
+    public Task<Result> DeleteClientAsync(RavenSmsClient client, CancellationToken cancellationToken = default)
+        => _clientsStore.DeleteAsync(client, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<Result> DeleteClientAsync(string clientId)
+    public async Task<Result> DeleteClientAsync(string clientId, CancellationToken cancellationToken = default)
     {
-        var client = await _clientsStore.FindByIdAsync(clientId).ConfigureAwait(false);
+        var client = await _clientsStore.FindByIdAsync(clientId, cancellationToken).ConfigureAwait(false);
         if (client is null)
         {
             return Result.Failure()
@@ -67,30 +67,34 @@ public partial class RavenSmsClientsManager
                 .WithCode(ResultCode.NotFound);
         }
 
-        return await DeleteClientAsync(client);
+        return await DeleteClientAsync(client, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task ClientDisconnectedAsync(string connectionId)
+    public async Task<Result> ClientDisconnectedAsync(string connectionId, CancellationToken cancellationToken = default)
     {
-        var client = await _clientsStore.FindByConnectionIdAsync(connectionId);
+        var client = await _clientsStore.FindByConnectionIdAsync(connectionId, cancellationToken);
         if (client is null)
-            return;
+        {
+            return Result.Failure()
+                .WithMessage("there is no client with the given connection id")
+                .WithCode(ResultCode.NotFound);
+        }
 
         client.ConnectionId = string.Empty;
         client.Status = RavenSmsClientStatus.Disconnected;
-        await _clientsStore.UpdateAsync(client);
+        return await _clientsStore.UpdateAsync(client, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsClient>> ClientConnectedAsync(RavenSmsClient client, string connectionId)
+    public async Task<Result> ClientConnectedAsync(RavenSmsClient client, string connectionId, CancellationToken cancellationToken = default)
     {
         // set the client id
         client.ConnectionId = connectionId;
         client.Status = RavenSmsClientStatus.Connected;
 
         // attach the connection id to the client in database
-        return await _clientsStore.UpdateAsync(client);
+        return await _clientsStore.UpdateAsync(client, cancellationToken);
     }
 }
 

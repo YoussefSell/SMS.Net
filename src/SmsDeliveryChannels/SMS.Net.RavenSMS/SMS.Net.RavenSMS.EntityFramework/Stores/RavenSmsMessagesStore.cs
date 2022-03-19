@@ -6,7 +6,7 @@
 public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 {
     /// <inheritdoc/>
-    public async Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync()
+    public async Task<(long totalSent, long totalFailed, long totalInQueue)> GetCountsAsync(CancellationToken cancellationToken = default)
     {
         var result = await _messages.GroupBy(e => e.Status)
             .Select(grouping => new
@@ -14,7 +14,7 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
                 grouping.Key,
                 Count = grouping.Count()
             })
-            .ToDictionaryAsync(e => e.Key, e => e.Count);
+            .ToDictionaryAsync(e => e.Key, e => e.Count, cancellationToken: cancellationToken);
 
         return (
             result.TryGetValue(RavenSmsMessageStatus.Sent, out var totalSent) ? totalSent : 0,
@@ -24,17 +24,11 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     }
 
     /// <inheritdoc/>
-    public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
-        => _messages.Include(e => e.Client)
-            .Include(m => m.SendAttempts)
-            .FirstOrDefaultAsync(message => message.Id == messageId);
+    public Task<RavenSmsMessage[]> GetAllAsync(CancellationToken cancellationToken = default)
+        => _messages.ToArrayAsync(cancellationToken: cancellationToken);
 
     /// <inheritdoc/>
-    public Task<RavenSmsMessage[]> GetAllAsync()
-        => _messages.ToArrayAsync();
-
-    /// <inheritdoc/>
-    public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter)
+    public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter, CancellationToken cancellationToken = default)
     {
         var query = _messages.Include(e => e.Client).AsQueryable();
 
@@ -48,13 +42,13 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
         {
             rowsCount = await query.Select(e => e.Id)
                 .Distinct()
-                .CountAsync();
+                .CountAsync(cancellationToken: cancellationToken);
 
             query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
                 .Take(filter.PageSize);
         }
 
-        var data = await query.ToArrayAsync();
+        var data = await query.ToArrayAsync(cancellationToken: cancellationToken);
 
         rowsCount = filter.IgnorePagination
             ? data.Length
@@ -62,14 +56,24 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
 
         return (data, rowsCount);
     }
-    
+
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsMessage>> AddAsync(RavenSmsMessage message)
+    public Task<bool> AnyAsync(string messageId, CancellationToken cancellationToken = default)
+        => _messages.AsNoTracking().AnyAsync(message => message.Id == messageId, cancellationToken: cancellationToken);
+
+    /// <inheritdoc/>
+    public Task<RavenSmsMessage?> FindByIdAsync(string messageId, CancellationToken cancellationToken = default)
+        => _messages.Include(e => e.Client)
+            .Include(m => m.SendAttempts)
+            .FirstOrDefaultAsync(message => message.Id == messageId, cancellationToken: cancellationToken);
+
+    /// <inheritdoc/>
+    public async Task<Result<RavenSmsMessage>> CreateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
         try
         {
             var entity = _messages.Add(message);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return entity.Entity;
         }
         catch (Exception ex)
@@ -81,12 +85,12 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
     }
 
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message)
+    public async Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
         try
         {
             var entity = _messages.Update(message);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return entity.Entity;
         }
         catch (Exception ex)
@@ -97,9 +101,6 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
         }
     }
 
-    /// <inheritdoc/>
-    public Task<bool> IsMessageExistAsync(string messageId)
-        => _messages.AsNoTracking().AnyAsync(message => message.Id == messageId);
 }
 
 /// <summary>

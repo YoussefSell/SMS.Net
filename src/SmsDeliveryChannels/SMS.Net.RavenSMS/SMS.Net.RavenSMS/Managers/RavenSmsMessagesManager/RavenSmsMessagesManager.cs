@@ -6,41 +6,37 @@
 public partial class RavenSmsMessagesManager
 {
     /// <inheritdoc/>
-    public Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync()
-        => _messagesStore.MessagesCountsAsync();
+    public Task<(long totalSent, long totalFailed, long totalInQueue)> MessagesCountsAsync(CancellationToken cancellationToken = default)
+        => _messagesStore.GetCountsAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter)
-        => _messagesStore.GetAllAsync(filter);
-
-    /// <summary>
-    /// check if the message already exist
-    /// </summary>
-    /// <param name="messageId">the id of the message</param>
-    /// <returns>true if exist, false if not</returns>
-    public Task<bool> IsMessageExistAsync(string messageId)
-        => _messagesStore.IsMessageExistAsync(messageId);
+    public Task<(RavenSmsMessage[] messages, int rowsCount)> GetAllMessagesAsync(RavenSmsMessageFilter filter, CancellationToken cancellationToken = default)
+        => _messagesStore.GetAllAsync(filter, cancellationToken);
 
     /// <inheritdoc/>
-    public Task<RavenSmsMessage?> FindByIdAsync(string messageId)
-        => _messagesStore.FindByIdAsync(messageId);
+    public Task<bool> AnyAsync(string messageId, CancellationToken cancellationToken = default)
+        => _messagesStore.AnyAsync(messageId,cancellationToken);
 
     /// <inheritdoc/>
-    public Task<RavenSmsMessage[]> GetAllAsync()
-        => _messagesStore.GetAllAsync();
+    public Task<RavenSmsMessage?> FindByIdAsync(string messageId, CancellationToken cancellationToken = default)
+        => _messagesStore.FindByIdAsync(messageId, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message)
+    public Task<RavenSmsMessage[]> GetAllAsync(CancellationToken cancellationToken = default)
+        => _messagesStore.GetAllAsync(cancellationToken);
+
+    /// <inheritdoc/>
+    public async Task<Result<RavenSmsMessage>> SaveAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
-        if (await _messagesStore.IsMessageExistAsync(message.Id))
-            return await _messagesStore.UpdateAsync(message);
+        if (await _messagesStore.AnyAsync(message.Id, cancellationToken))
+            return await _messagesStore.UpdateAsync(message, cancellationToken);
 
-        return await _messagesStore.AddAsync(message);
+        return await _messagesStore.CreateAsync(message, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message)
-        => _messagesStore.UpdateAsync(message);
+    public Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
+        => _messagesStore.UpdateAsync(message, cancellationToken);
 }
 
 /// <summary>

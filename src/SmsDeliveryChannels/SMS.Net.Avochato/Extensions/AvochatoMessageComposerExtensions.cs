@@ -56,7 +56,7 @@
             => messageComposer.PassChannelData(CustomChannelData.MediaUrl, value);
 
         /// <summary>
-        /// Send a callback via http POST to this domain when the delivery status is updated.
+        /// Send a callback via HTTP POST to this domain when the delivery status is updated.
         /// </summary>
         /// <param name="messageComposer">the message composer instance.</param>
         /// <param name="value">the StatusCallback value.</param>

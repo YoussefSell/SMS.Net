@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-
-namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
 
 /// <summary>
 /// the entity configuration for <see cref="RavenSmsMessage"/> entity
@@ -32,7 +30,7 @@ public class RavenSmsMessageSendAttemptEntityConfiguration : IEntityTypeConfigur
             .HasMaxLength(4000)
             .Metadata.SetValueComparer(valueComparer);
 
-        builder.HasOne(e => e.Message)
+        builder.HasOne<RavenSmsMessage>()
             .WithMany(e => e.SendAttempts)
             .HasForeignKey(e => e.MessageId)
             .IsRequired()

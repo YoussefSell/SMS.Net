@@ -21,14 +21,14 @@ public class RavenSmsClient
     public string Id { get; set; }
 
     /// <summary>
-    /// Get or set the date
-    /// </summary>
-    public DateTimeOffset CreatedOn { get; set; }
-
-    /// <summary>
     /// Get or set for the name of client app.
     /// </summary>
     public string Name { get; set; } = default!;
+
+    /// <summary>
+    /// Get or set the date
+    /// </summary>
+    public DateTimeOffset CreatedOn { get; set; }
     
     /// <summary>
     /// the current status of the client app.

@@ -6,7 +6,8 @@
 public static class EntityFrameworkExtensions
 {
     /// <summary>
-    /// Apply the Commune Configuration to all entities that derives from <see cref="Entity{Tkey}"/>
+    /// Apply the RavenSMS entities configuration. 
+    /// which include configuration for <see cref="RavenSmsClient"/>, <see cref="RavenSmsMessage"/>, and <see cref="RavenSmsMessageSendAttempt"/> entities
     /// </summary>
     /// <param name="modelBuilder">the module builder instance</param>
     /// <returns>the module builder instance</returns>

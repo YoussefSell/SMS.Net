@@ -20,7 +20,7 @@ public class RavenSmsHub : Hub
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         // disconnecting the client
-        _logger.LogInformation("client associated with connection Id: {connectionId} has been disconnected", Context.ConnectionId);
+        _logger.LogInformation("client associated with connection Id: {connectionId}, has been disconnected", Context.ConnectionId);
         await _clientsManager.ClientDisconnectedAsync(Context.ConnectionId);
     }
 
@@ -28,6 +28,7 @@ public class RavenSmsHub : Hub
     {
         // send an event to the client app to indicate that the connection has been established
         // because we don't have a way to get this info from the client app
+        _logger.LogInformation("client associated with connection Id: {connectionId}, has connected", Context.ConnectionId);
         await Clients.Caller.SendAsync("ClientConnected");
     }
 
@@ -96,7 +97,7 @@ public class RavenSmsHub : Hub
 
 public static class RavenSmsHubExtensions
 {
-    public static async Task<Result> UpdateClientInfosync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client)
+    public static async Task<Result> UpdateClientInfosync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -116,7 +117,7 @@ public static class RavenSmsHubExtensions
                 clientName = client.Name,
                 clientDescription = client.Description,
                 clientPhoneNumber = client.PhoneNumber,
-            });
+            }, cancellationToken: cancellationToken);
 
             return Result.Success();
         }
@@ -127,7 +128,7 @@ public static class RavenSmsHubExtensions
         }
     }
 
-    public static async Task<Result> SendSmsMessageAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, RavenSmsMessage message)
+    public static async Task<Result> SendSmsMessageAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -150,7 +151,7 @@ public static class RavenSmsHubExtensions
                 status = message.Status,
                 content = message.Body,
                 id = message.Id,
-            });
+            }, cancellationToken: cancellationToken);
 
             return Result.Success();
         }
@@ -161,7 +162,7 @@ public static class RavenSmsHubExtensions
         }
     }
 
-    public static async Task<Result> ForceDisconnectAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, string reason)
+    public static async Task<Result> ForceDisconnectAsync(this IHubContext<RavenSmsHub> hub, RavenSmsClient client, string reason, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -176,7 +177,7 @@ public static class RavenSmsHubExtensions
                     .WithCode("invalid_client_connection_id");
 
             await hub.Clients.Client(client.ConnectionId)
-                .SendAsync("forceDisconnect", reason);
+                .SendAsync("forceDisconnect", reason, cancellationToken: cancellationToken);
 
             return Result.Success();
         }

@@ -11,7 +11,8 @@ public static class Configurations
     /// <param name="builder">the RavenSMS builder instance.</param>
     /// <returns>instance of <see cref="RavenSmsBuilder"/> to enable methods chaining.</returns>
     /// <remarks>
-    /// we assume that you already configured hangfire in your project, this package only provide an implementation of <see cref="ISmsDeliveryChannel"/> that uses Hangfire background jobs for queuing the messages.
+    /// we assume that you already configured hangfire in your project, 
+    /// this package only provide an implementation of <see cref="IQueueManager"/> that uses Hangfire background jobs for queuing the messages.
     /// </remarks>
     public static RavenSmsBuilder UseHangfireQueue(this RavenSmsBuilder builder)
     {

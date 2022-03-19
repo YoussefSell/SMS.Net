@@ -58,7 +58,7 @@
         public TValue GetValue<TValue>() => (TValue)Value;
 
         /// <summary>
-        /// Indicates whether the specified edp is empty.
+        /// Indicates whether the specified channel is empty.
         /// </summary>
         /// <returns>true if the value is empty; otherwise, false.</returns>
         public bool IsEmpty() => !Key.IsValid() && Value == default;
@@ -70,9 +70,8 @@
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
-            if (obj.GetType() != typeof(ChannelData)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return base.Equals((ChannelData)obj);
+            if (obj is ChannelData data) return Equals(data);
+            return false;
         }
 
         /// <summary>
