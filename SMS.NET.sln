@@ -49,9 +49,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RavenSMS", "RavenSMS", "{13
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj", "{944C5327-6A8B-491D-81A5-964F51FC7644}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Hangfire", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.Hangfire\SMS.Net.RavenSMS.Hangfire.csproj", "{9F167F99-34EE-4710-8E57-96D5160BCE69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Queue.Hangfire", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\Queues\SMS.Net.RavenSMS.Queue.Hangfire\SMS.Net.RavenSMS.Queue.Hangfire.csproj", "{9F167F99-34EE-4710-8E57-96D5160BCE69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.EntityFramework", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.EntityFramework\SMS.Net.RavenSMS.EntityFramework.csproj", "{E466B617-2C66-4341-A1E4-E2634AFE6977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS.Storage.EntityFramework", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\Storage\SMS.Net.RavenSMS.Storage.EntityFramework\SMS.Net.RavenSMS.Storage.EntityFramework.csproj", "{E466B617-2C66-4341-A1E4-E2634AFE6977}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
