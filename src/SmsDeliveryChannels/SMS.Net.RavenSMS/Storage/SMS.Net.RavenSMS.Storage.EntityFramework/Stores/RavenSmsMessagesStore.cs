@@ -100,7 +100,6 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
                 .WithErrors(ex);
         }
     }
-
 }
 
 /// <summary>

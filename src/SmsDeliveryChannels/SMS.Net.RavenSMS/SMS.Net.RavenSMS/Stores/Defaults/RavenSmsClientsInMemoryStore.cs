@@ -100,7 +100,6 @@ public partial class RavenSmsClientsInMemoryStore
         return Task.FromResult(_clients.FirstOrDefault(q => q.PhoneNumber == phoneNumber.ToString()));
     }
 
-
     /// <inheritdoc/>
     public Task<Result<RavenSmsClient>> CreateAsync(RavenSmsClient client, CancellationToken cancellationToken = default)
     {
