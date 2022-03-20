@@ -1,9 +1,9 @@
-﻿namespace SMS.Net.RavenSMS.Stores.Defaults;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores.InMemory;
 
 /// <summary>
 /// the default implementation for <see cref="IRavenSmsClientsStore"/> with an in memory store
 /// </summary>
-public partial class RavenSmsClientsInMemoryStore
+public partial class RavenSmsClientsInMemoryStore : IRavenSmsClientsStore
 {
     /// <inheritdoc/>
     public Task<long> GetCountAsync(CancellationToken cancellationToken = default)

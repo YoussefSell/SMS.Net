@@ -1,12 +1,12 @@
-﻿namespace SMS.Net.RavenSMS.Stores.Defaults;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores.InMemory;
 
 /// <summary>
 /// the default implementation for <see cref="IRavenSmsMessagesStore"/> with an in memory store
 /// </summary>
-public partial class RavenSmsMessagesInMemoryStore
+public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
 {
     /// <inheritdoc/>
-    public async Task<(long totalSent, long totalFailed, long totalInQueue)> GetCountsAsync(CancellationToken cancellationToken = default)
+    public Task<(long totalSent, long totalFailed, long totalInQueue)> GetCountsAsync(CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
             cancellationToken.ThrowIfCancellationRequested();
@@ -15,15 +15,15 @@ public partial class RavenSmsMessagesInMemoryStore
             .Select(grouping => new
             {
                 grouping.Key,
-                Count = grouping.Count()
+                Count = grouping.LongCount()
             })
             .ToDictionary(e => e.Key, e => e.Count);
 
-        return (
+        return Task.FromResult((
             result.TryGetValue(RavenSmsMessageStatus.Sent, out var totalSent) ? totalSent : 0,
             result.TryGetValue(RavenSmsMessageStatus.Failed, out var totalFailed) ? totalFailed : 0,
             result.TryGetValue(RavenSmsMessageStatus.Queued, out var totalQueued) ? totalQueued : 0
-        );
+        ));
     }
 
     /// <inheritdoc/>

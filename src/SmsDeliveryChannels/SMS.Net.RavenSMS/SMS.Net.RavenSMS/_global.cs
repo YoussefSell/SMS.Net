@@ -14,6 +14,7 @@ global using SMS.Net.Channel.RavenSMS.Managers;
 global using SMS.Net.Channel.RavenSMS.Exceptions;
 global using SMS.Net.Channel.RavenSMS.Persistence;
 global using SMS.Net.Channel.RavenSMS.Models.Filters;
+global using SMS.Net.Channel.RavenSMS.Stores.InMemory;
 global using SMS.Net.Factories;
 global using SMS.Net.Channel;
 global using ResultNet;

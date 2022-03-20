@@ -41,9 +41,26 @@ public static class Configurations
         return builder;
     }
 
+    /// <summary>
+    /// Maps incoming requests with the ravenSMS hub path to the <see cref="RavenSmsHub"/>
+    /// </summary>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     public static void MapRavenSmsHub(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapHub<RavenSmsHub>("RavenSMS/Hub");
+    }
+
+    /// <summary>
+    /// Set RavenSMS to use in memory stores to persist the data.
+    /// </summary>
+    /// <param name="builder">the RavenSMS builder instance.</param>
+    /// <returns>instance of <see cref="RavenSmsBuilder"/> to enable methods chaining.</returns>
+    public static RavenSmsBuilder UseInMemoryStores(this RavenSmsBuilder builder)
+    {
+        builder.ServiceCollection.AddScoped<IRavenSmsClientsStore, RavenSmsClientsInMemoryStore>();
+        builder.ServiceCollection.AddScoped<IRavenSmsMessagesStore, RavenSmsMessagesInMemoryStore>();
+
+        return builder;
     }
 }
 
