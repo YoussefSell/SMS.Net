@@ -62,6 +62,8 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
             ? data.Length
             : rowsCount;
 
+        await SetMessagesClientsAsync(data, cancellationToken);
+
         return (data, rowsCount);
     }
 
@@ -75,12 +77,19 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
     }
 
     /// <inheritdoc/>
-    public Task<RavenSmsMessage?> FindByIdAsync(string messageId, CancellationToken cancellationToken = default)
+    public async Task<RavenSmsMessage?> FindByIdAsync(string messageId, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
             cancellationToken.ThrowIfCancellationRequested();
 
-        return Task.FromResult(_messages.FirstOrDefault(message => message.Id == messageId));
+        var message = _messages.FirstOrDefault(message => message.Id == messageId);
+        if (message is not null)
+        {
+            // we need to set the client info
+            message.Client = await _clientsStore.FindByIdAsync(message.ClientId, cancellationToken);
+        }
+
+        return message;
     }
 
     /// <inheritdoc/>
@@ -108,16 +117,6 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
                 .WithCode("message_not_found"));
         }
 
-        messageToUpdate.To = message.To;
-        messageToUpdate.Body = message.Body;
-        messageToUpdate.Status = message.Status;
-        messageToUpdate.SentOn = message.SentOn;
-        messageToUpdate.Priority = message.Priority;
-        messageToUpdate.ClientId = message.ClientId;
-        messageToUpdate.CreateOn = message.CreateOn;
-        messageToUpdate.DeliverAt = message.DeliverAt;
-        messageToUpdate.SendAttempts = message.SendAttempts;
-
         return Task.FromResult(Result.Success(messageToUpdate));
     }
 }
@@ -128,11 +127,13 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
 public partial class RavenSmsMessagesInMemoryStore
 {
     const string _dateFormat = "yyyy-MM-ddTHH:mm:sszzz";
+    private readonly IRavenSmsClientsStore _clientsStore;
     private readonly ICollection<RavenSmsMessage> _messages;
 
-    public RavenSmsMessagesInMemoryStore()
+    public RavenSmsMessagesInMemoryStore(IRavenSmsClientsStore clientsStore)
     {
         _messages = new List<RavenSmsMessage>();
+        this._clientsStore = clientsStore;
     }
 
     private static IEnumerable<RavenSmsMessage> SetFilter(IEnumerable<RavenSmsMessage> query, RavenSmsMessageFilter filter)
@@ -159,5 +160,21 @@ public partial class RavenSmsMessagesInMemoryStore
             query = query.Where(e => filter.Clients.Contains(e.ClientId));
 
         return query;
+    }
+
+    private async Task SetMessagesClientsAsync(RavenSmsMessage[] messages, CancellationToken cancellationToken = default)
+    {
+        // select the client to retrieve
+        var clientsIds = messages.Select(message => message.ClientId).ToArray();
+
+        // get the clients and convert the list of dictionary
+        var clients = (await _clientsStore.FindByIdAsync(clientsIds, cancellationToken).ConfigureAwait(false))
+            .ToDictionary(client => client.Id);
+
+        foreach (var message in messages)
+        {
+            if (clients.TryGetValue(message.ClientId, out var client))
+                message.Client = client;
+        }
     }
 }
