@@ -60,6 +60,15 @@ public interface IRavenSmsClientsStore
     Task<RavenSmsClient?> FindByIdAsync(string clientId, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// find the clients with the given Ids.
+    /// </summary>
+    /// <param name="clientsIds">the ids of the clients to find.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
+    /// <returns>array of <see cref="RavenSmsClient"/> found.</returns>
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<RavenSmsClient[]> FindByIdAsync(string[] clientsIds, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// find a client by connection Id.
     /// </summary>
     /// <param name="connectionId">the connection Id</param>

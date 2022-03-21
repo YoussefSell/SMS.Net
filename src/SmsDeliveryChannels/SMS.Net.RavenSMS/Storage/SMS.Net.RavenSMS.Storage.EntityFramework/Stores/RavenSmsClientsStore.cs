@@ -58,6 +58,10 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
         => _clients.FirstOrDefaultAsync(client => client.Id == clientId, cancellationToken: cancellationToken);
     
     /// <inheritdoc/>
+    public Task<RavenSmsClient[]> FindByIdAsync(string[] clientsIds, CancellationToken cancellationToken = default)
+        => _clients.Where(client => clientsIds.Contains(client.Id)).ToArrayAsync(cancellationToken: cancellationToken);
+
+    /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId, CancellationToken cancellationToken = default)
         => _clients.FirstOrDefaultAsync(client => client.ConnectionId == connectionId, cancellationToken: cancellationToken);
 

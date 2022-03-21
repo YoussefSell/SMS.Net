@@ -83,6 +83,15 @@ public partial class RavenSmsClientsInMemoryStore : IRavenSmsClientsStore
     }
 
     /// <inheritdoc/>
+    public Task<RavenSmsClient[]> FindByIdAsync(string[] clientsIds, CancellationToken cancellationToken = default)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        return Task.FromResult(_clients.Where(client => clientsIds.Contains(client.Id)).ToArray());
+    }
+
+    /// <inheritdoc/>
     public Task<RavenSmsClient?> FindByConnectionIdAsync(string connectionId, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
@@ -125,10 +134,6 @@ public partial class RavenSmsClientsInMemoryStore : IRavenSmsClientsStore
                 .WithCode("client_not_found"));
         }
 
-        clientToUpdate.Name = client.Name;
-        clientToUpdate.PhoneNumber = client.PhoneNumber;
-        clientToUpdate.Description = client.Description ?? string.Empty;
-
         return Task.FromResult(Result.Success(clientToUpdate));
     }
 
@@ -161,7 +166,18 @@ public partial class RavenSmsClientsInMemoryStore
 
     public RavenSmsClientsInMemoryStore()
     {
-        _clients = new List<RavenSmsClient>();
+        _clients = new List<RavenSmsClient>
+        {
+            new RavenSmsClient
+            {
+                Id = "clt_defaultclient",
+                Name = "Default Client",
+                CreatedOn = DateTimeOffset.Now,
+                PhoneNumber = "00212060606606",
+                Status = RavenSmsClientStatus.RequireSetup,
+                Description = "the default client created when the list of clients is initialized",
+            }
+        };
     }
 
     private static IEnumerable<RavenSmsClient> SetFilter(IEnumerable<RavenSmsClient> query, RavenSmsClientsFilter filter)
