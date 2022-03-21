@@ -57,8 +57,8 @@ public static class Configurations
     /// <returns>instance of <see cref="RavenSmsBuilder"/> to enable methods chaining.</returns>
     public static RavenSmsBuilder UseInMemoryStores(this RavenSmsBuilder builder)
     {
-        builder.ServiceCollection.AddScoped<IRavenSmsClientsStore, RavenSmsClientsInMemoryStore>();
-        builder.ServiceCollection.AddScoped<IRavenSmsMessagesStore, RavenSmsMessagesInMemoryStore>();
+        builder.ServiceCollection.AddSingleton<IRavenSmsClientsStore, RavenSmsClientsInMemoryStore>();
+        builder.ServiceCollection.AddSingleton<IRavenSmsMessagesStore, RavenSmsMessagesInMemoryStore>();
 
         return builder;
     }
