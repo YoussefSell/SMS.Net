@@ -31,6 +31,7 @@ builder.Services.AddHangfire(configuration => configuration
 
 // Add the processing server as IHostedService
 builder.Services.AddHangfireServer();
+builder.Services.AddQueue();
 
 // add SMS.Net services
 builder.Services.AddSMSNet(options =>
@@ -44,8 +45,11 @@ builder.Services.AddSMSNet(options =>
 .UseMessageBird(accessKey: "Key-1")
 .UseRavenSMS(options =>
 {
-    options.UseHangfireQueue();
-    options.UseEntityFrameworkStores<ApplicationDbContext>();
+    //options.UseHangfireQueue();
+    //options.UseEntityFrameworkStores<ApplicationDbContext>();
+
+    options.UseCoravelQueue();
+    options.UseInMemoryStores();
 });
 
 var app = builder.Build();
