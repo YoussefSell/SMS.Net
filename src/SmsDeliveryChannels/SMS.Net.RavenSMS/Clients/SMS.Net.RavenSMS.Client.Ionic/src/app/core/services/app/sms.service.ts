@@ -22,8 +22,12 @@ export class SmsService {
      * check if the app has permission to send sms messages.
      * @returns returns a promise that resolves with a boolean that indicates if we have permission
      */
-    HasPermissionAsync(): Promise<boolean> {
-        return this.sms.hasPermission();
+    async HasPermissionAsync(): Promise<boolean> {
+        if (this.platform == 'web') {
+            return true;
+        }
+
+        return await this.sms.hasPermission();
     }
 
     /**
@@ -32,12 +36,12 @@ export class SmsService {
      * @param message the sms message content
      */
     async sendSmsAsync(phoneNumber: string, message: string): Promise<IResult> {
-        if (this.platform != 'web') {
-            return this.sendSmsNativeAsync(phoneNumber, message);
+        if (this.platform == 'web') {
+            // for the web we will assume the message has been sent.
+            return { isSuccess: true }
         }
 
-        // for the web we will assume the message has been sent.
-        return { isSuccess: true }
+        return this.sendSmsNativeAsync(phoneNumber, message);
     }
 
     async sendSmsNativeAsync(phoneNumber: string, message: string): Promise<IResult> {
