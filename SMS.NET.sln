@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queues", "Queues", "{C724CA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{A852F91A-9868-4577-869A-02A139639246}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS.Net.RavenSMS.Queue.Coravel", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\Queues\SMS.Net.RavenSMS.Queue.Coravel\SMS.Net.RavenSMS.Queue.Coravel.csproj", "{11965BBF-2BCA-4438-B966-53765E5A9C02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E466B617-2C66-4341-A1E4-E2634AFE6977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11965BBF-2BCA-4438-B966-53765E5A9C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11965BBF-2BCA-4438-B966-53765E5A9C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11965BBF-2BCA-4438-B966-53765E5A9C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11965BBF-2BCA-4438-B966-53765E5A9C02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +149,7 @@ Global
 		{E466B617-2C66-4341-A1E4-E2634AFE6977} = {A852F91A-9868-4577-869A-02A139639246}
 		{C724CAE8-BE05-437D-877E-97BCAFD7D38B} = {132547C0-9894-4A8C-94A2-21E39666C7CB}
 		{A852F91A-9868-4577-869A-02A139639246} = {132547C0-9894-4A8C-94A2-21E39666C7CB}
+		{11965BBF-2BCA-4438-B966-53765E5A9C02} = {C724CAE8-BE05-437D-877E-97BCAFD7D38B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A9E6973-ECDE-4895-8435-8CA0F49DF342}
