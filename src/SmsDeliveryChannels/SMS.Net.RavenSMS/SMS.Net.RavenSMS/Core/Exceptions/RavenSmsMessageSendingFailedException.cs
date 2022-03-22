@@ -4,7 +4,7 @@
 /// exception thrown when the sending of sms message has failed
 /// </summary>
 [Serializable]
-public class RavenSmsMessageSendingFailedException : Exception
+public class RavenSmsMessageSendingFailedException : RavenSmsException
 {
     /// <inheritdoc/>
     public RavenSmsMessageSendingFailedException(string cause) 

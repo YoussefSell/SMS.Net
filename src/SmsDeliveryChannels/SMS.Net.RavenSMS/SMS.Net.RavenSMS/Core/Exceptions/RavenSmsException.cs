@@ -1,19 +1,19 @@
 ﻿namespace SMS.Net.Channel.RavenSMS.Exceptions;
 
 /// <summary>
-/// exception thrown when no RavenSms message has been found
+/// the base exception for all RavenSms related errors
 /// </summary>
 [Serializable]
-public class RavenSmsMessageNotFoundException : RavenSmsException
+public class RavenSmsException : Exception
 {
     /// <inheritdoc/>
-    public RavenSmsMessageNotFoundException() { }
+    public RavenSmsException() { }
 
     /// <inheritdoc/>
-    public RavenSmsMessageNotFoundException(string message) : base(message) { }
+    public RavenSmsException(string message) : base(message) { }
 
     /// <inheritdoc/>
-    protected RavenSmsMessageNotFoundException(
+    protected RavenSmsException(
       System.Runtime.Serialization.SerializationInfo info,
       System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 }
