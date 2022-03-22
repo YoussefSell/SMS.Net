@@ -4,7 +4,7 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
 import { IAppIdentification, IMessages, IResult, IServerInfo } from './core/models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SignalRService, SmsService } from './core/services';
+import { ServerAlertService, SignalRService, SmsService } from './core/services';
 import { TranslocoService } from '@ngneat/transloco';
 import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
@@ -26,7 +26,6 @@ export class AppComponent implements OnInit, OnDestroy {
   _subSink = new SubSink();
 
   _dark: boolean = false;
-  _serverAlert: HTMLIonAlertElement | null = null;
   _networkAlert: HTMLIonAlertElement | null = null;
 
   _serverInfo: IServerInfo | null = null;
@@ -38,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _toast: ToastController,
     private _smsService: SmsService,
     private _signalRService: SignalRService,
+    private _serverAlert: ServerAlertService,
     private _store: Store<RootStoreState.State>,
     private _translationService: TranslocoService,
   ) {
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
           await this.presentToastAsync("you have been connected to the server successfully", 1000);
         }
 
-        await this.dismissServerAlertAsync();
+        await this._serverAlert.dismiss();
       });
 
     this._subSink.sink = this._store.select(RootStoreSelectors.NetworkConnectionSelector)
@@ -263,38 +263,24 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // hold the state if we should present the alert or it already presented
-    let alreadyPresented = true;
-
-    // check if the server alert is already presented, 
-    // if not we should create an instance
-    if (this._serverAlert == null) {
-      this._serverAlert = await this._alert.create({ backdropDismiss: false });
-      alreadyPresented = false;
-    }
-
     if (status == ServerStatus.RECONNECTING) {
-      this._serverAlert.message = "Failed to connect to the server, an automatic reconnection is enabled, try to start the server again.";
+      await this._serverAlert.setMessageAsync("Failed to connect to the server, an automatic reconnection is enabled, try to start the server again.");
     }
 
     // if the server is offline we will add the possibility to reconfigure the client
     if (status == ServerStatus.OFFLINE) {
-      this._serverAlert.message = "failed to connect to server, make sure the server is running, and try again.";
-      this._serverAlert.buttons = [{ text: 're-configure', role: 're_configure' }];
+      this._serverAlert.setMessageAsync("failed to connect to server, make sure the server is running, and try again.");
+      this._serverAlert.setButton('re-configure', 're_configure');
     }
 
     // we only going to present the alter if it not already presented & we are not on the setup page
-    if (!alreadyPresented) {
-      await this._serverAlert.present();
-    }
+    await this._serverAlert.present();
 
     if (status == ServerStatus.OFFLINE) {
-      var dismissResult = await this._serverAlert.onDidDismiss();
-
       //if the user choosed to reconfigure the client app, we stop the connection, clear server info & set the status to unknown
-      if (dismissResult.role == 're_configure') {
-        await this.disconnectClientAsync();
-      }
+      await this._serverAlert.onDidDismissAsync(
+        're_configure',
+        async () => await this.disconnectClientAsync());
     }
   }
 
@@ -303,10 +289,5 @@ export class AppComponent implements OnInit, OnDestroy {
     this._store.dispatch(SettingsStoreActions.UpdateServerInfo({ data: null }));
     this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: null }));
     this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.Disconnected }));
-  }
-
-  private async dismissServerAlertAsync() {
-    await this._serverAlert?.dismiss();
-    this._serverAlert = null;
   }
 }
