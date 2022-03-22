@@ -62,6 +62,20 @@ public static class Configurations
 
         return builder;
     }
+
+    /// <summary>
+    /// Set RavenSMS to use in memory Queue to queue and process sending events.
+    /// </summary>
+    /// <param name="builder">the RavenSMS builder instance.</param>
+    /// <returns>instance of <see cref="RavenSmsBuilder"/> to enable methods chaining.</returns>
+    public static RavenSmsBuilder UseInMemoryQueue(this RavenSmsBuilder builder)
+    {
+        builder.ServiceCollection.AddSingleton<IQueueManager, InMemoryQueueManager>();
+        builder.ServiceCollection.AddSingleton<IInMemoryQueue, InMemoryQueue>();
+        builder.ServiceCollection.AddHostedService<InMemoryQueueHost>();
+
+        return builder;
+    }
 }
 
 internal class RavenSmsUIConfigureOptions : IPostConfigureOptions<StaticFileOptions>

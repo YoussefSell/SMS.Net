@@ -45,10 +45,7 @@ builder.Services.AddSMSNet(options =>
 .UseMessageBird(accessKey: "Key-1")
 .UseRavenSMS(options =>
 {
-    //options.UseHangfireQueue();
-    //options.UseEntityFrameworkStores<ApplicationDbContext>();
-
-    options.UseCoravelQueue();
+    options.UseInMemoryQueue();
     options.UseInMemoryStores();
 });
 
