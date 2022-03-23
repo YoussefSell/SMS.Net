@@ -1,10 +1,10 @@
 import { MessagesStoreActions, RootActions, RootStoreSelectors, RootStoreState, StorePersistenceActions, UIStoreSelectors } from './store';
 import { DeviceNetworkStatus, DisconnectionReason, MessageStatus, ServerStatus } from './core/constants/enums';
-import { AlertController, ToastController } from '@ionic/angular';
 import { SettingsStoreActions, SettingsStoreSelectors } from './store/settings-store';
-import { IAppIdentification, IMessages, IResult, IServerInfo } from './core/models';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServerAlertService, SignalRService, SmsService } from './core/services';
+import { IAppIdentification, IMessages, IServerInfo } from './core/models';
+import { AlertController, ToastController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
@@ -153,6 +153,9 @@ export class AppComponent implements OnInit, OnDestroy {
     // register the handler for the client info updated event
     this._signalRService.onClientInfoUpdatedEvent((clientInfo) => this._store.dispatch(SettingsStoreActions.UpdateClientAppIdentification({ data: clientInfo })));
 
+    // register the handler for the client messages retrieval event
+    this._signalRService.onReadClientSentMessagesEvent((messages) => this._store.dispatch(MessagesStoreActions.LoadMessagesFinished({ data: messages })));
+
     // register the handler for the send message event
     this._signalRService.onSendMessageEvent(async (message: IMessages) => {
       // check for sms permission, if not show an alert to ask the user to allow the permission
@@ -197,6 +200,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this._clientIdentification.clientId) {
         await this._signalRService.sendPersistClientConnectionEvent$(this._clientIdentification.clientId);
         this._store.dispatch(RootActions.UpdateServerConnectionStatus({ newStatus: ServerStatus.ONLINE }));
+        this._store.dispatch(MessagesStoreActions.LoadMessages());
       }
     });
 

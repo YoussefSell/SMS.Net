@@ -1,12 +1,9 @@
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { map, catchError, exhaustMap } from 'rxjs/operators';
-import { MessagesService } from 'src/app/core/services';
 import { TranslocoService } from '@ngneat/transloco';
 import * as RootActionTypes from '../root-actions';
+import { exhaustMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import * as ActionTypes from './actions';
-import { Store } from '@ngrx/store';
-import { State } from './state';
 import { of } from 'rxjs';
 
 @Injectable()

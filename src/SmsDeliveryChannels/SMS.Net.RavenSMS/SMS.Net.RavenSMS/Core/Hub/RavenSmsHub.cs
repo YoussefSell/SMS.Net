@@ -94,6 +94,33 @@ public class RavenSmsHub : Hub
 
         await _messagesManager.SaveAsync(message);
     }
+
+    public async Task LoadClientMessagesAsync(string clientId)
+    {
+        // get the client associated with the given id
+        var client = await _clientsManager.FindClientByIdAsync(clientId);
+        if (client is null)
+        {
+            await Clients.Caller.SendAsync("forceDisconnect", DisconnectionReason.ClientNotFound);
+            return;
+        }
+
+        // get the list of messages
+        var messages = await _messagesManager.GetAllMessagesAsync(clientId);
+
+        // send the event to read the client messages
+        await Clients.Caller.SendAsync("ReadClientSentMessagesAsync", messages
+            .Select(message => new
+            {
+                from = client.PhoneNumber,
+                createdOn = message.CreateOn,
+                to = message.To.ToString(),
+                sentOn = message.SentOn,
+                status = message.Status,
+                content = message.Body,
+                id = message.Id,
+            }));
+    }
 }
 
 public static class RavenSmsHubExtensions

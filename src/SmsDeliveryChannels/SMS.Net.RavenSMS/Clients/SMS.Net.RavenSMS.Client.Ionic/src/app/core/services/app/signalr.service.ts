@@ -1,6 +1,6 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
-import { IAppIdentification, IMessages } from '../../models';
 import { DisconnectionReason, MessageStatus } from '../../constants/enums';
+import { IAppIdentification, IMessages } from '../../models';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -149,6 +149,26 @@ export class SignalRService {
     public onClientConnectedEvent(handler: () => void): void {
         if (this.hubConnection) {
             this.hubConnection.on('clientConnected', handler);
+        }
+    }
+
+    /**
+     * load the messages sent by this client.
+     * @param clientId the id of this client instance
+     */
+    async loadClientMessagesAsync(clientId: string) {
+        if (this.hubConnection) {
+            await this.hubConnection.send('LoadClientMessagesAsync');
+        }
+    }
+
+    /**
+    * get the list of messages sent by the client
+    * @param handler the handler to be executed when the event is triggered
+    */
+    public onReadClientSentMessagesEvent(handler: (messages: IMessages[]) => void): void {
+        if (this.hubConnection) {
+            this.hubConnection.on('ReadClientSentMessagesAsync', handler);
         }
     }
 }

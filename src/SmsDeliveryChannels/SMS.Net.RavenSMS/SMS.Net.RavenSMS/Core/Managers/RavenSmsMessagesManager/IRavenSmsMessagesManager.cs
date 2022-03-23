@@ -19,7 +19,14 @@ public interface IRavenSmsMessagesManager
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>list of all messages</returns>
     /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
-    Task<RavenSmsMessage[]> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<RavenSmsMessage[]> GetAllMessagesAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// get the list of messages sent by the client with the given id
+    /// </summary>
+    /// <param name="clientId">the id of the client</param>
+    /// <returns>an array of <see cref="RavenSmsMessage"/></returns>
+    Task<RavenSmsMessage[]> GetAllMessagesAsync(string clientId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// get the list of messages using a filter with total count of all entities that matches the filter for pagination.
