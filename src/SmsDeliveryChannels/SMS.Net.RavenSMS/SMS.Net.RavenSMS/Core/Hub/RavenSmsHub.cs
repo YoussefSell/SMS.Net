@@ -80,6 +80,7 @@ public class RavenSmsHub : Hub
         var attempt = new RavenSmsMessageSendAttempt { Status = SendAttemptStatus.Sent };
 
         message.Status = status;
+        message.DeliverAt = null;
         message.SentOn = DateTimeOffset.UtcNow;
         message.SendAttempts.Add(attempt);
 

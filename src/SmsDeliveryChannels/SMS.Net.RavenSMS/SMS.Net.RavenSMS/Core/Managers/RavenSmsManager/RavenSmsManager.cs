@@ -81,6 +81,7 @@ public partial class RavenSmsManager : IRavenSmsManager
         // queue the message for future processing
         message.JobQueueId = await _queueManager.QueueMessageAsync(message, delay, cancellationToken);
         message.Status = RavenSmsMessageStatus.Queued;
+        message.DeliverAt = DateTimeOffset.UtcNow.Add(delay);
 
         // save the message
         var saveResult = await _messagesManager.SaveAsync(message, cancellationToken);
