@@ -36,35 +36,12 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
     }
 
     /// <inheritdoc/>
-    public async Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter, CancellationToken cancellationToken = default)
+    public Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
             cancellationToken.ThrowIfCancellationRequested();
 
-        // apply the filter & the orderBy
-        var query = SetFilter(_messages, filter);
-
-        var rowsCount = 0;
-
-        if (!filter.IgnorePagination)
-        {
-            rowsCount = query.Select(e => e.Id)
-                .Distinct()
-                .Count();
-
-            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize);
-        }
-
-        var data = query.ToArray();
-
-        rowsCount = filter.IgnorePagination
-            ? data.Length
-            : rowsCount;
-
-        await SetMessagesClientsAsync(data, cancellationToken);
-
-        return (data, rowsCount);
+        return GetAllAsync(filter);
     }
 
     /// <inheritdoc/>
@@ -93,18 +70,19 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
     }
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsMessage>> CreateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
+    public async Task<Result<RavenSmsMessage>> CreateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
             cancellationToken.ThrowIfCancellationRequested();
 
+        message.Client = await _clientsStore.FindByIdAsync(message.ClientId, cancellationToken);
         _messages.Add(message);
 
-        return Task.FromResult(Result.Success(message));
+        return Result.Success(message);
     }
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
+    public async Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
             cancellationToken.ThrowIfCancellationRequested();
@@ -112,12 +90,13 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
         var messageToUpdate = _messages.FirstOrDefault(c => c.Id == message.Id);
         if (messageToUpdate == null)
         {
-            return Task.FromResult(Result.Failure<RavenSmsMessage>()
+            return Result.Failure<RavenSmsMessage>()
                 .WithMessage("Failed to update the message, not found")
-                .WithCode("message_not_found"));
+                .WithCode("message_not_found");
         }
 
-        return Task.FromResult(Result.Success(messageToUpdate));
+        message.Client = await _clientsStore.FindByIdAsync(message.ClientId, cancellationToken);
+        return Result.Success(messageToUpdate);
     }
 }
 
@@ -133,7 +112,33 @@ public partial class RavenSmsMessagesInMemoryStore
     public RavenSmsMessagesInMemoryStore(IRavenSmsClientsStore clientsStore)
     {
         _messages = new List<RavenSmsMessage>();
-        this._clientsStore = clientsStore;
+        _clientsStore = clientsStore;
+    }
+
+    private Task<(RavenSmsMessage[] data, int rowsCount)> GetAllAsync(RavenSmsMessageFilter filter)
+    {
+        // apply the filter & the orderBy
+        var query = SetFilter(_messages, filter);
+
+        var rowsCount = 0;
+
+        if (!filter.IgnorePagination)
+        {
+            rowsCount = query.Select(e => e.Id)
+                .Distinct()
+                .Count();
+
+            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+        }
+
+        var data = query.ToArray();
+
+        rowsCount = filter.IgnorePagination
+            ? data.Length
+            : rowsCount;
+
+        return Task.FromResult((data, rowsCount));
     }
 
     private static IEnumerable<RavenSmsMessage> SetFilter(IEnumerable<RavenSmsMessage> query, RavenSmsMessageFilter filter)
@@ -162,7 +167,7 @@ public partial class RavenSmsMessagesInMemoryStore
         return query;
     }
 
-    private async Task SetMessagesClientsAsync(RavenSmsMessage[] messages, CancellationToken cancellationToken = default)
+    protected async Task SetMessagesClientsAsync(RavenSmsMessage[] messages, CancellationToken cancellationToken = default)
     {
         // select the client to retrieve
         var clientsIds = messages.Select(message => message.ClientId).ToArray();
