@@ -57,6 +57,13 @@
                                 <label asp-for="SmsMessage.SentOn" class="form-label">Sent On</label>
                                 <input asp-for="SmsMessage.SentOn" class="form-control" readonly>
                             </div>
+                            @if (Model.SmsMessage.DeliverAt.HasValue)
+                            {
+                                <div class="mb-3 col-sm-12">
+                                    <label asp-for="SmsMessage.DeliverAt" class="form-label">Deliver at:</label>
+                                    <input asp-for="SmsMessage.DeliverAt" class="form-control" readonly>
+                                </div>
+                            }
                             <!-- To -->
                         <div class="mb-3">
                                 <label asp-for="SmsMessage.To" class="form-label">To</label>
