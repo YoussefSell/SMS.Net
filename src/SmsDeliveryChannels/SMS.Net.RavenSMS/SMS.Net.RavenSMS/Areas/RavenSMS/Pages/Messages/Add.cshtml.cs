@@ -77,7 +77,6 @@ public partial class MessagesAddPageModel
                 Body = Input.Body,
                 ClientId = Input.Client,
                 Priority = Input.Priority,
-                Status = RavenSmsMessageStatus.Created,
             };
 
             // if delivery date is specified queue without a delay

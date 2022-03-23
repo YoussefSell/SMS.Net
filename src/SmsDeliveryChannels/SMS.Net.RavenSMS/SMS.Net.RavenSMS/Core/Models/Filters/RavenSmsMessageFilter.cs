@@ -9,10 +9,11 @@ public class RavenSmsMessageFilter : FilterOptions
     {
         OrderBy = nameof(RavenSmsMessage.SentOn);
         SortDirection = SortDirection.Descending;
+        Status = RavenSmsMessageStatus.None;
 
         To = new HashSet<string>();
         Clients = new HashSet<string>();
-        Status = RavenSmsMessageStatus.None;
+        ExcludeStatus = new HashSet<RavenSmsMessageStatus>();
     }
 
     /// <summary>
@@ -34,6 +35,11 @@ public class RavenSmsMessageFilter : FilterOptions
     /// Get or set the status filter.
     /// </summary>
     public RavenSmsMessageStatus Status { get; set; }
+    
+    /// <summary>
+    /// status to exclude
+    /// </summary>
+    public IEnumerable<RavenSmsMessageStatus> ExcludeStatus { get; set; }
 
     /// <summary>
     /// Get or set the list of recipients filter.

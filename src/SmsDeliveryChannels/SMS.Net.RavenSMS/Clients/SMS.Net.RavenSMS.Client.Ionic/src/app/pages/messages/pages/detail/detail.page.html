@@ -35,9 +35,14 @@
         {{translate('messages.pages.details.labels.message_to')}}: <br />
         {{_message.to }}
       </p>
-      <p>
+      <p *ngIf="_message.sentOn">
         {{translate('messages.pages.details.labels.message_sent_on')}}: <br />
         {{_message.sentOn | date:'long'}}
+      </p>
+      <p *ngIf="_message.deliverAt">
+        {{translate('messages.pages.details.labels.message_deliver_at')}}:
+        <br />
+        {{_message.deliverAt | date:'long'}}
       </p>
       <p>
         {{translate('messages.pages.details.labels.message_created_on')}}:

@@ -27,7 +27,12 @@ export interface IMessages {
     /**
      * the date the message is sent
      */
-    sentOn: Date;
+    sentOn: Date | null;
+
+    /**
+     * if the message in the queue this will be the date the message will be delivered at
+     */
+    deliverAt: Date | null;
 
     /**
      * the date the message was created on

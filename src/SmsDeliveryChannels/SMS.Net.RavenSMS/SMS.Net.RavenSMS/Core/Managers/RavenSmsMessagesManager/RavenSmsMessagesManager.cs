@@ -14,12 +14,17 @@ public partial class RavenSmsMessagesManager
         => _messagesStore.GetAllAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<RavenSmsMessage[]> GetAllMessagesAsync(string clientId, CancellationToken cancellationToken = default)
+    public async Task<RavenSmsMessage[]> GetAllMessagesAsync(string clientId, bool excludeMessagesInQueue = true, CancellationToken cancellationToken = default)
     {
         var (messages, _) = await GetAllMessagesAsync(new RavenSmsMessageFilter
         {
             IgnorePagination = true,
-            Clients = new[] { clientId }
+            Clients = new[] { clientId },
+            ExcludeStatus = new[] { 
+                RavenSmsMessageStatus.None, 
+                RavenSmsMessageStatus.Queued, 
+                RavenSmsMessageStatus.Created, 
+            }
         },
         cancellationToken);
 

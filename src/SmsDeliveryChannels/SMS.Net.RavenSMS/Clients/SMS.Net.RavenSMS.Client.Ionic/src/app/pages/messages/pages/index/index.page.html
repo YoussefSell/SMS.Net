@@ -46,7 +46,14 @@
     <ion-list #scheduleList [hidden]="_messagesGroups.length === 0">
       <ion-item-group *ngFor="let group of _messagesGroups">
         <ion-item-divider sticky>
-          <ion-label> {{group.date}} </ion-label>
+          <ng-container *ngIf="group.date !== 'in_queue'; else elseTemplate">
+            <ion-label> {{group.date}} </ion-label>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ion-label>
+              {{translate('messages.pages.index.labels.messages_in_queue')}}
+            </ion-label>
+          </ng-template>
         </ion-item-divider>
 
         <ion-item-sliding *ngFor="let message of group.messages">
@@ -63,9 +70,13 @@
                 {{translate('messages.pages.index.labels.message_to')}}:
                 {{message.to}}
               </h3>
-              <p>
+              <p *ngIf="message.sentOn">
                 {{translate('messages.pages.index.labels.message_sent_on')}}:
                 {{message.sentOn | date:'fullTime'}}
+              </p>
+              <p *ngIf="message.deliverAt">
+                {{translate('messages.pages.index.labels.message_deliver_at')}}:
+                {{message.deliverAt | date:'fullTime'}}
               </p>
             </ion-label>
           </ion-item>

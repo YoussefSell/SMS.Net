@@ -158,6 +158,9 @@ public partial class RavenSmsMessagesInMemoryStore
         if (filter.Status != RavenSmsMessageStatus.None)
             query = query.Where(e => filter.Status == e.Status);
 
+        if(filter.ExcludeStatus.Any())
+            query = query.Where(e => !filter.ExcludeStatus.Contains(e.Status));
+
         if (filter.To is not null && filter.To.Any())
             query = query.Where(e => filter.To.Contains((string)e.To));
 

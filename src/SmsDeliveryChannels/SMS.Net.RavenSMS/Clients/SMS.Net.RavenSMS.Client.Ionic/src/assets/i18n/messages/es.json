@@ -3,8 +3,10 @@
         "index": {
             "page_title": "Mensajes",
             "labels": {
+                "messages_in_queue": "En la cola",
                 "message_to": "Para",
                 "message_sent_on": "Enviado el",
+                "message_deliver_at": "Entregar en",
                 "empty_page": "No se han encontrado mensajes"
             },
             "actions": {
@@ -18,6 +20,7 @@
                 "message_content": "Contenido",
                 "message_status": "Estado",
                 "message_to": "Para",
+                "message_deliver_at": "Entregar en",
                 "message_sent_on": "Enviado el",
                 "message_created_on": "Creado el"
             },

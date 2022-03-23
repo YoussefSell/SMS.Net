@@ -115,6 +115,7 @@ public class RavenSmsHub : Hub
                 from = client.PhoneNumber,
                 createdOn = message.CreateOn,
                 to = message.To.ToString(),
+                deliverAt = message.DeliverAt,
                 sentOn = message.SentOn,
                 status = message.Status,
                 content = message.Body,
@@ -174,6 +175,7 @@ public static class RavenSmsHubExtensions
             {
                 from = client.PhoneNumber,
                 createdOn = message.CreateOn,
+                deliverAt = message.DeliverAt,
                 to = message.To.ToString(),
                 sentOn = message.SentOn,
                 status = message.Status,

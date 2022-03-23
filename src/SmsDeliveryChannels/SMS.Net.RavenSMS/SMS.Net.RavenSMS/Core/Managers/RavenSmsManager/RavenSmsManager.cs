@@ -12,6 +12,9 @@ public partial class RavenSmsManager : IRavenSmsManager
         if (message is null)
             throw new RavenSmsMessageNotFoundException($"there is no message with the given Id {messageId}");
 
+        // reset the deliver at date
+        message.DeliverAt = null;
+
         // get the client associated with the given from number
         var client = await _clientsManagers.FindClientByIdAsync(message.ClientId, cancellationToken);
         if (client is null)
