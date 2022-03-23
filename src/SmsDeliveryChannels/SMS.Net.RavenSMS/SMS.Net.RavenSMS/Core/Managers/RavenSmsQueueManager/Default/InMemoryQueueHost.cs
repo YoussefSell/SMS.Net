@@ -76,7 +76,6 @@ internal partial class InMemoryQueueHost : IHostedService, IDisposable
             ?? throw new RavenSmsException("the inMemory Queue is not registered, call UseInMemoryQueue() on RavenSmsBuilder");
     }
 
-
     private void Consume() => Task.Run(ConsumeQueueAsync);
 
     private async Task ConsumeQueueAsync()
@@ -94,6 +93,6 @@ internal partial class InMemoryQueueHost : IHostedService, IDisposable
             callback: (state) => _signal.Release(),
             state: null,
             dueTime: TimeSpan.Zero,
-            period: TimeSpan.FromSeconds(10));
+            period: TimeSpan.FromSeconds(5));
     }
 }

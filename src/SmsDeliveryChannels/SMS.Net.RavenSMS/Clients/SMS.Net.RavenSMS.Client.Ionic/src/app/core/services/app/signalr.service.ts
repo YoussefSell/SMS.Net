@@ -158,7 +158,7 @@ export class SignalRService {
      */
     async loadClientMessagesAsync(clientId: string) {
         if (this.hubConnection) {
-            await this.hubConnection.send('LoadClientMessagesAsync');
+            await this.hubConnection.send('LoadClientMessagesAsync', clientId);
         }
     }
 
