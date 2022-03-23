@@ -58,6 +58,9 @@ export class ServerAlertService {
      * @returns a promise that resolve to void
      */
     async present(): Promise<void> {
+        // enure that the alert has been initialized
+        await this.ensureAlertInitAsync();
+
         // if the alert is already presented no need to present
         if (this._presented) {
             return;
