@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.RavenSMS.Pages;
+﻿namespace SMS.Net.Channel.RavenSMS.Pages;
 
 /// <summary>
 /// holds the view data keys

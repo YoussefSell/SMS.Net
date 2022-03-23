@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores.EntityFramework;
 
 /// <summary>
 /// the store implementation for <see cref="IRavenSmsClientsStore"/>
@@ -14,35 +14,12 @@ public partial class RavenSmsClientsStore : IRavenSmsClientsStore
         => _clients.ToArrayAsync(cancellationToken: cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default)
+    public Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default)
     {
         if (filter is null)
             throw new ArgumentNullException(nameof(filter));
 
-        var query = _clients.AsQueryable();
-
-        // apply the filter & the orderBy
-        query = SetFilter(query, filter);
-        query = query.DynamicOrderBy(filter.OrderBy, filter.SortDirection);
-
-        var rowsCount = 0;
-
-        if (!filter.IgnorePagination)
-        {
-            rowsCount = await query.Select(e => e.Id)
-                .Distinct()
-                .CountAsync(cancellationToken: cancellationToken);
-
-            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize);
-        }
-
-        var data = await query.ToArrayAsync(cancellationToken: cancellationToken);
-
-        rowsCount = filter.IgnorePagination
-            ? data.Length : rowsCount;
-
-        return (data, rowsCount);
+        return GetAllBaseAsync(filter, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -134,6 +111,34 @@ public partial class RavenSmsClientsStore
     {
         _context = context;
         _clients = _context.Set<RavenSmsClient>();
+    }
+
+    private async Task<(RavenSmsClient[] data, int rowsCount)> GetAllBaseAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken)
+    {
+        var query = _clients.AsQueryable();
+
+        // apply the filter & the orderBy
+        query = SetFilter(query, filter);
+        query = query.DynamicOrderBy(filter.OrderBy, filter.SortDirection);
+
+        var rowsCount = 0;
+
+        if (!filter.IgnorePagination)
+        {
+            rowsCount = await query.Select(e => e.Id)
+                .Distinct()
+                .CountAsync(cancellationToken: cancellationToken);
+
+            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+        }
+
+        var data = await query.ToArrayAsync(cancellationToken: cancellationToken);
+
+        rowsCount = filter.IgnorePagination
+            ? data.Length : rowsCount;
+
+        return (data, rowsCount);
     }
 
     private static IQueryable<RavenSmsClient> SetFilter(IQueryable<RavenSmsClient> query, RavenSmsClientsFilter filter)

@@ -1,12 +1,5 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
-
 /// <summary>
 /// the Configurations class
 /// </summary>

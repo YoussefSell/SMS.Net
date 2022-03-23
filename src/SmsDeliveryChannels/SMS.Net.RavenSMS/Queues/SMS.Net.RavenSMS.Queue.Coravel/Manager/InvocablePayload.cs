@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Coravel;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.Coravel;
 
 /// <summary>
 /// the invocable payload

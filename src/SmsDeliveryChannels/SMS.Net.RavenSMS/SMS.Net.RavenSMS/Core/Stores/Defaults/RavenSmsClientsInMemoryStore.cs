@@ -24,35 +24,12 @@ public partial class RavenSmsClientsInMemoryStore : IRavenSmsClientsStore
     }
 
     /// <inheritdoc/>
-    public async Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default)
+    public Task<(RavenSmsClient[] data, int rowsCount)> GetAllAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken = default)
     {
         if (filter is null)
             throw new ArgumentNullException(nameof(filter));
 
-        if (cancellationToken.IsCancellationRequested)
-            cancellationToken.ThrowIfCancellationRequested();
-
-        // apply the filter & the orderBy
-        var query = SetFilter(_clients, filter);
-
-        var rowsCount = 0;
-
-        if (!filter.IgnorePagination)
-        {
-            rowsCount = query.Select(e => e.Id)
-                .Distinct()
-                .Count();
-
-            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize);
-        }
-
-        var data = query.ToArray();
-
-        rowsCount = filter.IgnorePagination
-            ? data.Length : rowsCount;
-
-        return (data, rowsCount);
+        return GetAllBaseAsync(filter, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -178,6 +155,34 @@ public partial class RavenSmsClientsInMemoryStore
                 Description = "the default client created when the list of clients is initialized",
             }
         };
+    }
+
+    private Task<(RavenSmsClient[] data, int rowsCount)> GetAllBaseAsync(RavenSmsClientsFilter filter, CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        // apply the filter & the orderBy
+        var query = SetFilter(_clients, filter);
+
+        var rowsCount = 0;
+
+        if (!filter.IgnorePagination)
+        {
+            rowsCount = query.Select(e => e.Id)
+                .Distinct()
+                .Count();
+
+            query = query.Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+        }
+
+        var data = query.ToArray();
+
+        rowsCount = filter.IgnorePagination
+            ? data.Length : rowsCount;
+
+        return Task.FromResult((data, rowsCount));
     }
 
     private static IEnumerable<RavenSmsClient> SetFilter(IEnumerable<RavenSmsClient> query, RavenSmsClientsFilter filter)

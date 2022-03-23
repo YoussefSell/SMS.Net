@@ -1,4 +1,4 @@
-# SMS.Net.RavenSMS - SMS delivery channel
+# SMS.Net.Channel.RavenSMS - SMS delivery channel
 
 RavenSMS is custom developed channel that utilises our phones to send sms messages without the need for buying a subscription from services like Twilio and MessageBird etc.
 
@@ -24,7 +24,7 @@ RavenSMS is built on top of ASP.NET Core 6, so keep that in mind if your project
 so let's start with configuring our RavenSMS server,
 to get started first install in your ASP core project.
 
-- **[SMS.Net.RavenSMS](https://www.nuget.org/packages/SMS.Net.RavenSMS/):** `Install-Package SMS.Net.RavenSMS`.
+- **[SMS.Net.Channel.RavenSMS](https://www.nuget.org/packages/SMS.Net.Channel.RavenSMS/):** `Install-Package SMS.Net.Channel.RavenSMS`.
 
 after installing it we need to add RavenSMS to SMS.NET configuration
 

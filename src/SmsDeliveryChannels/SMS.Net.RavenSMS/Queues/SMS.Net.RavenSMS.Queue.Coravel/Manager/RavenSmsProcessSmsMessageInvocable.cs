@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Coravel;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.Coravel;
 
 /// <summary>
 /// the Invocable for processing RavenSMS messages
@@ -17,7 +17,7 @@ public class RavenSmsProcessSmsMessageInvocable : IInvocable, IInvocableWithPayl
     public Task Invoke()
     {
         if (Payload is null)
-            throw new ArgumentNullException("IInvocable.Payload", "the payload is null");
+            throw new RavenSmsException("the payload is null");
 
         return ProcessAsync();
     }

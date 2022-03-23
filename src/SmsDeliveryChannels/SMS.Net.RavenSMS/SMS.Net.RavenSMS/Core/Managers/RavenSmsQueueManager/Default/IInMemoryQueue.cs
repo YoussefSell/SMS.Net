@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Managers;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.InMemory;
 
 /// <summary>
 /// interface to identify the InMemory queue in DI

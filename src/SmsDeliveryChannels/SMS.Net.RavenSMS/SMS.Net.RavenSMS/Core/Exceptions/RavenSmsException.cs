@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Exceptions;
+﻿namespace SMS.Net.Channel.RavenSMS;
 
 /// <summary>
 /// the base exception for all RavenSms related errors

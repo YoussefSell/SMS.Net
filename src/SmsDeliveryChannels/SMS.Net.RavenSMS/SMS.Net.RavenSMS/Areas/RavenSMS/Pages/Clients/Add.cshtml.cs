@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SMS.Net.RavenSMS.Pages;
+namespace SMS.Net.Channel.RavenSMS.Pages;
 
 /// <summary>
 /// the Clients add page

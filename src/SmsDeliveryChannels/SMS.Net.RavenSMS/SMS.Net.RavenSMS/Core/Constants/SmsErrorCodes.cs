@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.RavenSMS.Pages;
+﻿namespace SMS.Net.Channel.RavenSMS.Pages;
 
 /// <summary>
 ///  class that defines the sms errors messages

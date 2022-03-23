@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Hangfire;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.Hangfire;
 
 /// <summary>
 /// the queue manager implementation using Hangfire

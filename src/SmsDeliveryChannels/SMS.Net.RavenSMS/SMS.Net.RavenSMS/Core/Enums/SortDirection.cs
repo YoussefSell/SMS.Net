@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Enums;
+﻿namespace SMS.Net.Channel.RavenSMS.Domain.Enums;
 
 /// <summary>
 /// the order by type

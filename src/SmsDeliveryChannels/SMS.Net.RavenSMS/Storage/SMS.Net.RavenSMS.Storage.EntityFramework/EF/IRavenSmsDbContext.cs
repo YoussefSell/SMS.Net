@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores.EntityFramework;
 
 /// <summary>
 /// an interface that defines the entity framework db context

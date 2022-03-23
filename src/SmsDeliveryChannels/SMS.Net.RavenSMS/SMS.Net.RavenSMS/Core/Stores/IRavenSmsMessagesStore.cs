@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Persistence;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores;
 
 /// <summary>
 /// the store for managing RavenSMS messages data.

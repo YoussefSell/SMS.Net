@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Models.Filters;
+﻿namespace SMS.Net.Channel.RavenSMS.Domain.Models.Filters;
 
 /// <summary>
 /// the filter for retrieving the <see cref="RavenSmsMessage"/>.

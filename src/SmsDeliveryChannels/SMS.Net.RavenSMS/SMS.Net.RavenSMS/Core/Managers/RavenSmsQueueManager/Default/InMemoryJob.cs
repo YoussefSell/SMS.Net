@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Managers;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.InMemory;
 
 /// <summary>
 /// this class defines an in memory job definition
@@ -19,7 +19,7 @@ internal class InMemoryJob
     /// <param name="action">the action instance</param>
     public InMemoryJob(Action action)
     {
-        _job = action;
+        _job = action ?? throw new ArgumentNullException(nameof(action));
         Id = Guid.NewGuid();
     }
 
@@ -29,7 +29,7 @@ internal class InMemoryJob
     /// <param name="func">the function instance</param>
     public InMemoryJob(Func<Task> func)
     {
-        _asyncJob = func;
+        _asyncJob = func ?? throw new ArgumentNullException(nameof(func));
         Id = Guid.NewGuid();
     }
 
@@ -42,6 +42,7 @@ internal class InMemoryJob
             return;
         }
 
-        _job();
+        if (_job is not null)
+            _job();
     }
 }

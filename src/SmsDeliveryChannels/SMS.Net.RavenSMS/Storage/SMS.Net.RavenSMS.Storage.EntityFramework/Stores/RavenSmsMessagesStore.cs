@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.EntityFramework;
+﻿namespace SMS.Net.Channel.RavenSMS.Stores.EntityFramework;
 
 /// <summary>
 /// the store implementation for <see cref="IRavenSmsMessagesStore"/>

@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Entities;
+﻿namespace SMS.Net.Channel.RavenSMS.Domain.Models;
 
 /// <summary>
 /// this class used to hold info about a send attempt of a sms message

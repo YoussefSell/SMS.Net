@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.RavenSMS.Pages;
+﻿namespace SMS.Net.Channel.RavenSMS.Domain.Constants;
 
 /// <summary>
 ///  class that defines the disconnection reasons

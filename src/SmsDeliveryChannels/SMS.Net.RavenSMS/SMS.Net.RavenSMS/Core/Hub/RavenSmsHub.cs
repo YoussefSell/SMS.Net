@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS;
+﻿namespace SMS.Net.Channel.RavenSMS.SignalR;
 
 public class RavenSmsHub : Hub
 {

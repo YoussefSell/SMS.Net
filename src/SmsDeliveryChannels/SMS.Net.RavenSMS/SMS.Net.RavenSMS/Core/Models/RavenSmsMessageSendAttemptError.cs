@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Entities;
+﻿namespace SMS.Net.Channel.RavenSMS.Domain.Models;
 
 /// <summary>
 /// defines a sending attempt error

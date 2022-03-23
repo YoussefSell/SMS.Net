@@ -1,4 +1,4 @@
-﻿namespace SMS.Net.Channel.RavenSMS.Managers;
+﻿namespace SMS.Net.Channel.RavenSMS.Queues.InMemory;
 
 /// <summary>
 /// the in memory queue implementation of the <see cref="IQueueManager"/>
