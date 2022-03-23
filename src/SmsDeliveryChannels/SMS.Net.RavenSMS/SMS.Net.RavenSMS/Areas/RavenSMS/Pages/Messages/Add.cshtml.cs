@@ -86,8 +86,14 @@ public partial class MessagesAddPageModel
 
             else
             {
+                if (Input.DeliveryDate.Value <= DateTime.Now)
+                {
+                    ModelState.AddModelError("", "the delivery date should be a date in the future.");
+                    return Page();
+                }
+
                 // calculate the delay
-                var delay = Input.DeliveryDate.Value - DateTime.UtcNow;
+                var delay = Input.DeliveryDate.Value - DateTime.Now;
 
                 // queue the message with the delay
                 await _manager.QueueMessageAsync(message, delay);
