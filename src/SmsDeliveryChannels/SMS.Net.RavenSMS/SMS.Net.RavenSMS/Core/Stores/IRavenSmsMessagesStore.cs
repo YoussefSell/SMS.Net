@@ -65,4 +65,13 @@ public interface IRavenSmsMessagesStore
     /// <returns>the operation result</returns>
     /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
     Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// delete the message with the given id.
+    /// </summary>
+    /// <param name="message">the message to delete</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
+    /// <returns>the operation result</returns>
+    /// <exception cref="OperationCanceledException">If the System.Threading.CancellationToken is canceled.</exception>
+    Task<Result> DeleteAsync(RavenSmsMessage message, CancellationToken cancellationToken = default);
 }

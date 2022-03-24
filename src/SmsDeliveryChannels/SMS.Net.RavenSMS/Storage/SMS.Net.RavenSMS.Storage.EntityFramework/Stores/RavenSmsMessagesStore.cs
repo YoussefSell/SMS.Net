@@ -100,6 +100,23 @@ public partial class RavenSmsMessagesStore : IRavenSmsMessagesStore
                 .WithErrors(ex);
         }
     }
+
+    /// <inheritdoc/>
+    public async Task<Result> DeleteAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            _ = _messages.Remove(message);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure()
+                .WithMessage("Failed to update the message, an exception has been accrued")
+                .WithErrors(ex);
+        }
+    }
 }
 
 /// <summary>

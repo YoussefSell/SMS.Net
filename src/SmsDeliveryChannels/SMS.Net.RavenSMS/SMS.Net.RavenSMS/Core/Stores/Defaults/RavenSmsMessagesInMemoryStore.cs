@@ -98,6 +98,25 @@ public partial class RavenSmsMessagesInMemoryStore : IRavenSmsMessagesStore
         message.Client = await _clientsStore.FindByIdAsync(message.ClientId, cancellationToken);
         return Result.Success(messageToUpdate);
     }
+
+    /// <inheritdoc/>
+    public Task<Result> DeleteAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        var messageToUpdate = _messages.FirstOrDefault(c => c.Id == message.Id);
+        if (messageToUpdate == null)
+        {
+            return Task.FromResult(Result.Failure()
+                .WithMessage("Failed to delete the message, not found")
+                .WithCode("message_not_found"));
+        }
+
+        _messages.Remove(messageToUpdate);
+
+        return Task.FromResult(Result.Success());
+    }
 }
 
 /// <summary>
