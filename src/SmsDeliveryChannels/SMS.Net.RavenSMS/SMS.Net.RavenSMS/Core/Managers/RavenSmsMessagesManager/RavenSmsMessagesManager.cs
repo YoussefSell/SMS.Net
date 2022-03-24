@@ -53,8 +53,18 @@ public partial class RavenSmsMessagesManager
     }
 
     /// <inheritdoc/>
-    public Task<Result<RavenSmsMessage>> UpdateAsync(RavenSmsMessage message, CancellationToken cancellationToken = default)
-        => _messagesStore.UpdateAsync(message, cancellationToken);
+    public async Task<Result> DeleteAsync(string messageId, CancellationToken cancellationToken = default)
+    {
+        var message = await _messagesStore.FindByIdAsync(messageId, cancellationToken);
+        if (message is null)
+        {
+            return Result.Failure()
+                .WithMessage("Failed to delete the message, not found")
+                .WithCode("message_not_found");
+        }
+
+        return await _messagesStore.DeleteAsync(message, cancellationToken);
+    }
 }
 
 /// <summary>
