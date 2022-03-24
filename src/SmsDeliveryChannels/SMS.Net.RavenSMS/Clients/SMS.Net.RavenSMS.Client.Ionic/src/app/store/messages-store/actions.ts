@@ -13,8 +13,9 @@ export enum StoreActionTypes {
     UNSELECT_MESSAGE = '@messages/unselect',
 
     INSERT_MESSAGE = '@messages/insert',
-    DELETE_MESSAGE = '@messages/delete',
     UPDATE_MESSAGE_STATUS = '@messages/update/status',
+    DELETE_MESSAGE = '@messages/delete',
+    MESSAGE_DELETED = '@messages/deleted',
 }
 
 export const LoadMessages = createAction(StoreActionTypes.LOAD_MESSAGES);
@@ -24,5 +25,7 @@ export const SelectMessage = createAction(StoreActionTypes.SELECT_MESSAGE, props
 export const UnselectMessage = createAction(StoreActionTypes.UNSELECT_MESSAGE);
 
 export const InsertMessage = createAction(StoreActionTypes.INSERT_MESSAGE, props<{ message: IMessages }>());
-export const DeleteMessage = createAction(StoreActionTypes.DELETE_MESSAGE, props<{ messageId: string; }>());
 export const UpdateMessageStatus = createAction(StoreActionTypes.UPDATE_MESSAGE_STATUS, props<{ messageId: string, newStatus: MessageStatus }>());
+export const DeleteMessage = createAction(StoreActionTypes.DELETE_MESSAGE, props<{ messageId: string; }>());
+export const MessageDeleted = createAction(StoreActionTypes.DELETE_MESSAGE, props<{ messageId: string; }>());
+

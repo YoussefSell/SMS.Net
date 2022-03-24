@@ -143,6 +143,16 @@ export class SignalRService {
     }
 
     /**
+     * register an event handler to handle message deletion
+     * @param handler the handler to be executed when the event is triggered
+     */
+    public onMessageDeletedEvent(handler: (messageId: string) => void): void {
+        if (this.hubConnection) {
+            this.hubConnection.on('deleteMessage', handler);
+        }
+    }
+
+    /**
     * register an event handler to handle client connected event
     * @param handler the handler to be executed when the event is triggered
     */

@@ -222,6 +222,13 @@ export class AppComponent implements OnInit, OnDestroy {
           break;
       }
     });
+
+    // register the handler for the message deletion event
+    this._signalRService.onMessageDeletedEvent(async (messageId) => {
+      if (this._clientIdentification.clientId) {
+        this._store.dispatch(MessagesStoreActions.MessageDeleted({ messageId }));
+      }
+    });
   }
 
   /**

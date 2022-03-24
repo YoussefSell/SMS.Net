@@ -86,7 +86,7 @@ export const MainReducer = createReducer<State>(
 
         return newState;
     }),
-    on(Actions.DeleteMessage, (state, action): State => {
+    on(Actions.DeleteMessage, Actions.MessageDeleted, (state, action): State => {
         // get the message index
         const messageIndex = state.messages.map(m => m.id).indexOf(action.messageId);
 
