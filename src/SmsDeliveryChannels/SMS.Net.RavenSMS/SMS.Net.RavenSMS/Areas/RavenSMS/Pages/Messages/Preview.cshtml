@@ -76,7 +76,10 @@
                             </div>
                         </div>
                         <!-- re-send action -->
-                    <button type="button" class="btn app-btn-primary" onclick="onResend()">Re-Send</button>
+                        @if (Model.SmsMessage.Status != RavenSmsMessageStatus.Queued)
+                        {
+                            <button type="button" class="btn app-btn-primary" onclick="onResend()">Re-Send</button>
+                        }
                     </div>
                 </div>
             </div>
