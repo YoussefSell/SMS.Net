@@ -95,6 +95,11 @@ public class RavenSmsHub : Hub
         await _messagesManager.SaveAsync(message);
     }
 
+    public async Task DeleteMessageAsync(string messageId)
+    {
+        await _messagesManager.DeleteAsync(messageId);
+    }
+
     public async Task LoadClientMessagesAsync(string clientId)
     {
         // get the client associated with the given id

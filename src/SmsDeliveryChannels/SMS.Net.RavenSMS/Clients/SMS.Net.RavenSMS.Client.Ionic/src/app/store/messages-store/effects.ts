@@ -27,4 +27,13 @@ export class MainEffects {
       })
     );
   }, { dispatch: false });
+
+  DeleteMessage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ActionTypes.DeleteMessage),
+      exhaustMap(async (props) => {
+        await this._signalRService.deleteMessageEventAsync(props.messageId);
+      })
+    );
+  }, { dispatch: false });
 }

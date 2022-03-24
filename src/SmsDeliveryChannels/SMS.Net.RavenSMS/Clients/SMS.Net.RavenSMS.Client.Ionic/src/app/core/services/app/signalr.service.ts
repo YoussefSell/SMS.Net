@@ -148,7 +148,17 @@ export class SignalRService {
      */
     public onMessageDeletedEvent(handler: (messageId: string) => void): void {
         if (this.hubConnection) {
-            this.hubConnection.on('deleteMessage', handler);
+            this.hubConnection.on('onMessageDeleted', handler);
+        }
+    }
+
+    /**
+     * delete a message from the server
+     * @param messageId the id of the message to delete.
+     */
+    public async deleteMessageEventAsync(messageId: string): Promise<void> {
+        if (this.hubConnection) {
+            await this.hubConnection.send('DeleteMessageAsync', messageId);
         }
     }
 
