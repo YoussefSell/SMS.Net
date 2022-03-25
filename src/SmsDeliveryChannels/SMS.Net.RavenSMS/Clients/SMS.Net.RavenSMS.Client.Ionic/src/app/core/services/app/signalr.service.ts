@@ -47,7 +47,12 @@ export class SignalRService {
         return this.hubConnection.start();
     }
 
-    // init the server connection
+    /**
+     * init the server connection
+     * @param serverUrl the ravenSMS signalR hub server url
+     * @param clientId the client id
+     * @returns a promise that resolve to void
+     */
     public initConnection(serverUrl: string, clientId: string): Promise<void> {
         // 1- build the connection hub
         this.buildHubConnection(serverUrl, clientId);
@@ -96,22 +101,6 @@ export class SignalRService {
         this.hubConnection.onreconnecting(callback);
     }
 
-    async sendUpdateMessageStatusEventAsync(messageId: string, status: MessageStatus, error: string) {
-        if (this.hubConnection.state == HubConnectionState.Connected) {
-            await this.hubConnection.send('UpdateMessageStatusAsync', messageId, status, error);
-        }
-    }
-
-    /**
-     * send the command to persist the connection id for this client
-     * @param clientId the id of the client app
-     */
-    public async sendPersistClientConnectionEvent$(clientId: string): Promise<void> {
-        if (this.hubConnection.state == HubConnectionState.Connected) {
-            await this.hubConnection.send('PersistClientConnectionAsync', clientId, true);
-        }
-    }
-
     /**
      * register an event handler to handle send message requests
      * @param handler the handler to be executed when the event is triggered
@@ -153,16 +142,6 @@ export class SignalRService {
     }
 
     /**
-     * delete a message from the server
-     * @param messageId the id of the message to delete.
-     */
-    public async deleteMessageEventAsync(messageId: string): Promise<void> {
-        if (this.hubConnection) {
-            await this.hubConnection.send('DeleteMessageAsync', messageId);
-        }
-    }
-
-    /**
     * register an event handler to handle client connected event
     * @param handler the handler to be executed when the event is triggered
     */
@@ -173,22 +152,54 @@ export class SignalRService {
     }
 
     /**
-     * load the messages sent by this client.
-     * @param clientId the id of this client instance
-     */
-    async loadClientMessagesAsync(clientId: string) {
-        if (this.hubConnection) {
-            await this.hubConnection.send('LoadClientMessagesAsync', clientId);
-        }
-    }
-
-    /**
     * get the list of messages sent by the client
     * @param handler the handler to be executed when the event is triggered
     */
     public onReadClientSentMessagesEvent(handler: (messages: IMessages[]) => void): void {
         if (this.hubConnection) {
             this.hubConnection.on('ReadClientSentMessagesAsync', handler);
+        }
+    }
+
+    /**
+     * send an event to update the message status
+     * @param messageId the id of the message to be updated
+     * @param status the new status
+     * @param error error if any
+     */
+    public async sendUpdateMessageStatusEventAsync(messageId: string, status: MessageStatus, error: string) {
+        if (this.hubConnection.state == HubConnectionState.Connected) {
+            await this.hubConnection.send('UpdateMessageStatusAsync', messageId, status, error);
+        }
+    }
+
+    /**
+     * send the command to persist the connection id for this client
+     * @param clientId the id of the client app
+     */
+    public async sendPersistClientConnectionEvent$(clientId: string): Promise<void> {
+        if (this.hubConnection.state == HubConnectionState.Connected) {
+            await this.hubConnection.send('PersistClientConnectionAsync', clientId, true);
+        }
+    }
+
+    /**
+     * delete a message from the server
+     * @param messageId the id of the message to delete.
+     */
+    public async sendDeleteMessageEventAsync(messageId: string): Promise<void> {
+        if (this.hubConnection) {
+            await this.hubConnection.send('DeleteMessageAsync', messageId);
+        }
+    }
+
+    /**
+     * load the messages sent by this client.
+     * @param clientId the id of this client instance
+     */
+    public async sendLoadClientMessagesEventAsync(clientId: string) {
+        if (this.hubConnection) {
+            await this.hubConnection.send('LoadClientMessagesAsync', clientId);
         }
     }
 }

@@ -22,7 +22,7 @@ export class MainEffects {
       withLatestFrom(this.store.select(SettingsStoreSelectors.AppIdentificationSelector)),
       exhaustMap(async ([, clientInfo]) => {
         if (clientInfo) {
-          await this._signalRService.loadClientMessagesAsync(clientInfo.clientId)
+          await this._signalRService.sendLoadClientMessagesEventAsync(clientInfo.clientId)
         }
       })
     );
@@ -32,7 +32,7 @@ export class MainEffects {
     return this.actions$.pipe(
       ofType(ActionTypes.DeleteMessage),
       exhaustMap(async (props) => {
-        await this._signalRService.deleteMessageEventAsync(props.messageId);
+        await this._signalRService.sendDeleteMessageEventAsync(props.messageId);
       })
     );
   }, { dispatch: false });
