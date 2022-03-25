@@ -1,6 +1,6 @@
 # SMS.Net.Channel.RavenSMS - SMS delivery channel
 
-RavenSMS is custom developed channel that utilises our phones to send sms messages without the need for buying a subscription from services like Twilio and MessageBird etc.
+RavenSMS is a custom developed channel that utilizes our phones to send sms messages without the need for buying a subscription from services like Twilio and MessageBird etc.
 
 the idea behind RavenSMS has raised when i found that most SMS delivery channels don't offer a great testing experience. the testing budgets very low on most of the services,Twilio for example gives you 15$ to be used for testing which i don't find enough. also the sending limitation, most services restrict you you to send SMS messages to only a specific test phone number.
 

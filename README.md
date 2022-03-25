@@ -1,11 +1,12 @@
 # SMS.NET
+
 [![](https://img.shields.io/github/license/YoussefSell/SMS.Net)](https://github.com/YoussefSell/SMS.Net/blob/master/LICENSE)
 [![](https://img.shields.io/nuget/v/SMS.Net)](https://www.nuget.org/packages/SMS.Net/)
 ![Build](https://github.com/YoussefSell/SMS.Net/actions/workflows/ci.yml/badge.svg)
 
-***this library is still under development**
+**\*this library is still under development**
 
-Send SMS message from your .Net application with a flexible solution that guarantee clean architectures, and access to different types of providers.
+Send SMS message from your .Net application with a flexible solution that guarantee clean architectures, and access to different types of delivery channels.
 
 ## Quick setup
 
@@ -19,11 +20,11 @@ when you send an SMS message, there are three component that you will interact w
 - **SmsService**: the SMS service.
 - **Channel**: the SMS Delivery Channel.
 
-first we start by compose the SMS message, than we pass the message to the SMS service, than service will send the message using a pre-configured channel.
+first we start by composing the SMS message, than we pass the message to the SMS service, than service will send the message using a pre-configured channel.
 
 ### 1. SmsMessage
 
-the SmsMessage contain you message details, which includes the following:
+the SmsMessage contain your message details, which includes the following:
 
 - **From:** the phone number to be used as the sender.
 - **To:** the phone number to be used as the recipient.
@@ -51,6 +52,7 @@ Delivery Channels are what actually used to send the SMS messages under the hood
 
 the pre-built channel are provided as Nuget packages:
 
+- **[SMS.Net.RavenSMS](https://www.nuget.org/packages/SMS.Net.RavenSMS/):** to send SMS messages using RavenSMS.
 - **[SMS.Net.Twilio](https://www.nuget.org/packages/SMS.Net.Twilio/):** to send SMS messages using Twilio.
 - **[SMS.Net.MessageBird](https://www.nuget.org/packages/SMS.Net.MessageBird/):** to send SMS messages using MessageBird.
 - **[SMS.Net.Avochato](https://www.nuget.org/packages/SMS.Net.Avochato/):** to send SMS messages using Avochato.
@@ -59,7 +61,7 @@ and we will be adding more in the future, but if you want to create your own Cha
 
 ### 3- SmsService
 
-the SMS service is what you will be interacting with to send your messages, to create an instance of the service use can use the factory `SmsServiceFactory`
+the SMS service is what you will be interacting with to send your messages, to create an instance of the service you can use the factory `SmsServiceFactory`
 
 ```csharp
 var smsService = SmsServiceFactory.Instance
@@ -94,7 +96,7 @@ starting with `UseOptions()` you can configure the `SmsService` options, there a
 - **DefaultFrom:** you can set the default Sender phone number, so that you don't have to do it each time on the message, note that if you have specified a Sender phone number on the message this value will be ignored.
 - **DefaultDeliveryChannel:** specify the default channel that should be used to send the SMS messages, because you can configure multiple channels you should indicate which one you want to be used.
 
-`UseChannel()` takes an instance of the Channel, like so: `UseChannel(new TwilioSmsDeliveryChannel(configuration))`, but you're not going to use this method, instead you will use the extension methods given to you by the channels as we seen on the example above, the Twilio channel has an extension method `UseTwilio()` that will allow you to register it.
+`UseChannel()` takes an instance of the Channel, like so: `UseChannel(new RavenSmsDeliveryChannel(configuration))`, but you're not going to use this method, instead you will use the extension methods given to you by the channels as we seen on the example above, the RavenSMS channel has an extension method `UseRavenSMS()` that will allow you to register it.
 
 finally `Create()` will simply create an instance of the `SmsService`.
 
@@ -139,7 +141,7 @@ services.AddSMSNet(options =>
     options.DefaultFrom = new PhoneNumber("+212100000009");
     options.DefaultDeliveryChannel = TwilioSmsDeliveryChannel.Name;
 })
-.UseTwilio("username", "password");
+.UseRavenSMS();
 ```
 
 then you can inject the SMS Service in your classes constructors using `ISmsService`
