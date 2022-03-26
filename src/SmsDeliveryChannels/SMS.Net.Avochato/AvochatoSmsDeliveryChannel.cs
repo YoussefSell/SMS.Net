@@ -69,6 +69,7 @@
         /// <summary>
         /// create an instance of <see cref="AvochatoSmsDeliveryChannel"/>
         /// </summary>
+        /// <param name="httpClient">the httpClient instance</param>
         /// <param name="options">the options instance</param>
         /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
         public AvochatoSmsDeliveryChannel(HttpClient httpClient, AvochatoSmsDeliveryChannelOptions options)
@@ -110,7 +111,7 @@
             };
 
             var tagsChannelData = message.ChannelData.GetData(CustomChannelData.Tags);
-            var authIdChannelData = message.ChannelData.GetData(CustomChannelData.AuthKey);
+            var authIdChannelData = message.ChannelData.GetData(CustomChannelData.AuthId);
             var mediaUrlChannelData = message.ChannelData.GetData(CustomChannelData.MediaUrl);
             var authSecretChannelData = message.ChannelData.GetData(CustomChannelData.AuthSecret);
             var markAddressedChannelData = message.ChannelData.GetData(CustomChannelData.MarkAddressed);

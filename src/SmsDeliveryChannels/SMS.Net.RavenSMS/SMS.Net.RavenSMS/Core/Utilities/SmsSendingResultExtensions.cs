@@ -6,9 +6,10 @@
 internal static class SmsSendingResultExtensions
 {
     /// <summary>
-    /// add a new error to the errors list.
+    /// add a new result error to the errors list.
     /// </summary>
-    /// <param name="error">the error to add.</param>
+    /// <param name="smsSendingResult">the smsSendingResult instance.</param>
+    /// <param name="result">the result to add.</param>
     /// <returns>the <see cref="SmsSendingResult"/> instance to enable methods chaining.</returns>
     /// <exception cref="ArgumentNullException">the error is null</exception>
     internal static SmsSendingResult AddError(this SmsSendingResult smsSendingResult, Result result)

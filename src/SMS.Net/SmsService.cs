@@ -9,7 +9,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// the email service used to abstract the email sending
+    /// the sms service used to abstract the sms sending
     /// </summary>
     public partial class SmsService
     {
@@ -28,7 +28,7 @@
             if (!_providers.TryGetValue(channel_name, out ISmsDeliveryChannel provider))
                 throw new SmsDeliveryChannelNotFoundException(channel_name);
 
-            // send the email message
+            // send the sms message
             return Send(message, provider);
         }
 
@@ -52,7 +52,7 @@
                     .AddMetaData(SmsSendingResult.MetaDataKeys.SendingPaused, true);
             }
 
-            // send the email message
+            // send the sms message
             return channel.Send(message);
         }
 
@@ -71,7 +71,7 @@
             if (!_providers.TryGetValue(channel_name, out ISmsDeliveryChannel provider))
                 throw new SmsDeliveryChannelNotFoundException(channel_name);
 
-            // send the email message
+            // send the sms message
             return SendAsync(message, provider, cancellationToken);
         }
 
@@ -95,7 +95,7 @@
                     .AddMetaData("sending_paused", true));
             }
 
-            // send the email message
+            // send the sms message
             return channel.SendAsync(message, cancellationToken);
         }
     }
@@ -111,18 +111,18 @@
         /// <summary>
         /// create an instance of <see cref="SmsService"/>.
         /// </summary>
-        /// <param name="emailDeliveryProviders">the list of supported email delivery providers.</param>
-        /// <param name="options">the email service options.</param>
-        /// <exception cref="ArgumentNullException">if emailDeliveryProviders or options are null.</exception>
-        /// <exception cref="ArgumentException">if emailDeliveryProviders list is empty.</exception>
-        /// <exception cref="EmailDeliveryProviderNotFoundException">if the default email delivery provider cannot be found.</exception>
-        public SmsService(IEnumerable<ISmsDeliveryChannel> emailDeliveryProviders, SmsServiceOptions options)
+        /// <param name="channels">the list of supported SMS delivery channels.</param>
+        /// <param name="options">the sms service options.</param>
+        /// <exception cref="ArgumentNullException">if channels or options are null.</exception>
+        /// <exception cref="ArgumentException">if channels list is empty.</exception>
+        /// <exception cref="SmsDeliveryChannelNotFoundException">if the default SMS delivery channel cannot be found.</exception>
+        public SmsService(IEnumerable<ISmsDeliveryChannel> channels, SmsServiceOptions options)
         {
-            if (emailDeliveryProviders is null)
-                throw new ArgumentNullException(nameof(emailDeliveryProviders));
+            if (channels is null)
+                throw new ArgumentNullException(nameof(channels));
 
-            if (!emailDeliveryProviders.Any())
-                throw new ArgumentException("you must specify at least one email delivery provider, the list is empty.", nameof(emailDeliveryProviders));
+            if (!channels.Any())
+                throw new ArgumentException("you must specify at least one sms delivery channel, the list is empty.", nameof(channels));
 
             if (options is null)
                 throw new ArgumentNullException(nameof(options));
@@ -133,9 +133,9 @@
             Options = options;
 
             // init the providers dictionary
-            _providers = emailDeliveryProviders.ToDictionary(provider => provider.Name);
+            _providers = channels.ToDictionary(provider => provider.Name);
 
-            // check if the default email delivery provider exist
+            // check if the default sms delivery channel exist
             if (!_providers.ContainsKey(options.DefaultDeliveryChannel))
                 throw new SmsDeliveryChannelNotFoundException(options.DefaultDeliveryChannel);
 
@@ -144,17 +144,17 @@
         }
 
         /// <summary>
-        /// Get the email service options instance
+        /// Get the sms service options instance
         /// </summary>
         public SmsServiceOptions Options { get; }
 
         /// <summary>
-        /// Get the list of email delivery providers attached to this email service.
+        /// Get the list of sms delivery channels attached to this sms service.
         /// </summary>
         public IEnumerable<ISmsDeliveryChannel> Channels => _providers.Values;
 
         /// <summary>
-        /// Get the default email delivery provider attached to this email service.
+        /// Get the default sms delivery channel attached to this sms service.
         /// </summary>
         public ISmsDeliveryChannel DefaultChannel => _defaultProvider;
 

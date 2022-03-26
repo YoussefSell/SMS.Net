@@ -1,17 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Coravel" Version="4.1.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Title>SMS.Net - RavenSMS channel Coravel queue</Title>
+		<PackageId>SMS.Net.RavenSMS.Queue.Coravel</PackageId>
+		<PackageTags>SMS.Net; SMS; RavenSMS; Coravel</PackageTags>
+		<Description>The Coravel queue implementation for RavenSMS.</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Coravel" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
+	</ItemGroup>
 
 </Project>

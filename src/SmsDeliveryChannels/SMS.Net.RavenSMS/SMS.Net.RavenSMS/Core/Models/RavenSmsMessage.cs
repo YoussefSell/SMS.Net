@@ -32,7 +32,7 @@ public class RavenSmsMessage
     public DateTimeOffset? SentOn { get; set; }
 
     /// <summary>
-    /// if the message has been queued, this will be the date & time the message will be sent
+    /// if the message has been queued, this will be the date and time the message will be sent
     /// </summary>
     public DateTimeOffset? DeliverAt { get; set; }
 

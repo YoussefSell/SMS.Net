@@ -96,6 +96,8 @@ public partial class RavenSmsDeliveryChannel
     /// <summary>
     /// create an instance of <see cref="RavenSmsDeliveryChannel"/>
     /// </summary>
+    /// <param name="ravenSmsManager">the <see cref="IRavenSmsManager"/> instance</param>
+    /// <param name="clientsManager">the <see cref="IRavenSmsClientsManager"/> instance</param>
     /// <param name="options">the channel options instance</param>
     /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
     public RavenSmsDeliveryChannel(
@@ -117,6 +119,7 @@ public partial class RavenSmsDeliveryChannel
     /// create a <see cref="RavenSmsMessage"/> instance from the given <see cref="SmsMessage"/>.
     /// </summary>
     /// <param name="message">the <see cref="SmsMessage"/> instance</param>
+    /// <param name="clientId">the clientId this message will be sent with.</param>
     /// <returns>an instance of <see cref="RavenSmsMessage"/> class</returns>
     public static RavenSmsMessage CreateMessage(SmsMessage message, string clientId)
         => new()

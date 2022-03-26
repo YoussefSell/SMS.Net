@@ -24,7 +24,6 @@ public class RavenSmsBuilder
     /// <summary>
     /// set the options values
     /// </summary>
-    /// <param name="configuration">the options instance</param>
     internal RavenSmsDeliveryChannelOptions InitOptions()
     {
         return new RavenSmsDeliveryChannelOptions
