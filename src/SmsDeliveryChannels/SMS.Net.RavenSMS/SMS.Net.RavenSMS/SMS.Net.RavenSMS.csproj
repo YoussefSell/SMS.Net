@@ -18,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\css\**\*" />
-    <EmbeddedResource Include="Assets\js\**\*" />
-    <EmbeddedResource Include="Assets\media\**\*" />
-    <EmbeddedResource Include="Assets\webfonts\**\*" />
+    <EmbeddedResource Include="Assets\build\css\**\*" />
+    <EmbeddedResource Include="Assets\build\js\**\*" />
+    <EmbeddedResource Include="Assets\build\media\**\*" />
+    <EmbeddedResource Include="Assets\build\webfonts\**\*" />
   </ItemGroup>
 
   <ItemGroup>
