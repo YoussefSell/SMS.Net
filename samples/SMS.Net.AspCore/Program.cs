@@ -43,11 +43,7 @@ builder.Services.AddSMSNet(options =>
 .UseAvochato(authId: "Key-1", authSecret: "Key-1")
 .UseTwilio(username: "Key-1", password: "Key-1")
 .UseMessageBird(accessKey: "Key-1")
-.UseRavenSMS(options =>
-{
-    options.UseInMemoryQueue();
-    options.UseInMemoryStores();
-});
+.UseRavenSMS();
 
 var app = builder.Build();
 

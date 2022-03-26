@@ -6,6 +6,19 @@
 public static class Configurations
 {
     /// <summary>
+    /// add the RavenSMS channel to be used with your SMS service, 
+    /// this will register RavenSMS with the InMemory implementation of the Queue and the stores.
+    /// </summary>
+    /// <param name="builder">the SMS.Net builder instance.</param>
+    /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
+    public static SmsNetBuilder UseRavenSMS(this SmsNetBuilder builder)
+        => builder.UseRavenSMS(options =>
+        {
+            options.UseInMemoryQueue();
+            options.UseInMemoryStores();
+        });
+
+    /// <summary>
     /// add the RavenSMS channel to be used with your SMS service.
     /// </summary>
     /// <param name="builder">the SMS.Net builder instance.</param>
@@ -96,4 +109,3 @@ internal class RavenSmsUIConfigureOptions : IPostConfigureOptions<StaticFileOpti
             new ManifestEmbeddedFileProvider(GetType().Assembly, "Assets"));
     }
 }
-
