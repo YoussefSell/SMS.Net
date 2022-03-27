@@ -3,5 +3,5 @@
     /// <summary>
     /// the MessageBird SMS delivery channel
     /// </summary>
-    public interface IMessageBirdSmsDeliveryChannel : ISmsChannel { }
+    public interface IMessageBirdSmsDeliveryChannel : ISmsDeliveryChannel { }
 }

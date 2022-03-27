@@ -4,6 +4,7 @@
     using global::MessageBird.Objects;
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -35,8 +36,13 @@
         }
 
         /// <inheritdoc/>
-        public async Task<SmsSendingResult> SendAsync(SmsMessage message)
-            => await Task.FromResult(Send(message));
+        public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                cancellationToken.ThrowIfCancellationRequested();
+
+            return await Task.FromResult(Send(message));
+        }
     }
 
     /// <summary>
@@ -50,14 +56,14 @@
         public const string Name = "MessageBird";
 
         /// <inheritdoc/>
-        string ISmsChannel.Name => Name;
+        string ISmsDeliveryChannel.Name => Name;
 
         private readonly MessageBirdSmsDeliveryChannelOptions _options;
 
         /// <summary>
         /// create an instance of <see cref="MessageBirdSmsDeliveryChannel"/>
         /// </summary>
-        /// <param name="options">the edp options instance</param>
+        /// <param name="options">the channel options instance</param>
         /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
         public MessageBirdSmsDeliveryChannel(MessageBirdSmsDeliveryChannelOptions options)
         {

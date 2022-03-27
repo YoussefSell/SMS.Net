@@ -77,7 +77,7 @@ namespace SMS.Net.Channel.MessageBird.Test
         public void SendEmail()
         {
             // arrange
-            var edp = new MessageBirdSmsDeliveryChannel(new MessageBirdSmsDeliveryChannelOptions()
+            var channel = new MessageBirdSmsDeliveryChannel(new MessageBirdSmsDeliveryChannelOptions()
             {
                 AccessKey = TEST_ACCESSKEY
             });
@@ -89,7 +89,7 @@ namespace SMS.Net.Channel.MessageBird.Test
                 .Build();
 
             // act
-            var result = edp.Send(message);
+            var result = channel.Send(message);
 
             // assert
             Assert.True(result.IsSuccess);

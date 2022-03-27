@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "SMS.Net.AspCore": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7114;http://localhost:5114",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

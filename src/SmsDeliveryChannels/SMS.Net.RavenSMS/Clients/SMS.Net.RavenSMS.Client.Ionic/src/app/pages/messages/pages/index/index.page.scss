@@ -1,0 +1,19 @@
+.message-created {
+  border-left: 2px solid var(--ion-color-message-created);
+  padding-left: 10px;
+}
+
+.message-sent {
+  border-left: 2px solid var(--ion-color-message-sent);
+  padding-left: 10px;
+}
+
+.message-failed {
+  border-left: 2px solid var(--ion-color-message-failed);
+  padding-left: 10px;
+}
+
+.message-queued {
+  border-left: 2px solid var(--ion-color-message-queued);
+  padding-left: 10px;
+}

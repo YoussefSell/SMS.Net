@@ -1,0 +1,69 @@
+<ng-container *transloco="let translate">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{translate('messages.pages.details.page_title')}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button [defaultHref]="'/app/tabs/messages'"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <div *ngIf="_message" class="ion-padding">
+      <p>
+        {{translate('messages.pages.details.labels.message_id')}}: <br />
+        {{_message.id}}
+      </p>
+      <p>
+        {{translate('messages.pages.details.labels.message_content')}}: <br />
+        {{_message.content}}
+      </p>
+      <p>
+        {{translate('messages.pages.details.labels.message_status')}}: <br />
+        <span
+          [ngClass]="{
+        'message-created-color': _message.status === _messageStatus.Created, 
+        'message-queued-color': _message.status === _messageStatus.Queued, 
+        'message-failed-color': _message.status === _messageStatus.Failed, 
+        'message-sent-color': _message.status === _messageStatus.Sent
+      }"
+          >{{translate('common.enumerations.messageStatus.' +
+          _message.status)}}</span
+        >
+      </p>
+      <p>
+        {{translate('messages.pages.details.labels.message_to')}}: <br />
+        {{_message.to }}
+      </p>
+      <p *ngIf="_message.sentOn">
+        {{translate('messages.pages.details.labels.message_sent_on')}}: <br />
+        {{_message.sentOn | date:'long'}}
+      </p>
+      <p *ngIf="_message.deliverAt">
+        {{translate('messages.pages.details.labels.message_deliver_at')}}:
+        <br />
+        {{_message.deliverAt | date:'long'}}
+      </p>
+      <p>
+        {{translate('messages.pages.details.labels.message_created_on')}}:
+        <br />
+        {{_message.createdOn | date:'long'}}
+      </p>
+      <br />
+    </div>
+
+    <ion-list>
+      <ion-item (click)="removeMessage()" button>
+        <ion-label color="danger"
+          >{{translate('messages.pages.details.actions.remove')}}: <br
+        /></ion-label>
+        <ion-icon
+          slot="end"
+          color="danger"
+          size="small"
+          name="trash-outline"
+        ></ion-icon>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ng-container>

@@ -5,7 +5,7 @@
     /// </summary>
     internal static class CustomChannelData
     {
-        public const string AuthKey = "auth_key";
+        public const string AuthId = "auth_id";
 
         public const string AuthSecret = "auth_secret";
      

@@ -5,6 +5,7 @@
     using SMS.Net.Utilities;
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -36,8 +37,11 @@
         }
 
         /// <inheritdoc/>
-        public async Task<SmsSendingResult> SendAsync(SmsMessage message)
+        public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
         {
+            if (cancellationToken.IsCancellationRequested)
+                cancellationToken.ThrowIfCancellationRequested();
+
             try
             {
                 // init the Twilio client
@@ -70,14 +74,14 @@
         public const string Name = "twilio";
 
         /// <inheritdoc/>
-        string ISmsChannel.Name => Name;
+        string ISmsDeliveryChannel.Name => Name;
 
         private readonly TwilioSmsDeliveryChannelOptions _options;
 
         /// <summary>
         /// create an instance of <see cref="TwilioSmsDeliveryChannel"/>
         /// </summary>
-        /// <param name="options">the edp options instance</param>
+        /// <param name="options">the options instance</param>
         /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
         public TwilioSmsDeliveryChannel(TwilioSmsDeliveryChannelOptions options)
         {
@@ -98,11 +102,11 @@
 
             var userName = userNameEdpData.IsEmpty() ? _options.Username : userNameEdpData.GetValue<string>();
             var password = passwordEdpData.IsEmpty() ? _options.Password : passwordEdpData.GetValue<string>();
-            var accountSId = accountSIdEdpData.IsEmpty() ? _options.AccountSID : accountSIdEdpData.GetValue<string>();
+            var accountSid = accountSIdEdpData.IsEmpty() ? _options.AccountSID : accountSIdEdpData.GetValue<string>();
 
-            if (accountSId.IsValid())
+            if (!string.IsNullOrEmpty(accountSid) && !string.IsNullOrWhiteSpace(accountSid))
             {
-                TwilioClient.Init(userName, password, accountSId);
+                TwilioClient.Init(userName, password, accountSid);
                 return;
             }
 
@@ -126,10 +130,10 @@
         }
 
         /// <summary>
-        /// create an instance of <see cref="BasicMessage"/> from the given <see cref="SmsMessage"/>.
+        /// create an instance of <see cref="CreateMessageOptions"/> from the given <see cref="SmsMessage"/>.
         /// </summary>
         /// <param name="message">the message instance</param>
-        /// <returns>instance of <see cref="BasicMessage"/></returns>
+        /// <returns>instance of <see cref="CreateMessageOptions"/></returns>
         public CreateMessageOptions CreateMessage(SmsMessage message)
         {
             var attemptChannelData = message.ChannelData.GetData(CustomChannelData.Attempt);

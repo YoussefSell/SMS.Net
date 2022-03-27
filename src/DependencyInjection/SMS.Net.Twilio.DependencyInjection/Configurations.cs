@@ -46,7 +46,7 @@
             configuration.Validate();
 
             builder.ServiceCollection.AddSingleton((s) => configuration);
-            builder.ServiceCollection.AddScoped<ISmsChannel, TwilioSmsDeliveryChannel>();
+            builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, TwilioSmsDeliveryChannel>();
             builder.ServiceCollection.AddScoped<ITwilioSmsDeliveryChannel, TwilioSmsDeliveryChannel>();
 
             return builder;

@@ -1,0 +1,18 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Sobre",
+            "content": {
+                "section_one": "SMS.Net es una abstracción del remitente de SMS para que .NET desacople el envío de SMS del proveedor subyacente, con acceso a diferentes tipos de proveedores como Twilio, MessageBird, Avochato, etc.",
+                "section_two": "RavenSMS es un canal desarrollado a medida que permite a los desarrolladores usar sus propios teléfonos para enviar mensajes SMS, sin necesidad de comprar una suscripción con un canal como Twilio."
+            },
+            "labels": {
+                "details_section": {
+                    "title": "Detalles",
+                    "version": "Versión",
+                    "github": "Github"
+                }
+            }
+        }
+    }
+}

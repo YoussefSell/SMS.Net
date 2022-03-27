@@ -16,17 +16,17 @@
         public Priority Priority { get; }
 
         /// <summary>
-        /// the message body.
+        /// Gets or sets the message body.
         /// </summary>
         public string Body { get; set; }
 
         /// <summary>
-        /// the phone number of the sender.
+        /// Gets or sets the phone number of the sender.
         /// </summary>
-        public PhoneNumber From { get; internal set; }
+        public PhoneNumber From { get; set; }
 
         /// <summary>
-        /// the phone numbers of recipients to send the SMS message to.
+        /// Gets or sets the phone numbers of recipients to send the SMS message to.
         /// </summary>
         public PhoneNumber To { get; }
 

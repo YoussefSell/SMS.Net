@@ -1,0 +1,81 @@
+﻿@page
+@model SMS.Net.Channel.RavenSMS.Pages.MessagesAddPageModel
+@{
+    ViewData[ViewDataKeys.PageTitle] = "Compose Message";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.MessagesAddPage;
+}
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <div class="page-title">
+            <a asp-page="/Messages/Index" class="btn btn-default back-btn"><i class="fas fa-solid fa-arrow-left"></i></a>
+            <h1>Compose a SMS message</h1>
+        </div>
+        <div class="row g-4 settings-section">
+            <div class="app-card app-card-settings shadow-sm p-4">
+                <div class="app-card-body">
+                    <form id="add-message-form" class="settings-form" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <!-- client app -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Client" class="form-label">
+                                Client
+                                <span class="ms-2" data-container="body" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top"
+                                      data-bs-content="Select the client used to send the SMS message.">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
+                                        <circle cx="8" cy="4.5" r="1" />
+                                    </svg>
+                                </span>
+                            </label>
+                            <select asp-for="Input.Client" class="form-select" aria-label="Default select example">
+                                <option value="" disabled hidden selected>select a client app</option>
+                            </select>
+                            <span asp-validation-for="Input.Client" class="invalid-feedback"></span>
+                        </div>
+                        <!-- To -->
+                        <div class="mb-3">
+                            <label asp-for="Input.To" class="form-label">To</label>
+                            <input asp-for="Input.To" class="form-control">
+                            <span asp-validation-for="Input.To" class="invalid-feedback"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Priority" class="form-label">Priority</label>
+                            <select asp-for="Input.Priority" class="form-select" aria-label="select message priority">
+                                <option value="0">Low</option>
+                                <option value="1" selected>Normal</option>
+                                <option value="2">High</option>
+                            </select>
+                            <span asp-validation-for="Input.Priority" class="invalid-feedback"></span>
+                        </div>
+                        <!-- Message body -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Body" class="form-label">Message body</label>
+                            <textarea asp-for="Input.Body" class="form-control" placeholder="you message" style="height: 100px"></textarea>
+                            <span asp-validation-for="Input.Body" class="invalid-feedback"></span>
+                        </div>
+                        <!-- Queue for future delivery -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="schedule" onchange="onEnableSheduling(this.checked)">
+                            <label class="form-check-label" for="schedule">Schedule for future delivery</label>
+                        </div>
+                        <!-- Queue for future delivery -->
+                        <div id="delivery-date-container" class="mb-3" style="display: none">
+                            <label asp-for="Input.DeliveryDate" class="form-label">delivery date</label>
+                            <input asp-for="Input.DeliveryDate" class="form-control">
+                        </div>
+                        <!-- Send action -->
+                        <button type="submit" class="btn app-btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+    </div>
+</div>
+
+@section scripts {
+<script src="~/build/js/jquery.validation.min.js"></script>
+<script src="~/build/js/messages.add.page.min.js"></script>
+}

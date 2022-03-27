@@ -1,0 +1,32 @@
+{
+    "pages": {
+        "index": {
+            "page_title": "Messages",
+            "labels": {
+                "messages_in_queue": "In the queue",
+                "message_to": "To",
+                "message_deliver_at": "Deliver at",
+                "message_sent_on": "Sent on",
+                "empty_page": "No messages Found"
+            },
+            "actions": {
+                "remove": "Remove"
+            }
+        },
+        "details": {
+            "page_title": "Message details",
+            "labels": {
+                "message_id": "Id",
+                "message_content": "Content",
+                "message_status": "Status",
+                "message_to": "To",
+                "message_sent_on": "Sent on",
+                "message_deliver_at": "Deliver at",
+                "message_created_on": "Created on"
+            },
+            "actions": {
+                "remove": "Remove"
+            }
+        }
+    }
+}

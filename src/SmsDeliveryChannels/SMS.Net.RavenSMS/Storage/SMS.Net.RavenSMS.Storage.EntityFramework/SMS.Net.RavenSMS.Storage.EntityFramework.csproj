@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>SMS.Net - RavenSMS channel EF core stores</Title>
+		<PackageId>SMS.Net.RavenSMS.Storage.EntityFramework</PackageId>
+		<PackageTags>SMS.Net; SMS; RavenSMS; EntityFramework</PackageTags>
+		<Description>The EntityFramework stores implementation for RavenSMS.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
+	</ItemGroup>
+
+</Project>

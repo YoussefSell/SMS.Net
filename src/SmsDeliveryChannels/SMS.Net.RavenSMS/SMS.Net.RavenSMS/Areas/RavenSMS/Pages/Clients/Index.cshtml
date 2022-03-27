@@ -1,0 +1,64 @@
+﻿@page
+@model SMS.Net.Channel.RavenSMS.Pages.ClientIndexPageModel
+@{
+    ViewData[ViewDataKeys.PageTitle] = "Clients";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.ClientIndexPage;
+}
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="app-page-title mb-0">Clients</h1>
+            </div>
+            <div class="col-auto">
+                <div class="page-utilities">
+                    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                        <div class="col-auto">
+                            <div class="row gx-1 align-items-center">
+                                <div class="col-auto">
+                                    <input type="text" id="search-query" name="searchQuery" class="form-control" placeholder="Search">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn app-btn-secondary" onclick="loadData()">Search</button>
+                                </div>
+                            </div>
+                        </div><!--//col-->
+                        <div class="col-auto">
+                            <a class="btn app-btn-secondary" asp-page="/Clients/Add">
+                                <i class="fas fa-mobile me-1"></i>
+                                Connect new client
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-card app-card-orders-table shadow-sm mb-5">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table id="clients_table" class="table app-table-hover mb-0 text-left">
+                        <thead>
+                            <tr>
+                                <th class="cell">Id</th>
+                                <th class="cell">Name</th>
+                                <th class="cell">Status</th>
+                                <th class="cell fit"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <nav class="app-pagination">
+            <ul id="paginator" class="pagination justify-content-center">
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section scripts {
+<script src="~/build/js/clients.index.page.min.js"></script>
+}

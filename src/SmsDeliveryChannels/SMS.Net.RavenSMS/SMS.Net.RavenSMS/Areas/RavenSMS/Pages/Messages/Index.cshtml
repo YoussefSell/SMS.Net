@@ -1,0 +1,88 @@
+﻿@page
+@model SMS.Net.Channel.RavenSMS.Pages.MessagesIndexPageModel
+@{
+    ViewData[ViewDataKeys.PageTitle] = "Messages";
+    ViewData[ViewDataKeys.SelectedPage] = PageId.MessagesIndexPage;
+}
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="app-page-title mb-0">Messages</h1>
+            </div>
+            <div class="col-auto">
+                <div class="page-utilities">
+                    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                        <div class="col-auto">
+                            <div class="row gx-1 align-items-center">
+                                <div class="col-auto">
+                                    <input type="text" id="search-query" name="searchQuery" class="form-control" placeholder="Search">
+                                </div>
+                                <div class="col-auto">
+                                    @* <input id="search-period" type="text" class="form-control" />*@
+                                    <div id="search-period" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <span></span> <i class="fa fa-caret-down"></i>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn app-btn-secondary" onclick="loadData()">Search</button>
+                                </div>
+                            </div>
+                        </div><!--//col-->
+                        <div class="col-auto">
+                            <a class="btn app-btn-secondary" asp-page="/Messages/Add">
+                                <i class="fas fa-edit"></i>
+                                Compose
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav id="messages-status" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+            <a class="flex-sm-fill text-sm-center nav-link active" value="-1" data-bs-toggle="tab" >All</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="0" data-bs-toggle="tab">Created</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="1" data-bs-toggle="tab">Queued</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="3" data-bs-toggle="tab">Sent</a>
+            <a class="flex-sm-fill text-sm-center nav-link" value="2" data-bs-toggle="tab">Failed</a>
+        </nav>
+
+        <div class="app-card app-card-orders-table shadow-sm mb-5">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table id="messages_table" class="table app-table-hover mb-0 text-left">
+                        <thead>
+                            <tr>
+                                <th class="cell">Id</th>
+                                <th class="cell">Client</th>
+                                <th class="cell">To</th>
+                                <th class="cell">Date</th>
+                                <th class="cell">Status</th>
+                                <th class="cell"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <nav class="app-pagination">
+            <ul id="paginator" class="pagination justify-content-center">
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+@section styles {
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+}
+
+@section scripts {
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="~/build/js/messages.index.page.min.js"></script>
+}

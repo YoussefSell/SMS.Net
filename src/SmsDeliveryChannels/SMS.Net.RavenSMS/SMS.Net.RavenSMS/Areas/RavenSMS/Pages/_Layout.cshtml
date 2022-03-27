@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RavenSMS - @ViewData[ViewDataKeys.PageTitle]</title>
+
+    <!-- meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="RavenSMS - you own server for sending SMS messages." />
+    <meta name="author" content="Youssef Sellami - @@YoussefSell" />
+    <link rel="shortcut icon" href="~/build/media/images/favicon.ico" />
+
+    <!-- css -->
+    <link rel="stylesheet" href="~/build/css/vendor.min.css" />
+    <link rel="stylesheet" href="~/build/css/app.min.css" />
+
+    <!-- scripts section -->
+    @RenderSection("styles", required: false)
+</head>
+
+<body class="app">
+    <!-- app header -->
+    <header class="app-header fixed-top">
+        <partial name="_header" />
+    </header>
+
+    <!-- app body -->
+    <div class="app-wrapper">
+        @RenderBody()
+
+        <!-- app footer -->
+        <footer class="app-footer">
+            <partial name="_footer" />
+        </footer>
+    </div>
+
+    <!-- js -->
+    <script src="~/build/js/vendor.min.js"></script>
+    <script src="~/build/js/app.min.js"></script>
+
+    <!-- add scripts section -->
+    @await RenderSectionAsync("scripts", required: false)
+</body>
+</html>

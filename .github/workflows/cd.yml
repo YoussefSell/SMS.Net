@@ -37,6 +37,18 @@ jobs:
       - name: Pack SMS.Net.Twilio.DependencyInjection
         run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/DependencyInjection/SMS.Net.Twilio.DependencyInjection/SMS.Net.Twilio.DependencyInjection.csproj -o .
 
+      - name: Pack SMS.Net.RavenSMS
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/SMS.Net.RavenSMS/SMS.Net.RavenSMS.csproj -o .
+
+      - name: Pack SMS.Net.RavenSMS.Storage.EntityFramework
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/Storage/SMS.Net.RavenSMS.Storage.EntityFramework/SMS.Net.RavenSMS.Storage.EntityFramework.csproj -o .
+
+      - name: Pack SMS.Net.RavenSMS.Queue.Coravel
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/Queues/SMS.Net.RavenSMS.Queue.Coravel/SMS.Net.RavenSMS.Queue.Coravel.csproj -o .
+
+      - name: Pack SMS.Net.RavenSMS.Queue.Hangfire
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/Queues/SMS.Net.RavenSMS.Queue.Hangfire/SMS.Net.RavenSMS.Queue.Hangfire.csproj -o .
+
       - name: Push packages
         run: dotnet nuget push *.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
 

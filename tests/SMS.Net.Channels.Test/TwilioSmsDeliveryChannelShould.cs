@@ -115,7 +115,7 @@ namespace SMS.Net.Channel.Twilio.Test
         public void CreatSmsMessageFromMessage()
         {
             // arrange
-            var edp = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
+            var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
             {
                 Password = TEST_PASSWORD,
                 Username = TEST_USERNAME
@@ -128,7 +128,7 @@ namespace SMS.Net.Channel.Twilio.Test
                 .Build();
 
             // act
-            var mailMessage = edp.CreateMessage(message);
+            var mailMessage = channel.CreateMessage(message);
 
             // assert
             Assert.Equal(message.From.ToString(), mailMessage.From.ToString());
@@ -140,7 +140,7 @@ namespace SMS.Net.Channel.Twilio.Test
         public void CreatSmsMessageFromMessageWithCustomData()
         {
             // arrange
-            var edp = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
+            var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
             {
                 Password = TEST_PASSWORD,
                 Username = TEST_USERNAME
@@ -173,7 +173,7 @@ namespace SMS.Net.Channel.Twilio.Test
             var message = messageComposer.Build();
 
             // act
-            var mailMessage = edp.CreateMessage(message);
+            var mailMessage = channel.CreateMessage(message);
 
             // assert
             Assert.True(mailMessage.SendAsMms);
@@ -194,7 +194,7 @@ namespace SMS.Net.Channel.Twilio.Test
         public void SendEmail()
         {
             // arrange
-            var edp = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
+            var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
             {
                 Password = TEST_PASSWORD,
                 Username = TEST_USERNAME
@@ -207,7 +207,7 @@ namespace SMS.Net.Channel.Twilio.Test
                 .Build();
 
             // act
-            var result = edp.Send(message);
+            var result = channel.Send(message);
 
             // assert
             Assert.True(result.IsSuccess);

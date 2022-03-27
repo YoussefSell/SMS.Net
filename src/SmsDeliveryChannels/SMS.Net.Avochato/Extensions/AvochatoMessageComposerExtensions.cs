@@ -11,13 +11,14 @@
     public static class AvochatoMessageComposerExtensions
     {
         /// <summary>
-        /// pass a custom channel data to configure a custom AuthKey to be used when initializing the Avochato client instead of using the one set in the <see cref="AvochatoSmsDeliveryChannelOptions.AuthKey"/>
+        /// pass a custom channel data to configure a custom AuthKey to be used when initializing 
+        /// the Avochato client instead of using the one set in the <see cref="AvochatoSmsDeliveryChannelOptions.AuthId"/>
         /// </summary>
         /// <param name="messageComposer">the message composer instance.</param>
         /// <param name="value">the AccessKey to be used.</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
         public static SmsMessageComposer UseAuthKey(this SmsMessageComposer messageComposer, string value)
-            => messageComposer.PassChannelData(CustomChannelData.AuthKey, value);
+            => messageComposer.PassChannelData(CustomChannelData.AuthId, value);
 
         /// <summary>
         /// pass a custom channel data to configure a custom AuthSecret to be used when initializing the Avochato client instead of using the one set in the <see cref="AvochatoSmsDeliveryChannelOptions.AuthSecret"/>
@@ -56,7 +57,7 @@
             => messageComposer.PassChannelData(CustomChannelData.MediaUrl, value);
 
         /// <summary>
-        /// Send a callback via http POST to this domain when the delivery status is updated.
+        /// Send a callback via HTTP POST to this domain when the delivery status is updated.
         /// </summary>
         /// <param name="messageComposer">the message composer instance.</param>
         /// <param name="value">the StatusCallback value.</param>

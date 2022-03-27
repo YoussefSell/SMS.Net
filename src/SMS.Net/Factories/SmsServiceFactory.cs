@@ -32,11 +32,11 @@
         }
 
         /// <summary>
-        /// set the <see cref="ISmsChannel"/> to be used by the SMS service.
+        /// set the <see cref="ISmsDeliveryChannel"/> to be used by the SMS service.
         /// </summary>
-        /// <param name="channel">the <see cref="ISmsChannel"/> instance</param>
+        /// <param name="channel">the <see cref="ISmsDeliveryChannel"/> instance</param>
         /// <returns>instance of <see cref="SmsServiceFactory"/> to enable method chaining.</returns>
-        public SmsServiceFactory UseChannel(ISmsChannel channel)
+        public SmsServiceFactory UseChannel(ISmsDeliveryChannel channel)
         {
             if (channel is null)
                 throw new ArgumentNullException(nameof(channel));
@@ -59,7 +59,7 @@
     public partial class SmsServiceFactory
     {
         private readonly SmsServiceOptions _options = new SmsServiceOptions();
-        private readonly HashSet<ISmsChannel> _channels = new HashSet<ISmsChannel>();
+        private readonly HashSet<ISmsDeliveryChannel> _channels = new HashSet<ISmsDeliveryChannel>();
 
         private SmsServiceFactory() { }
     }
