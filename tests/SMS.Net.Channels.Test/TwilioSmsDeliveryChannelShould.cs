@@ -9,7 +9,7 @@ namespace SMS.Net.Channel.Twilio.Test
     public class TwilioSmsDeliveryChannelShould
     {
         static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TWILIO_FROM_PHONE_NUMBER");
-        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TWILIO_TO_PHONE_NUMBER");
+        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
         static readonly string TEST_USERNAME = EnvVariable.Load("SMS_NET_TWILIO_USERNAME");
         static readonly string TEST_PASSWORD = EnvVariable.Load("SMS_NET_TWILIO_PASSWORD");
 

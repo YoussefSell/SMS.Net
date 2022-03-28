@@ -9,7 +9,7 @@ namespace SMS.Net.Channel.Avochato.Test
     public class AvochatoSmsDeliveryChannelShould
     {
         static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_AVOCHATO_FROM_PHONE_NUMBER");
-        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_AVOCHATO_TO_PHONE_NUMBER");
+        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
         static readonly string TEST_AUTHSECRET = EnvVariable.Load("SMS_NET_AVOCHATO_AUTHSECRET");
         static readonly string TEST_AUTHID = EnvVariable.Load("SMS_NET_AVOCHATO_AUTHID");
 
