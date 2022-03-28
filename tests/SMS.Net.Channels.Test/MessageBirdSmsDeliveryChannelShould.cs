@@ -3,13 +3,12 @@ namespace SMS.Net.Channel.MessageBird.Test
     using SMS.Net.Channel.MessageBird;
     using SMS.Net.Exceptions;
     using System;
-    using System.Collections.Generic;
     using Xunit;
 
     public class MessageBirdSmsDeliveryChannelShould
     {
         static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_MESSAGEBIRD_FROM_PHONE_NUMBER");
-        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_MESSAGEBIRD_TO_PHONE_NUMBER");
+        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
         static readonly string TEST_ACCESSKEY = EnvVariable.Load("SMS_NET_MESSAGEBIRD_ACCESSKEY");
 
         [Fact]
