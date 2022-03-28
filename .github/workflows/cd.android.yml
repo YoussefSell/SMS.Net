@@ -4,6 +4,11 @@ on:
   release:
     types: [created]
 
+defaults:
+  run:
+    shell: bash
+    working-directory: src/SmsDeliveryChannels/SMS.Net.RavenSMS/Clients/SMS.Net.RavenSMS.Client.Ionic
+
 jobs:
   build:
     name: Build APK
