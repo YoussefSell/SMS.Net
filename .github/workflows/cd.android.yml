@@ -46,8 +46,9 @@ jobs:
         run: ionic capacitor build android --release --prod
 
       - name: Generate the Android App Bundle
-        working-directory: ./android/
-        run: ./gradlew bundle
+        run: |
+          cd ./android
+          ./gradlew bundle
 
       - name: Upload dev APK
         uses: actions/upload-artifact@v3
