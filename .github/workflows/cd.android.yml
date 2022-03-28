@@ -48,6 +48,7 @@ jobs:
       - name: Generate the Android App Bundle
         run: |
           cd ./android
+          chmod +x ./gradlew
           ./gradlew bundle
 
       - name: Upload dev APK
