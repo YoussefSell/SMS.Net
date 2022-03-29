@@ -51,6 +51,11 @@ jobs:
           chmod +x ./gradlew
           ./gradlew bundle
 
+      - name: Check folder content
+        run: |
+          ls android/app/build/outputs/apk/debug/
+          ls android/app/build/outputs/bundle/release/
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v3
         with:
