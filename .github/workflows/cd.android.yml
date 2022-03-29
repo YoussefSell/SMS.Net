@@ -52,7 +52,9 @@ jobs:
           ./gradlew bundle
 
       - name: Check folder content
-        run: ls
+        run: |
+          cd ./android/app/build/outputs/apk/debug
+          ls
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v3
