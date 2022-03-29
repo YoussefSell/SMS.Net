@@ -51,14 +51,14 @@ jobs:
           chmod +x ./gradlew
           ./gradlew bundle
 
-      - name: Upload dev APK
+      - name: Upload debug APK
         uses: actions/upload-artifact@v3
         with:
           name: app-dev
-          path: apk/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: apk/app.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
