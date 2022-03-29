@@ -55,10 +55,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-dev
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Upload release bundle
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          path: android/
