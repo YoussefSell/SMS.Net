@@ -5,7 +5,7 @@ import { IMessages } from 'src/app/core/models';
 import { Config } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
-import * as moment from 'moment';
+import { format } from 'date-fns';
 import * as _ from 'lodash';
 
 @Component({
@@ -47,7 +47,7 @@ export class IndexPage implements OnInit, OnDestroy {
 
   groupMessages(): void {
     // group messages by date
-    const grouping = _.groupBy(this._filteredMessages, item => item.sentOn ? moment(item.sentOn).format('YYYY-MM-DD') : 'in_queue');
+    const grouping = _.groupBy(this._filteredMessages, item => item.sentOn ? format(this.ToDate(item.sentOn), 'yyyy-MM-dd') : 'in_queue');
 
     // transform the grouping into an array
     this._messagesGroups = Object.keys(grouping)
@@ -73,5 +73,22 @@ export class IndexPage implements OnInit, OnDestroy {
     // reset the list & perform the grouping
     this._filteredMessages = this._messages;
     this.groupMessages();
+  }
+
+  /**
+   * check if the given date value is a string, if so we will convert it to date
+   * @param date the date value to check
+   * @returns date or null
+   */
+  ToDate(date: any): Date | null {
+    if (date instanceof Date) {
+      return date;
+    }
+
+    if (typeof date === 'string') {
+      return new Date(date);
+    }
+
+    return null;
   }
 }
