@@ -8,19 +8,18 @@ import { AboutPageRoutingModule } from './about-routing.module';
 import { IndexPage } from './pages/index/index.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslocoModule,
-    AboutPageRoutingModule
-  ],
-  declarations: [IndexPage],
-  entryComponents: [],
-  bootstrap: [IndexPage],
-  providers: [
-    { provide: TRANSLOCO_SCOPE, useValue: 'common', multi: true },
-    { provide: TRANSLOCO_SCOPE, useValue: 'about', multi: true },
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        TranslocoModule,
+        AboutPageRoutingModule
+    ],
+    declarations: [IndexPage],
+    bootstrap: [IndexPage],
+    providers: [
+        { provide: TRANSLOCO_SCOPE, useValue: 'common', multi: true },
+        { provide: TRANSLOCO_SCOPE, useValue: 'about', multi: true },
+    ]
 })
 export class AboutModule { }

@@ -1,7 +1,7 @@
 import { SettingsStoreSelectors } from 'src/app/store/settings-store';
 import { IAppIdentification, IServerInfo } from 'src/app/core/models';
 import { RootStoreSelectors, RootStoreState, UIStoreActions, UIStoreSelectors } from 'src/app/store';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -17,7 +17,7 @@ import { State } from 'src/app/store/ui-store/state';
 export class IndexPage {
 
   _subsink = new SubSink();
-  _settingsForm: FormGroup;
+  _settingsForm: UntypedFormGroup;
 
   _serverInfo: IServerInfo | null = null;
   _serverStatus: ServerStatus = ServerStatus.UNKNOWN;
@@ -26,7 +26,7 @@ export class IndexPage {
   _languages: { value: string; label: string }[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store<RootStoreState.State>,
     private translationService: TranslocoService,
   ) {

@@ -1,6 +1,6 @@
 import { SettingsStoreActions, SettingsStoreSelectors } from 'src/app/store/settings-store';
 import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IQrContentModel } from 'src/app/core/models';
 import { AlertController } from '@ionic/angular';
 import { RootStoreState } from 'src/app/store';
@@ -28,11 +28,11 @@ export class IndexPage {
   showGrantPermissionButton = false;
 
   platform: string;
-  configurationForm: FormGroup;
+  configurationForm: UntypedFormGroup;
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private alert: AlertController,
     private store: Store<RootStoreState.State>,
   ) {
