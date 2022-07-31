@@ -1,7 +1,0 @@
-{
-  "name": "RavenSMS",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

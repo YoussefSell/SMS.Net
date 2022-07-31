@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>true</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>SMS.Net - RavenSMS channel</Title>
+		<PackageId>SMS.Net.RavenSMS</PackageId>
+		<PackageTags>SMS.Net; SMS; RavenSMS</PackageTags>
+		<Description>RavenSMS SMS delivery channel for SMS.Net.</Description>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="RavenSMS" Version="1.2.0" />
+		<PackageReference Include="Result.Net" Version="1.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\DependencyInjection\SMS.Net.DependencyInjection\SMS.Net.DependencyInjection.csproj" />
+	</ItemGroup>
+
+</Project>

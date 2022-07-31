@@ -1,3 +1,5 @@
+using SMS.Net.Channel.Twilio;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -31,19 +33,23 @@ builder.Services.AddHangfire(configuration => configuration
 
 // Add the processing server as IHostedService
 builder.Services.AddHangfireServer();
-builder.Services.AddQueue();
 
 // add SMS.Net services
 builder.Services.AddSMSNet(options =>
 {
     options.PauseSending = false;
     options.DefaultFrom = new SMS.Net.PhoneNumber("+21206060606");
-    options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
+    options.DefaultDeliveryChannel = TwilioSmsDeliveryChannel.Name;
 })
 .UseAvochato(authId: "Key-1", authSecret: "Key-1")
 .UseTwilio(username: "Key-1", password: "Key-1")
 .UseMessageBird(accessKey: "Key-1")
-.UseRavenSMS();
+.UseRavenSMS(options =>
+ {
+     options.UseDashboard();
+     options.UseInMemoryQueue();
+     options.UseInMemoryStores();
+ });
 
 var app = builder.Build();
 
