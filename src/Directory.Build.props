@@ -1,14 +1,14 @@
 <Project>
 
   <PropertyGroup>
-    <Version>2.0.0-beta</Version>
+    <Version>1.0.0</Version>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <Product>SMS.Net</Product>
     <Authors>Youssef Sellami</Authors>
-    <Copyright>Copyright &#169; 2021 YoussefSell.</Copyright>
+    <Copyright>Copyright &#169; 2022 YoussefSell.</Copyright>
     <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
