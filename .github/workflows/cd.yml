@@ -22,7 +22,7 @@ jobs:
       - name: Pack SMS.Net
         run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SMS.Net/SMS.Net.csproj -o .
       - name: Pack SMS.Net.RavenSMS
-        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/SMS.Net.RavenSMS/SMS.Net.RavenSMS.csproj -o .
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.RavenSMS/SMS.Net.RavenSMS.csproj -o .
       - name: Pack SMS.Net.Avochato
         run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.Avochato/SMS.Net.Avochato.csproj -o .
       - name: Pack SMS.Net.MessageBird
