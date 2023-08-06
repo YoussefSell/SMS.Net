@@ -14,6 +14,8 @@ public static class Configurations
     public static SmsNetBuilder UseRavenSMS(this SmsNetBuilder builder, Action<RavenSmsBuilder> config)
     {
         builder.ServiceCollection.AddRavenSMS(config);
+        builder.ServiceCollection.AddScoped<ISmsDeliveryChannel, RavenSmsDeliveryChannel>();
+        builder.ServiceCollection.AddScoped<IRavenSmsDeliveryChannel, RavenSmsDeliveryChannel>();
         return builder;
     }
 }

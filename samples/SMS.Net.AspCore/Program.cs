@@ -1,4 +1,5 @@
-using SMS.Net.Channel.Twilio;
+using SMS.Net;
+using SMS.Net.Channel.RavenSMS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ builder.Services.AddCors(options =>
             "http://localhost",
             "ionic://localhost",
             "capacitor://localhost",
-            "http://localhost:8100", 
+            "http://localhost:8100",
             "http://192.168.1.99:8100",
             "http://192.168.1.102:8100"
         )
@@ -38,8 +39,8 @@ builder.Services.AddHangfireServer();
 builder.Services.AddSMSNet(options =>
 {
     options.PauseSending = false;
-    options.DefaultFrom = new SMS.Net.PhoneNumber("+21206060606");
-    options.DefaultDeliveryChannel = TwilioSmsDeliveryChannel.Name;
+    options.DefaultFrom = new SMS.Net.PhoneNumber("00212060606606");
+    options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
 })
 .UseAvochato(authId: "Key-1", authSecret: "Key-1")
 .UseTwilio(username: "Key-1", password: "Key-1")
