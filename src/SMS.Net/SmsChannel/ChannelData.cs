@@ -48,7 +48,7 @@
         /// <param name="value">the data value</param>
         /// <returns>instance of <see cref="ChannelData"/></returns>
         public static ChannelData New(string key, object value)
-            => new ChannelData(key, value);
+            => new(key, value);
 
         /// <summary>
         /// get the value

@@ -39,7 +39,7 @@ builder.Services.AddHangfireServer();
 builder.Services.AddSMSNet(options =>
 {
     options.PauseSending = false;
-    options.DefaultFrom = new SMS.Net.PhoneNumber("00212060606606");
+    options.DefaultFrom = new PhoneNumber("00212060606606");
     options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
 })
 .UseAvochato(authId: "Key-1", authSecret: "Key-1")

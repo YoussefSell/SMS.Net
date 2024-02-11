@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿namespace SMS.Net
 {
-    using SMS.Net;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// the SMS.net DI builder.
@@ -22,7 +22,7 @@
         /// Get the service collection.
         /// </summary>
         public IServiceCollection ServiceCollection { get; }
-        
+
         /// <summary>
         /// Get the SMS service options.
         /// </summary>

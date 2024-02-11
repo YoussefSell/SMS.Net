@@ -12,5 +12,5 @@ public static class RavenSmsSmsMessageComposerExtensions
     /// <param name="delay">the Timespan delay.</param>
     /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
     public static SmsMessageComposer SendAfter(this SmsMessageComposer messageComposer, TimeSpan delay)
-        => messageComposer.PassChannelData(CustomChannelData.Delay, delay);
+        => messageComposer.WithCustomData(CustomChannelData.Delay, delay);
 }

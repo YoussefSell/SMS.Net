@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace SMS.Net;
+
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// the Configurations class

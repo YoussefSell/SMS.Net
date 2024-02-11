@@ -41,6 +41,15 @@
     /// </summary>
     public partial class SmsMessage
     {
+        /// <summary>
+        /// create an instance of <see cref="SmsMessage"/>
+        /// </summary>
+        /// <param name="priority">the message priority</param>
+        /// <param name="body">the message body</param>
+        /// <param name="from">the sender phone number</param>
+        /// <param name="to">the recipient phone number</param>
+        /// <param name="channelData">the custom delivery channel data</param>
+        /// <exception cref="ArgumentNullException">thrown if the <paramref name="to"/> is null</exception>
         public SmsMessage(Priority priority, string body, PhoneNumber from, PhoneNumber to, ICollection<ChannelData> channelData)
         {
             if (to is null)
@@ -66,6 +75,27 @@
         /// </summary>
         /// <returns>instance of <see cref="SmsMessageComposer"/>.</returns>
         public static SmsMessageComposer Compose()
-            => new SmsMessageComposer();
+            => new();
+    }
+
+    /// <summary>
+    /// Specifies the priority of the message.
+    /// </summary>
+    public enum Priority
+    {
+        /// <summary>
+        ///  The email has low priority.
+        /// </summary>
+        Low = 0,
+
+        /// <summary>
+        /// The email has normal priority.
+        /// </summary>
+        Normal = 1,
+
+        /// <summary>
+        /// The email has high priority.
+        /// </summary>
+        High = 2
     }
 }

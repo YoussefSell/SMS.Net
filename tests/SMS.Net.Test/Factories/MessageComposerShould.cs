@@ -24,7 +24,7 @@
                 .To("+212625415254")
                 .From("+212625415254")
                 .WithContent("this the message content")
-                .PassChannelData("key", "value");
+                .WithCustomData("key", "value");
 
             // act
             var message = composser.Build();
@@ -197,7 +197,7 @@
 
             // act
             var message = composser
-                .PassChannelData("key", "value")
+                .WithCustomData("key", "value")
                 .Build();
 
             // assert
@@ -216,7 +216,7 @@
 
             // act
             var message = composser
-                .PassChannelData(new ChannelData("key", "value"))
+                .WithCustomData(new ChannelData("key", "value"))
                 .Build();
 
             // assert
@@ -235,7 +235,7 @@
 
             // act
             var message = composser
-                .PassChannelData(new[] { new ChannelData("key1", "value"), new ChannelData("key2", "value") })
+                .WithCustomData(new[] { new ChannelData("key1", "value"), new ChannelData("key2", "value") })
                 .Build();
 
             // assert

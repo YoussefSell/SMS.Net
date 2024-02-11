@@ -1,5 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿namespace SMS.Net
 {
+    using Microsoft.Extensions.DependencyInjection;
     using SMS.Net.Channel;
     using SMS.Net.Channel.MessageBird;
     using System;

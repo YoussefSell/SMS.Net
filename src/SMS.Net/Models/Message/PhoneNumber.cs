@@ -4,16 +4,18 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Phone number
+    /// a class that defines a phone number
     /// </summary>
     public sealed class PhoneNumber : IEquatable<PhoneNumber>, IEquatable<string>
     {
         private readonly string _number;
 
         /// <summary>
-        /// Create a new PhoneNumber
+        /// Create a new PhoneNumber instance
         /// </summary>
         /// <param name="number">Phone number</param>
+        /// <exception cref="ArgumentNullException">if the <paramref name="number"/> is null</exception>
+        /// <exception cref="ArgumentException">if the <paramref name="number"/> is empty</exception>
         public PhoneNumber(string number)
         {
             if (number is null)
@@ -29,15 +31,15 @@
         /// Add implicit constructor for PhoneNumber to make it assignable from string
         /// </summary>
         /// <param name="number">Phone number</param>
-        /// <returns></returns>
+        /// <returns>instance of <see cref="PhoneNumber"/></returns>
         public static implicit operator PhoneNumber(string number) 
-            => new PhoneNumber(number);
+            => new(number);
 
         /// <summary>
         /// Add implicit constructor for PhoneNumber to make it assignable from string
         /// </summary>
         /// <param name="number">Phone number</param>
-        /// <returns></returns>
+        /// <returns>the <see cref="PhoneNumber"/> string value</returns>
         public static implicit operator string(PhoneNumber number) => number.ToString();
 
         /// <inheritdoc/>
@@ -62,15 +64,7 @@
             => other is not null && other.ToString().Equals(_number, StringComparison.OrdinalIgnoreCase);
 
         /// <inheritdoc/>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = 144377059;
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_number);
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() => HashCode.Combine(_number);
 
         /// <inheritdoc/>
         public static bool operator ==(PhoneNumber left, PhoneNumber right) => EqualityComparer<PhoneNumber>.Default.Equals(left, right);

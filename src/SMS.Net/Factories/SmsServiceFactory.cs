@@ -5,14 +5,20 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// the SMS service factory used to generate an instance of <see cref="SmsService"/>
+    /// the SMS service factory used to generate an instance of <see cref="SmsService"/> 
+    /// in case you not using DI, if you have access to DI use the Dependency injection integration instead.
     /// </summary>
     public partial class SmsServiceFactory
     {
+        private readonly SmsServiceOptions _options = new();
+        private readonly HashSet<ISmsDeliveryChannel> _channels = [];
+
+        private SmsServiceFactory() { }
+
         /// <summary>
         /// get an instance of the <see cref="SmsServiceFactory"/>
         /// </summary>
-        public static readonly SmsServiceFactory Instance = new SmsServiceFactory();
+        public static readonly SmsServiceFactory Instance = new();
 
         /// <summary>
         /// set the options of the SMS service.
@@ -51,16 +57,5 @@
         /// </summary>
         /// <returns>instance of <see cref="SmsService"/></returns>
         public ISmsService Create() => new SmsService(_channels, _options);
-    }
-
-    /// <summary>
-    /// partial part of <see cref="SmsServiceFactory"/>
-    /// </summary>
-    public partial class SmsServiceFactory
-    {
-        private readonly SmsServiceOptions _options = new SmsServiceOptions();
-        private readonly HashSet<ISmsDeliveryChannel> _channels = new HashSet<ISmsDeliveryChannel>();
-
-        private SmsServiceFactory() { }
     }
 }

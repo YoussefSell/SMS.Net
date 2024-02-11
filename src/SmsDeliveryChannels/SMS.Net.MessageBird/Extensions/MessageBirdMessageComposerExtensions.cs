@@ -15,6 +15,6 @@
         /// <param name="accessKey">the AccessKey to be used.</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
         public static SmsMessageComposer UseAccessKey(this SmsMessageComposer messageComposer, string accessKey)
-            => messageComposer.PassChannelData(CustomChannelData.AccessKey, accessKey);
+            => messageComposer.WithCustomData(CustomChannelData.AccessKey, accessKey);
     }
 }

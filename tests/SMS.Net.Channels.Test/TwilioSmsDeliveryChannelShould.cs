@@ -148,7 +148,7 @@ namespace SMS.Net.Channel.Twilio.Test
 
             var expectedPersistentAction = new List<string> { "value_1" };
             var expectedStatusCallback = new Uri("https://example.com/webhook");
-            var expectedMediaUrl = new List<Uri> { new Uri("https://example.com/logo.png") };
+            var expectedMediaUrl = new List<Uri> { new("https://example.com/logo.png") };
 
             var messageComposer = SmsMessage.Compose()
                 .To(TEST_TO_PHONE_NUMBER)

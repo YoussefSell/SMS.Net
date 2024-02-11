@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.Avochato.DependencyInjection\SMS.Net.Avochato.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.MessageBird.DependencyInjection\SMS.Net.MessageBird.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\DependencyInjection\SMS.Net.Twilio.DependencyInjection\SMS.Net.Twilio.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Avochato\SMS.Net.Avochato.csproj" />
+    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.MessageBird\SMS.Net.MessageBird.csproj" />
     <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
+    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Twilio\SMS.Net.Twilio.csproj" />
   </ItemGroup>
 
 </Project>

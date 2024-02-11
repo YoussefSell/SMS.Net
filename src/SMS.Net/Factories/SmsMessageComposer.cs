@@ -5,7 +5,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// a factory for creating the mail message.
+    /// a factory for creating a <see cref="SmsMessage"/>.
     /// </summary>
     public class SmsMessageComposer
     {
@@ -17,8 +17,8 @@
 
         internal SmsMessageComposer()
         {
+            _channelData = [];
             _priority = Priority.Normal;
-            _channelData = new HashSet<ChannelData>();
         }
 
         /// <summary>
@@ -107,20 +107,20 @@
         }
 
         /// <summary>
-        /// add the data to be passed to the delivery channel.
+        /// add a custom data to be passed to the delivery channel.
         /// </summary>
         /// <param name="key">the data key.</param>
         /// <param name="value">the data value.</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
-        public SmsMessageComposer PassChannelData(string key, object value)
-            => PassChannelData(new ChannelData(key, value));
+        public SmsMessageComposer WithCustomData(string key, object value)
+            => WithCustomData(new ChannelData(key, value));
 
         /// <summary>
-        /// add the data to be passed to the delivery channel.
+        /// add a custom data to be passed to the delivery channel.
         /// </summary>
         /// <param name="data">the data instance.</param>
         /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining</returns>
-        public SmsMessageComposer PassChannelData(params ChannelData[] data)
+        public SmsMessageComposer WithCustomData(params ChannelData[] data)
         {
             foreach (var item in data)
                 _channelData.Add(item);
@@ -132,7 +132,6 @@
         /// build the <see cref="SmsMessage"/> instance.
         /// </summary>
         /// <returns>Instance of <see cref="SmsMessage"/>.</returns>
-        public SmsMessage Build()
-            => new SmsMessage(_priority, _bodyContent, _from, _to, _channelData);
+        public SmsMessage Build() => new(_priority, _bodyContent, _from, _to, _channelData);
     }
 }

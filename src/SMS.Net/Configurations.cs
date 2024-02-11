@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿namespace SMS.Net
 {
-    using SMS.Net;
+    using Microsoft.Extensions.DependencyInjection;
     using System;
 
     /// <summary>
@@ -12,9 +12,9 @@
         /// add the SMS.Net services and configuration.
         /// </summary>
         /// <param name="serviceCollection">the service collection instant</param>
-        /// <param name="defaultEdpName">name of the default delivery channel to be used.</param>
-        public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, string defaultEdpName)
-            => AddSMSNet(serviceCollection, options => options.DefaultDeliveryChannel = defaultEdpName);
+        /// <param name="defaultChannel">name of the default delivery channel to be used.</param>
+        public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, string defaultChannel)
+            => AddSMSNet(serviceCollection, options => options.DefaultDeliveryChannel = defaultChannel);
 
         /// <summary>
         /// add the SMS.Net services and configuration.

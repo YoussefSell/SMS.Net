@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// exception thrown when a required exception value is not specified
+    /// exception thrown when a required options value is not specified
     /// </summary>
     [Serializable]
     public class RequiredOptionValueNotSpecifiedException<TOptions> : Exception

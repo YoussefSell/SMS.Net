@@ -20,7 +20,7 @@
         public string ChannelName { get; }
 
         /// <summary>
-        /// method data associated with this result if any.
+        /// additional data associated with this result if any.
         /// </summary>
         public IDictionary<string, object> MetaData { get; }
 
@@ -41,14 +41,15 @@
         /// create an instance of <see cref="SmsSendingResult"/>.
         /// </summary>
         /// <param name="isSuccess">true if the sending was successfully</param>
-        /// <param name="edpName">the name of the channel used to sent the SMS.</param>
+        /// <param name="channelName">the name of the channel used to sent the SMS.</param>
         /// <param name="errors">the errors associated with the sending.</param>
-        public SmsSendingResult(bool isSuccess, string edpName, params SmsSendingError[] errors)
+        /// <exception cref="ArgumentNullException">if <paramref name="channelName"/> is null</exception>
+        public SmsSendingResult(bool isSuccess, string channelName, params SmsSendingError[] errors)
         {
             IsSuccess = isSuccess;
             MetaData = new Dictionary<string, object>();
             _errors = new HashSet<SmsSendingError>(errors);
-            ChannelName = edpName ?? throw new ArgumentNullException(nameof(edpName));
+            ChannelName = channelName ?? throw new ArgumentNullException(nameof(channelName));
         }
 
         /// <inheritdoc/>
@@ -129,7 +130,7 @@
         /// <param name="channelName">the name of the channel used to send the email.</param>
         /// <returns>instance of <see cref="SmsSendingResult"/></returns>
         public static SmsSendingResult Success(string channelName)
-            => new SmsSendingResult(true, channelName);
+            => new(true, channelName);
 
         /// <summary>
         /// create an instance of <see cref="SmsSendingResult"/> with a failure state.
@@ -138,7 +139,7 @@
         /// <param name="errors">errors associated with the failure if any.</param>
         /// <returns>instance of <see cref="SmsSendingResult"/></returns>
         public static SmsSendingResult Failure(string channelName, params SmsSendingError[] errors)
-            => new SmsSendingResult(false, channelName);
+            => new(false, channelName);
 
         /// <summary>
         /// this static class holds the keys names used in the email sending meta-data
