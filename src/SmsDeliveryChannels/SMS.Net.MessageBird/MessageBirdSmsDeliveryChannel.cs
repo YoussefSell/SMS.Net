@@ -1,98 +1,84 @@
-﻿namespace SMS.Net.Channel.MessageBird
+﻿namespace SMS.Net.Channel.MessageBird;
+
+using global::MessageBird;
+using global::MessageBird.Objects;
+
+/// <summary>
+/// the MessageBird client SMS delivery channel
+/// </summary>
+public partial class MessageBirdSmsDeliveryChannel : IMessageBirdSmsDeliveryChannel
 {
-    using global::MessageBird;
-    using global::MessageBird.Objects;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// the MessageBird client SMS delivery channel
-    /// </summary>
-    public partial class MessageBirdSmsDeliveryChannel : IMessageBirdSmsDeliveryChannel
+    /// <inheritdoc/>
+    public SmsSendingResult Send(SmsMessage message)
     {
-        /// <inheritdoc/>
-        public SmsSendingResult Send(SmsMessage message)
+        try
         {
-            try
-            {
-                // init the MessageBird client
-                var client = CreateClient(message.ChannelData);
+            // init the MessageBird client
+            var client = CreateClient(message.ChannelData);
 
-                // send the message
-                var result = client.SendMessage(
-                    message.From.ToString(),
-                    message.Body,
-                    new[] { long.Parse(message.To) }); 
+            // send the message
+            var result = client.SendMessage(
+                message.From.ToString(),
+                message.Body,
+                [long.Parse(message.To)]); 
 
-                // create the client
-                return BuildResultObject(result);
-            }
-            catch (Exception ex)
-            {
-                return SmsSendingResult.Failure(Name).AddError(ex);
-            }
+            // create the client
+            return BuildResultObject(result);
         }
-
-        /// <inheritdoc/>
-        public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
+        catch (Exception ex)
         {
-            if (cancellationToken.IsCancellationRequested)
-                cancellationToken.ThrowIfCancellationRequested();
-
-            return await Task.FromResult(Send(message));
+            return SmsSendingResult.Failure(Name).AddError(ex);
         }
     }
 
-    /// <summary>
-    /// partial part for <see cref="MessageBirdSmsDeliveryChannel"/>
-    /// </summary>
-    public partial class MessageBirdSmsDeliveryChannel
+    /// <inheritdoc/>
+    public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
     {
-        /// <summary>
-        /// the name of the SMS delivery channel
-        /// </summary>
-        public const string Name = "MessageBird";
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
 
-        /// <inheritdoc/>
-        string ISmsDeliveryChannel.Name => Name;
+        return await Task.FromResult(Send(message));
+    }
+}
 
-        private readonly MessageBirdSmsDeliveryChannelOptions _options;
+/// <summary>
+/// partial part for <see cref="MessageBirdSmsDeliveryChannel"/>
+/// </summary>
+public partial class MessageBirdSmsDeliveryChannel
+{
+    /// <summary>
+    /// the name of the SMS delivery channel
+    /// </summary>
+    public const string Name = "MessageBird";
 
-        /// <summary>
-        /// create an instance of <see cref="MessageBirdSmsDeliveryChannel"/>
-        /// </summary>
-        /// <param name="options">the channel options instance</param>
-        /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
-        public MessageBirdSmsDeliveryChannel(MessageBirdSmsDeliveryChannelOptions options)
-        {
-            if (options is null)
-                throw new ArgumentNullException(nameof(options));
+    /// <inheritdoc/>
+    string ISmsDeliveryChannel.Name => Name;
 
-            // validate if the options are valid
-            options.Validate();
-            _options = options;
-        }
+    private readonly MessageBirdSmsDeliveryChannelOptions _options;
 
-        private Client CreateClient(IEnumerable<ChannelData> data)
-        {
-            // get the userName, password & accountSId from the data list if any.
-            var accessKeyChannelData = data.GetData(CustomChannelData.AccessKey);
+    /// <summary>
+    /// create an instance of <see cref="MessageBirdSmsDeliveryChannel"/>
+    /// </summary>
+    /// <param name="options">the channel options instance</param>
+    /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
+    public MessageBirdSmsDeliveryChannel(MessageBirdSmsDeliveryChannelOptions options)
+    {
+        if (options is null)
+            throw new ArgumentNullException(nameof(options));
 
-            // set the access key
-            var accessKey = accessKeyChannelData.IsEmpty() ? _options.AccessKey : accessKeyChannelData.GetValue<string>();
+        // validate if the options are valid
+        options.Validate();
+        _options = options;
+    }
 
-            // create and return the client
-            return Client.CreateDefault(accessKey);
-        }
+    private Client CreateClient(IEnumerable<ChannelData> data) 
+        => Client.CreateDefault(accessKey: data.GetData(CustomChannelData.AccessKey, @default: _options.AccessKey));
 
-        private static SmsSendingResult BuildResultObject(Message result)
-        {
-            // there is no status of the delivery result, because they throw exception when there is a failure.
-            return SmsSendingResult.Success(Name)
-                .AddMetaData("message_id", result.Id)
-                .AddMetaData("messageBird_response", result);
-        }
+    private static SmsSendingResult BuildResultObject(Message result)
+    {
+        // there is no status of the delivery result, because they throw exception when there is a failure.
+        return SmsSendingResult.Success(Name)
+            .AddMetaData("message_id", result.Id)
+            .AddMetaData("messageBird_response", result);
     }
 }

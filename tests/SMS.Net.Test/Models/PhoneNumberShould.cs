@@ -1,103 +1,99 @@
-﻿namespace SMS.Net.Test.Models
+﻿namespace SMS.Net.Test.Models;
+
+public class PhoneNumberShould
 {
-    using System;
-    using Xunit;
-
-    public class PhoneNumberShould
+    [Fact]
+    public void ThrowIfValueIsNull()
     {
-        [Fact]
-        public void ThrowIfValueIsNull()
+        // arrange
+        // act
+
+        // assert
+        Assert.Throws<ArgumentNullException>(() =>
         {
-            // arrange
-            // act
+            new PhoneNumber(null!);
+        });
+    }
 
-            // assert
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new PhoneNumber(null);
-            });
-        }
+    [Fact]
+    public void ThrowIfValueIsEmpty()
+    {
+        // arrange
+        // act
 
-        [Fact]
-        public void ThrowIfValueIsEmpty()
+        // assert
+        Assert.Throws<ArgumentException>(() =>
         {
-            // arrange
-            // act
+            new PhoneNumber("");
+        });
+    }
 
-            // assert
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new PhoneNumber("");
-            });
-        }
+    [Fact]
+    public void CreatePhoneNumberInstance()
+    {
+        // arrange
+        var expected = "+212625415254";
 
-        [Fact]
-        public void CreatePhoneNumberInstance()
-        {
-            // arrange
-            var expected = "+212625415254";
+        // act
+        var phoneNumber = new PhoneNumber("+212625415254");
 
-            // act
-            var phoneNumber = new PhoneNumber("+212625415254");
+        // assert
+        Assert.Equal(expected, phoneNumber.ToString());
+    }
 
-            // assert
-            Assert.Equal(expected, phoneNumber.ToString());
-        }
+    [Fact]
+    public void CreatePhoneNumberInstanceImplicitlyFromString()
+    {
+        // arrange
+        var expected = "+212625415254";
 
-        [Fact]
-        public void CreatePhoneNumberInstanceImlicitlyFromString()
-        {
-            // arrange
-            var expected = "+212625415254";
+        // act
+        PhoneNumber phoneNumber = "+212625415254";
 
-            // act
-            PhoneNumber phoneNumber = "+212625415254";
+        // assert
+        Assert.Equal(expected, phoneNumber.ToString());
+    }
 
-            // assert
-            Assert.Equal(expected, phoneNumber.ToString());
-        }
+    [Fact]
+    public void ImplicitlyConvertToString()
+    {
+        // arrange
+        var expected = "+212625415254";
+        var phoneNumber = new PhoneNumber(expected);
 
-        [Fact]
-        public void ImplicitilyConvertToString()
-        {
-            // arrange
-            var expected = "+212625415254";
-            var phoneNumber = new PhoneNumber(expected);
+        // act
+        string phoneNumberString = phoneNumber;
 
-            // act
-            string phoneNumberString = phoneNumber;
-
-            // assert
-            Assert.Equal(expected, phoneNumberString);
-        }
+        // assert
+        Assert.Equal(expected, phoneNumberString);
+    }
 
 
-        [Fact]
-        public void BeEqualIfHaveSameValue()
-        {
-            // arrange
-            var phoneNumber1 = new PhoneNumber("+212625415254");
-            var phoneNumber2 = new PhoneNumber("+212625415254");
+    [Fact]
+    public void BeEqualIfHaveSameValue()
+    {
+        // arrange
+        var phoneNumber1 = new PhoneNumber("+212625415254");
+        var phoneNumber2 = new PhoneNumber("+212625415254");
 
-            // act
-            var equals = phoneNumber1 == phoneNumber2;
+        // act
+        var equals = phoneNumber1 == phoneNumber2;
 
-            // assert
-            Assert.True(equals);
-        }
+        // assert
+        Assert.True(equals);
+    }
 
-        [Fact]
-        public void BeEqualToStringIfHaveSameValue()
-        {
-            // arrange
-            var phoneNumber1 = "+212625415254";
-            var phoneNumber2 = new PhoneNumber("+212625415254");
+    [Fact]
+    public void BeEqualToStringIfHaveSameValue()
+    {
+        // arrange
+        var phoneNumber1 = "+212625415254";
+        var phoneNumber2 = new PhoneNumber("+212625415254");
 
-            // act
-            var equals = phoneNumber1 == phoneNumber2;
+        // act
+        var equals = phoneNumber1 == phoneNumber2;
 
-            // assert
-            Assert.True(equals);
-        }
+        // assert
+        Assert.True(equals);
     }
 }

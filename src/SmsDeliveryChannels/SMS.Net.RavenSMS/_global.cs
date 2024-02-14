@@ -1,4 +1,5 @@
-﻿global using RavenSMS;
+﻿global using Microsoft.Extensions.DependencyInjection;
+global using RavenSMS;
 global using RavenSMS.Models;
 global using ResultNet;
 global using SMS.Net.Channel;

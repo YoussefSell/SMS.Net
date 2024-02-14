@@ -1,201 +1,182 @@
-﻿namespace SMS.Net.Channel.Twilio
+﻿namespace SMS.Net.Channel.Twilio;
+
+using global::Twilio;
+using global::Twilio.Rest.Api.V2010.Account;
+
+/// <summary>
+/// the Twilio client SMS delivery channel
+/// </summary>
+public partial class TwilioSmsDeliveryChannel : ITwilioSmsDeliveryChannel
 {
-    using global::Twilio;
-    using global::Twilio.Rest.Api.V2010.Account;
-    using SMS.Net.Utilities;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// the Twilio client SMS delivery channel
-    /// </summary>
-    public partial class TwilioSmsDeliveryChannel : ITwilioSmsDeliveryChannel
+    /// <inheritdoc/>
+    public SmsSendingResult Send(SmsMessage message)
     {
-        /// <inheritdoc/>
-        public SmsSendingResult Send(SmsMessage message)
+        try
         {
-            try
-            {
-                // init the Twilio client
-                CreateClient(message.ChannelData);
+            // init the Twilio client
+            CreateClient(message.ChannelData);
 
-                // create the basic message
-                var twilioMessage = CreateMessage(message);
+            // create the basic message
+            var twilioMessage = CreateMessage(message);
 
-                // send the message
-                var result = MessageResource.Create(twilioMessage);
+            // send the message
+            var result = MessageResource.Create(twilioMessage);
 
-                // create the client
-                return BuildResultObject(result);
-            }
-            catch (Exception ex)
-            {
-                return SmsSendingResult.Failure(Name).AddError(ex);
-            }
+            // create the client
+            return BuildResultObject(result);
         }
-
-        /// <inheritdoc/>
-        public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
+        catch (Exception ex)
         {
-            if (cancellationToken.IsCancellationRequested)
-                cancellationToken.ThrowIfCancellationRequested();
-
-            try
-            {
-                // init the Twilio client
-                CreateClient(message.ChannelData);
-
-                // create the basic message
-                var twilioMessage = CreateMessage(message);
-
-                // send the message
-                var result = await MessageResource.CreateAsync(twilioMessage);
-
-                // create the client
-                return BuildResultObject(result);
-            }
-            catch (Exception ex)
-            {
-                return SmsSendingResult.Failure(Name).AddError(ex);
-            }
+            return SmsSendingResult.Failure(Name).AddError(ex);
         }
     }
 
-    /// <summary>
-    /// partial part for <see cref="TwilioSmsDeliveryChannel"/>
-    /// </summary>
-    public partial class TwilioSmsDeliveryChannel
+    /// <inheritdoc/>
+    public async Task<SmsSendingResult> SendAsync(SmsMessage message, CancellationToken cancellationToken = default)
     {
-        /// <summary>
-        /// the name of the SMS delivery channel
-        /// </summary>
-        public const string Name = "twilio";
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
 
-        /// <inheritdoc/>
-        string ISmsDeliveryChannel.Name => Name;
-
-        private readonly TwilioSmsDeliveryChannelOptions _options;
-
-        /// <summary>
-        /// create an instance of <see cref="TwilioSmsDeliveryChannel"/>
-        /// </summary>
-        /// <param name="options">the options instance</param>
-        /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
-        public TwilioSmsDeliveryChannel(TwilioSmsDeliveryChannelOptions options)
+        try
         {
-            if (options is null)
-                throw new ArgumentNullException(nameof(options));
+            // init the Twilio client
+            CreateClient(message.ChannelData);
 
-            // validate if the options are valid
-            options.Validate();
-            _options = options;
+            // create the basic message
+            var twilioMessage = CreateMessage(message);
+
+            // send the message
+            var result = await MessageResource.CreateAsync(twilioMessage);
+
+            // create the client
+            return BuildResultObject(result);
+        }
+        catch (Exception ex)
+        {
+            return SmsSendingResult.Failure(Name).AddError(ex);
+        }
+    }
+}
+
+/// <summary>
+/// partial part for <see cref="TwilioSmsDeliveryChannel"/>
+/// </summary>
+public partial class TwilioSmsDeliveryChannel
+{
+    /// <summary>
+    /// the name of the SMS delivery channel
+    /// </summary>
+    public const string Name = "twilio";
+
+    /// <inheritdoc/>
+    string ISmsDeliveryChannel.Name => Name;
+
+    private readonly TwilioSmsDeliveryChannelOptions _options;
+
+    /// <summary>
+    /// create an instance of <see cref="TwilioSmsDeliveryChannel"/>
+    /// </summary>
+    /// <param name="options">the options instance</param>
+    /// <exception cref="ArgumentNullException">if the given provider options is null</exception>
+    public TwilioSmsDeliveryChannel(TwilioSmsDeliveryChannelOptions options)
+    {
+        if (options is null)
+            throw new ArgumentNullException(nameof(options));
+
+        // validate if the options are valid
+        options.Validate();
+        _options = options;
+    }
+
+    private void CreateClient(IEnumerable<ChannelData> data)
+    {
+        // get the userName, password & accountSId from the data list if any.
+        var userName = data.GetData(CustomChannelData.Username, @default: _options.Username);
+        var password = data.GetData(CustomChannelData.Password, @default: _options.Password);
+        var accountSid = data.GetData(CustomChannelData.AccountSID, @default: _options.AccountSID);
+
+        if (!string.IsNullOrEmpty(accountSid) && !string.IsNullOrWhiteSpace(accountSid))
+        {
+            TwilioClient.Init(userName, password, accountSid);
+            return;
         }
 
-        private void CreateClient(IEnumerable<ChannelData> data)
+        TwilioClient.Init(userName, password);
+    }
+
+    private static SmsSendingResult BuildResultObject(MessageResource result)
+    {
+        // we will assume if the status != 'Failed', then it success
+        if (result.Status != MessageResource.StatusEnum.Failed)
         {
-            // get the userName, password & accountSId from the data list if any.
-            var userNameEdpData = data.GetData(CustomChannelData.Username);
-            var passwordEdpData = data.GetData(CustomChannelData.Password);
-            var accountSIdEdpData = data.GetData(CustomChannelData.AccountSID);
-
-            var userName = userNameEdpData.IsEmpty() ? _options.Username : userNameEdpData.GetValue<string>();
-            var password = passwordEdpData.IsEmpty() ? _options.Password : passwordEdpData.GetValue<string>();
-            var accountSid = accountSIdEdpData.IsEmpty() ? _options.AccountSID : accountSIdEdpData.GetValue<string>();
-
-            if (!string.IsNullOrEmpty(accountSid) && !string.IsNullOrWhiteSpace(accountSid))
-            {
-                TwilioClient.Init(userName, password, accountSid);
-                return;
-            }
-
-            TwilioClient.Init(userName, password);
-        }
-
-        private static SmsSendingResult BuildResultObject(MessageResource result)
-        {
-            // we will assume if the status != 'Failed', then it success
-            if (result.Status != MessageResource.StatusEnum.Failed)
-            {
-                // return the result
-                return SmsSendingResult.Success(Name)
-                    .AddMetaData("message_id", result.Sid)
-                    .AddMetaData("twilio_response", result);
-            }
-
-            // create the failure result & return the result
-            return SmsSendingResult.Failure(Name)
+            // return the result
+            return SmsSendingResult.Success(Name)
+                .AddMetaData("message_id", result.Sid)
                 .AddMetaData("twilio_response", result);
         }
 
-        /// <summary>
-        /// create an instance of <see cref="CreateMessageOptions"/> from the given <see cref="SmsMessage"/>.
-        /// </summary>
-        /// <param name="message">the message instance</param>
-        /// <returns>instance of <see cref="CreateMessageOptions"/></returns>
-        public CreateMessageOptions CreateMessage(SmsMessage message)
+        // create the failure result & return the result
+        return SmsSendingResult.Failure(Name)
+            .AddMetaData("twilio_response", result);
+    }
+
+    /// <summary>
+    /// create an instance of <see cref="CreateMessageOptions"/> from the given <see cref="SmsMessage"/>.
+    /// </summary>
+    /// <param name="message">the message instance</param>
+    /// <returns>instance of <see cref="CreateMessageOptions"/></returns>
+    public CreateMessageOptions CreateMessage(SmsMessage message)
+    {
+        var option = new CreateMessageOptions(new global::Twilio.Types.PhoneNumber(message.To))
         {
-            var attemptChannelData = message.ChannelData.GetData(CustomChannelData.Attempt);
-            var mediaUrlChannelData = message.ChannelData.GetData(CustomChannelData.MediaUrl);
-            var maxPriceChannelData = message.ChannelData.GetData(CustomChannelData.MaxPrice);
-            var sendAsMmsChannelData = message.ChannelData.GetData(CustomChannelData.SendAsMms);
-            var smartEncodedChannelData = message.ChannelData.GetData(CustomChannelData.SmartEncoded);
-            var forceDeliveryChannelData = message.ChannelData.GetData(CustomChannelData.ForceDelivery);
-            var applicationSidChannelData = message.ChannelData.GetData(CustomChannelData.ApplicationSid);
-            var statusCallbackChannelData = message.ChannelData.GetData(CustomChannelData.StatusCallback);
-            var pathAccountSidChannelData = message.ChannelData.GetData(CustomChannelData.PathAccountSid);
-            var validityPeriodChannelData = message.ChannelData.GetData(CustomChannelData.ValidityPeriod);
-            var provideFeedbackChannelData = message.ChannelData.GetData(CustomChannelData.ProvideFeedback);
-            var persistentActionChannelData = message.ChannelData.GetData(CustomChannelData.PersistentAction);
-            var messagingServiceSidChannelData = message.ChannelData.GetData(CustomChannelData.MessagingServiceSid);
+            Body = message.Body,
+            From = new global::Twilio.Types.PhoneNumber(message.From),
+        };
 
-            var option = new CreateMessageOptions(new global::Twilio.Types.PhoneNumber(message.To))
-            {
-                Body = message.Body,
-                From = new global::Twilio.Types.PhoneNumber(message.From),
-            };
+        SetCustomData(message, option);
 
-            if (!pathAccountSidChannelData.IsEmpty())
-                option.PathAccountSid = pathAccountSidChannelData.GetValue<string>();
+        return option;
 
-            if (!messagingServiceSidChannelData.IsEmpty())
-                option.MessagingServiceSid = messagingServiceSidChannelData.GetValue<string>();
+        static void SetCustomData(SmsMessage message, CreateMessageOptions option)
+        {
+            if (message.ChannelData.TryGetData<int>(CustomChannelData.Attempt, out var attempt))
+                option.Attempt = attempt;
 
-            if (!mediaUrlChannelData.IsEmpty())
-                option.MediaUrl = mediaUrlChannelData.GetValue<List<Uri>>();
+            if (message.ChannelData.TryGetData<List<Uri>>(CustomChannelData.MediaUrl, out var mediaUrl))
+                option.MediaUrl = mediaUrl;
 
-            if (!statusCallbackChannelData.IsEmpty())
-                option.StatusCallback = statusCallbackChannelData.GetValue<Uri>();
+            if (message.ChannelData.TryGetData<decimal>(CustomChannelData.MaxPrice, out var maxPrice))
+                option.MaxPrice = maxPrice;
 
-            if (!applicationSidChannelData.IsEmpty())
-                option.ApplicationSid = applicationSidChannelData.GetValue<string>();
+            if (message.ChannelData.TryGetData<bool>(CustomChannelData.SendAsMMS, out var sendAsMms))
+                option.SendAsMms = sendAsMms;
 
-            if (!maxPriceChannelData.IsEmpty())
-                option.MaxPrice = maxPriceChannelData.GetValue<decimal>();
+            if (message.ChannelData.TryGetData<bool>(CustomChannelData.SmartEncoded, out var smartEncoded))
+                option.SmartEncoded = smartEncoded;
 
-            if (!provideFeedbackChannelData.IsEmpty())
-                option.ProvideFeedback = provideFeedbackChannelData.GetValue<bool>();
+            if (message.ChannelData.TryGetData<bool>(CustomChannelData.ForceDelivery, out var forceDelivery))
+                option.ForceDelivery = forceDelivery;
 
-            if (!attemptChannelData.IsEmpty())
-                option.Attempt = attemptChannelData.GetValue<int>();
+            if (message.ChannelData.TryGetData<string>(CustomChannelData.ApplicationSid, out var applicationSid))
+                option.ApplicationSid = applicationSid;
 
-            if (!validityPeriodChannelData.IsEmpty())
-                option.ValidityPeriod = validityPeriodChannelData.GetValue<int>();
+            if (message.ChannelData.TryGetData<Uri>(CustomChannelData.StatusCallback, out var statusCallback))
+                option.StatusCallback = statusCallback;
 
-            if (!forceDeliveryChannelData.IsEmpty())
-                option.ForceDelivery = forceDeliveryChannelData.GetValue<bool>();
+            if (message.ChannelData.TryGetData<string>(CustomChannelData.PathAccountSid, out var pathAccountSid))
+                option.PathAccountSid = pathAccountSid;
 
-            if (!smartEncodedChannelData.IsEmpty())
-                option.SmartEncoded = smartEncodedChannelData.GetValue<bool>();
+            if (message.ChannelData.TryGetData<int>(CustomChannelData.ValidityPeriod, out var validityPeriod))
+                option.ValidityPeriod = validityPeriod;
 
-            if (!persistentActionChannelData.IsEmpty())
-                option.PersistentAction = persistentActionChannelData.GetValue<List<string>>();
+            if (message.ChannelData.TryGetData<bool>(CustomChannelData.ProvideFeedback, out var provideFeedback))
+                option.ProvideFeedback = provideFeedback;
 
-            if (!sendAsMmsChannelData.IsEmpty())
-                option.SendAsMms = sendAsMmsChannelData.GetValue<bool>();
+            if (message.ChannelData.TryGetData<List<string>>(CustomChannelData.PersistentAction, out var persistentAction))
+                option.PersistentAction = persistentAction;
 
-            return option;
+            if (message.ChannelData.TryGetData<string>(CustomChannelData.MessagingServiceSid, out var messagingServiceSid))
+                option.MessagingServiceSid = messagingServiceSid;
         }
     }
 }

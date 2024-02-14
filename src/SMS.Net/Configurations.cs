@@ -1,40 +1,36 @@
-﻿namespace SMS.Net
+﻿namespace SMS.Net;
+
+/// <summary>
+/// the Configurations class
+/// </summary>
+public static class Configurations
 {
-    using Microsoft.Extensions.DependencyInjection;
-    using System;
+    /// <summary>
+    /// add the SMS.Net services and configuration.
+    /// </summary>
+    /// <param name="serviceCollection">the service collection instant</param>
+    /// <param name="defaultChannel">name of the default delivery channel to be used.</param>
+    public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, string defaultChannel)
+        => AddSMSNet(serviceCollection, options => options.DefaultDeliveryChannel = defaultChannel);
 
     /// <summary>
-    /// the Configurations class
+    /// add the SMS.Net services and configuration.
     /// </summary>
-    public static class Configurations
+    /// <param name="serviceCollection">the service collection instant</param>
+    /// <param name="config">the configuration initializer.</param>
+    public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, Action<SmsServiceOptions> config)
     {
-        /// <summary>
-        /// add the SMS.Net services and configuration.
-        /// </summary>
-        /// <param name="serviceCollection">the service collection instant</param>
-        /// <param name="defaultChannel">name of the default delivery channel to be used.</param>
-        public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, string defaultChannel)
-            => AddSMSNet(serviceCollection, options => options.DefaultDeliveryChannel = defaultChannel);
+        if (config is null)
+            throw new ArgumentNullException(nameof(config));
 
-        /// <summary>
-        /// add the SMS.Net services and configuration.
-        /// </summary>
-        /// <param name="serviceCollection">the service collection instant</param>
-        /// <param name="config">the configuration initializer.</param>
-        public static SmsNetBuilder AddSMSNet(this IServiceCollection serviceCollection, Action<SmsServiceOptions> config)
-        {
-            if (config is null)
-                throw new ArgumentNullException(nameof(config));
+        // load the configuration
+        var configuration = new SmsServiceOptions();
+        config(configuration);
 
-            // load the configuration
-            var configuration = new SmsServiceOptions();
-            config(configuration);
+        serviceCollection.AddSingleton((s) => configuration);
+        serviceCollection.AddScoped<ISmsService, SmsService>();
 
-            serviceCollection.AddSingleton((s) => configuration);
-            serviceCollection.AddScoped<ISmsService, SmsService>();
-
-            // register the countries service
-            return new SmsNetBuilder(serviceCollection, configuration);
-        }
+        // register the countries service
+        return new SmsNetBuilder(serviceCollection, configuration);
     }
 }

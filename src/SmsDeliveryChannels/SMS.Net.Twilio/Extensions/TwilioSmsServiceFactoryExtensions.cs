@@ -1,54 +1,49 @@
-﻿namespace SMS.Net
+﻿namespace SMS.Net;
+
+/// <summary>
+/// the extensions methods over the <see cref="SmsServiceFactory"/> factory.
+/// </summary>
+public static class TwilioSmsServiceFactoryExtensions
 {
-    using SMS.Net.Channel.Twilio;
-    using SMS.Net.Factories;
-    using System;
+    /// <summary>
+    /// add the Twilio channel to be used with your SMS service.
+    /// </summary>
+    /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
+    /// <param name="username">Set your Twilio username.</param>
+    /// <param name="password">Set your Twilio password.</param>
+    /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
+    public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, string username, string password)
+        => builder.UseTwilio(username, password, null);
 
     /// <summary>
-    /// the extensions methods over the <see cref="SmsServiceFactory"/> factory.
+    /// add the Twilio channel to be used with your SMS service.
     /// </summary>
-    public static class TwilioSmsServiceFactoryExtensions
+    /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
+    /// <param name="username">Set your Twilio username.</param>
+    /// <param name="password">Set your Twilio password.</param>
+    /// <param name="accountSID">Set your Twilio account SID.</param>
+    /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
+    public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, string username, string password, string? accountSID)
+       => builder.UseTwilio(op => { op.Username = username; op.Password = password; op.AccountSID = accountSID; });
+
+    /// <summary>
+    /// add the Twilio channel to be used with your SMS service.
+    /// </summary>
+    /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
+    /// <param name="config">the configuration builder instance.</param>
+    /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
+    public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, Action<TwilioSmsDeliveryChannelOptions> config)
     {
-        /// <summary>
-        /// add the Twilio channel to be used with your SMS service.
-        /// </summary>
-        /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
-        /// <param name="username">Set your Twilio username.</param>
-        /// <param name="password">Set your Twilio password.</param>
-        /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
-        public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, string username, string password)
-            => builder.UseTwilio(username, password, null);
+        // load the configuration
+        var configuration = new TwilioSmsDeliveryChannelOptions();
+        config(configuration);
 
-        /// <summary>
-        /// add the Twilio channel to be used with your SMS service.
-        /// </summary>
-        /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
-        /// <param name="username">Set your Twilio username.</param>
-        /// <param name="password">Set your Twilio password.</param>
-        /// <param name="accountSID">Set your Twilio account SID.</param>
-        /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
-        public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, string username, string password, string accountSID)
-           => builder.UseTwilio(op => { op.Username = username; op.Password = password; op.AccountSID = accountSID; });
+        // validate the configuration
+        configuration.Validate();
 
-        /// <summary>
-        /// add the Twilio channel to be used with your SMS service.
-        /// </summary>
-        /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
-        /// <param name="config">the configuration builder instance.</param>
-        /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
-        public static SmsServiceFactory UseTwilio(this SmsServiceFactory builder, Action<TwilioSmsDeliveryChannelOptions> config)
-        {
-            // load the configuration
-            var configuration = new TwilioSmsDeliveryChannelOptions();
-            config(configuration);
+        // add the channel to the SMSs service factory
+        builder.UseChannel(new TwilioSmsDeliveryChannel(configuration));
 
-            // validate the configuration
-            configuration.Validate();
-
-            // add the channel to the SMSs service factory
-            builder.UseChannel(new TwilioSmsDeliveryChannel(configuration));
-
-            return builder;
-        }
+        return builder;
     }
 }

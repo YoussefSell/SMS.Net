@@ -15,13 +15,13 @@
         internal SmsNetBuilder(IServiceCollection serviceCollection, SmsServiceOptions configuration)
         {
             Configuration = configuration;
-            ServiceCollection = serviceCollection;
+            Services = serviceCollection;
         }
 
         /// <summary>
         /// Get the service collection.
         /// </summary>
-        public IServiceCollection ServiceCollection { get; }
+        public IServiceCollection Services { get; }
 
         /// <summary>
         /// Get the SMS service options.

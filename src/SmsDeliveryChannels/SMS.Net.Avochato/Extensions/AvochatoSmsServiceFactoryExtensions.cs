@@ -1,43 +1,38 @@
-﻿namespace SMS.Net
+﻿namespace SMS.Net;
+
+/// <summary>
+/// the extensions methods over the <see cref="SmsServiceFactory"/> factory.
+/// </summary>
+public static class AvochatoSmsServiceFactoryExtensions
 {
-    using SMS.Net.Channel.Avochato;
-    using SMS.Net.Factories;
-    using System;
+    /// <summary>
+    /// add the Avochato channel to be used with your SMS service.
+    /// </summary>
+    /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
+    /// <param name="authId">Set your Avochato accessKey.</param>
+    /// <param name="authSecret">Set your Avochato authSecret.</param>
+    /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
+    public static SmsServiceFactory UseAvochato(this SmsServiceFactory builder, string authId, string authSecret)
+       => builder.UseAvochato(op => { op.AuthId = authId; op.AuthSecret = authSecret; });
 
     /// <summary>
-    /// the extensions methods over the <see cref="SmsServiceFactory"/> factory.
+    /// add the Avochato channel to be used with your SMS service.
     /// </summary>
-    public static class AvochatoSmsServiceFactoryExtensions
+    /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
+    /// <param name="config">the configuration builder instance.</param>
+    /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
+    public static SmsServiceFactory UseAvochato(this SmsServiceFactory builder, Action<AvochatoSmsDeliveryChannelOptions> config)
     {
-        /// <summary>
-        /// add the Avochato channel to be used with your SMS service.
-        /// </summary>
-        /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
-        /// <param name="authId">Set your Avochato accessKey.</param>
-        /// <param name="authSecret">Set your Avochato authSecret.</param>
-        /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
-        public static SmsServiceFactory UseAvochato(this SmsServiceFactory builder, string authId, string authSecret)
-           => builder.UseAvochato(op => { op.AuthId = authId; op.AuthSecret = authSecret; });
+        // load the configuration
+        var configuration = new AvochatoSmsDeliveryChannelOptions();
+        config(configuration);
 
-        /// <summary>
-        /// add the Avochato channel to be used with your SMS service.
-        /// </summary>
-        /// <param name="builder">the <see cref="SmsServiceFactory"/> instance.</param>
-        /// <param name="config">the configuration builder instance.</param>
-        /// <returns>instance of <see cref="SmsServiceFactory"/> to enable methods chaining.</returns>
-        public static SmsServiceFactory UseAvochato(this SmsServiceFactory builder, Action<AvochatoSmsDeliveryChannelOptions> config)
-        {
-            // load the configuration
-            var configuration = new AvochatoSmsDeliveryChannelOptions();
-            config(configuration);
+        // validate the configuration
+        configuration.Validate();
 
-            // validate the configuration
-            configuration.Validate();
+        // add the channel to the SMSs service factory
+        builder.UseChannel(new AvochatoSmsDeliveryChannel(null, configuration));
 
-            // add the channel to the SMSs service factory
-            builder.UseChannel(new AvochatoSmsDeliveryChannel(null, configuration));
-
-            return builder;
-        }
+        return builder;
     }
 }

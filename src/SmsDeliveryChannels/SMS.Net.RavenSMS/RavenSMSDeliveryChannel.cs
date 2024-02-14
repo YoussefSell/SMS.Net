@@ -27,8 +27,7 @@ public partial class RavenSmsDeliveryChannel : IRavenSmsDeliveryChannel
             var ravenSmsMessage = CreateMessage(message);
 
             // get the delay data if any
-            var delayData = message.ChannelData.GetData(CustomChannelData.Delay);
-            var delay = delayData.IsEmpty() ? TimeSpan.Zero : delayData.GetValue<TimeSpan>();
+            var delay = message.ChannelData.GetData(CustomChannelData.Delay, @default: TimeSpan.Zero);
 
             // queue the message for delivery with a delay
             var queuingWithDelayResult = await _service.SendAsync(ravenSmsMessage, delay, cancellationToken);
@@ -82,5 +81,5 @@ public partial class RavenSmsDeliveryChannel
     /// <param name="clientId">the clientId this message will be sent with.</param>
     /// <returns>an instance of <see cref="RavenSmsMessage"/> class</returns>
     public static Message CreateMessage(SmsMessage message)
-        => new(message.Body, message.From, message.To, (global::RavenSMS.Priority)((int)message.Priority));
+        => new(message.Body, message.From, message.To, (global::RavenSMS.Priority)(int)message.Priority);
 }

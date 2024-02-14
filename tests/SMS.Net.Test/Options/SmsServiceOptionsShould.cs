@@ -1,22 +1,18 @@
-﻿namespace SMS.Net.Test
+﻿namespace SMS.Net.Test;
+
+public class SmsServiceOptionsShould
 {
-    using SMS.Net.Exceptions;
-    using Xunit;
-
-    public class SmsServiceOptionsShould
+    [Fact]
+    public void ThrowIfFRequiredValueIsNotSpecified()
     {
-        [Fact]
-        public void ThrowIfFRequiredValueIsNotSpecified()
-        {
-            // arrange
-            var options = new SmsServiceOptions() { DefaultDeliveryChannel = null };
+        // arrange
+        var options = new SmsServiceOptions() { DefaultDeliveryChannel = null! };
 
-            // assert
-            Assert.Throws<RequiredOptionValueNotSpecifiedException<SmsServiceOptions>>(() =>
-            {
-                // act
-                options.Validate();
-            });
-        }
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<SmsServiceOptions>>(() =>
+        {
+            // act
+            options.Validate();
+        });
     }
 }

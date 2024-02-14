@@ -1,25 +1,22 @@
-﻿namespace SMS.Net.Channel.MessageBird
+﻿namespace SMS.Net.Channel.MessageBird;
+
+/// <summary>
+/// the options for configuring the MessageBird SMS delivery channel
+/// </summary>
+public class MessageBirdSmsDeliveryChannelOptions
 {
-    using SMS.Net.Exceptions;
+    /// <summary>
+    /// Get or Set your MessageBird access Key.
+    /// </summary>
+    public string? AccessKey { get; set; }
 
     /// <summary>
-    /// the options for configuring the MessageBird SMS delivery channel
+    /// validate if the options are all set correctly
     /// </summary>
-    public class MessageBirdSmsDeliveryChannelOptions
+    public void Validate()
     {
-        /// <summary>
-        /// Get or Set your MessageBird access Key.
-        /// </summary>
-        public string AccessKey { get; set; }
-
-        /// <summary>
-        /// validate if the options are all set correctly
-        /// </summary>
-        public void Validate()
-        {
-            if (string.IsNullOrWhiteSpace(AccessKey))
-                throw new RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>(
-                    $"{nameof(AccessKey)}", "the given MessageBirdSmsDeliveryChannelOptions.AccessKey value is null or empty.");
-        }
+        if (string.IsNullOrWhiteSpace(AccessKey))
+            throw new RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>(
+                $"{nameof(AccessKey)}", "the given MessageBirdSmsDeliveryChannelOptions.AccessKey value is null or empty.");
     }
 }

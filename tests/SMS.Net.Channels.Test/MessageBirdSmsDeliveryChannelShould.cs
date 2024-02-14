@@ -1,97 +1,91 @@
-namespace SMS.Net.Channel.MessageBird.Test
+namespace SMS.Net.Channel.MessageBird.Test;
+
+public class MessageBirdSmsDeliveryChannelShould
 {
-    using SMS.Net.Channel.MessageBird;
-    using SMS.Net.Exceptions;
-    using System;
-    using Xunit;
+    static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_MESSAGEBIRD_FROM_PHONE_NUMBER");
+    static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
+    static readonly string TEST_ACCESSKEY = EnvVariable.Load("SMS_NET_MESSAGEBIRD_ACCESSKEY");
 
-    public class MessageBirdSmsDeliveryChannelShould
+    [Fact]
+    public void ThrowIfOptionsIsNull()
     {
-        static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_MESSAGEBIRD_FROM_PHONE_NUMBER");
-        static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
-        static readonly string TEST_ACCESSKEY = EnvVariable.Load("SMS_NET_MESSAGEBIRD_ACCESSKEY");
+        // arrange
+        MessageBirdSmsDeliveryChannelOptions? options = null;
 
-        [Fact]
-        public void ThorwIfOptionsIsNull()
+        // assert
+        Assert.Throws<ArgumentNullException>(() =>
         {
-            // arrange
-            MessageBirdSmsDeliveryChannelOptions? options = null;
-
-            // assert
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                // act
-                new MessageBirdSmsDeliveryChannel(options);
-            });
-        }
-
-        [Fact]
-        public void ThorwIfOptionsNotValid_AllIsNull()
-        {
-            // arrange
-            var options = new MessageBirdSmsDeliveryChannelOptions();
-
-            // assert
-            Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
-            {
-                // act
-                new MessageBirdSmsDeliveryChannel(options);
-            });
-        }
-
-        [Fact]
-        public void ThorwIfOptionsNotValid_Password_IsNull()
-        {
-            // arrange
-            var options = new MessageBirdSmsDeliveryChannelOptions()
-            {
-            };
-
-            // assert
-            Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
-            {
-                // act
-                new MessageBirdSmsDeliveryChannel(options);
-            });
-        }
-
-        [Fact]
-        public void ThorwIfOptionsNotValid_Password_IsEmpty()
-        {
-            // arrange
-            var options = new MessageBirdSmsDeliveryChannelOptions()
-            {
-                AccessKey = "",
-            };
-
-            // assert
-            Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
-            {
-                // act
-                new MessageBirdSmsDeliveryChannel(options);
-            });
-        }
-
-        [Fact(Skip = "no auth keys")]
-        public void SendEmail()
-        {
-            // arrange
-            var channel = new MessageBirdSmsDeliveryChannel(new MessageBirdSmsDeliveryChannelOptions()
-            {
-                AccessKey = TEST_ACCESSKEY
-            });
-
-            var message = SmsMessage.Compose()
-                .From(TEST_FROM_PHONE_NUMBER)
-                .To(TEST_TO_PHONE_NUMBER)
-                .WithContent("this is a test")
-                .Build();
-
             // act
-            var result = channel.Send(message);
+            new MessageBirdSmsDeliveryChannel(options!);
+        });
+    }
 
-            // assert
-            Assert.True(result.IsSuccess);
-        }
+    [Fact]
+    public void ThrowIfOptionsNotValid_AllIsNull()
+    {
+        // arrange
+        var options = new MessageBirdSmsDeliveryChannelOptions();
+
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
+        {
+            // act
+            new MessageBirdSmsDeliveryChannel(options);
+        });
+    }
+
+    [Fact]
+    public void ThrowIfOptionsNotValid_Password_IsNull()
+    {
+        // arrange
+        var options = new MessageBirdSmsDeliveryChannelOptions()
+        {
+        };
+
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
+        {
+            // act
+            new MessageBirdSmsDeliveryChannel(options);
+        });
+    }
+
+    [Fact]
+    public void ThrowIfOptionsNotValid_Password_IsEmpty()
+    {
+        // arrange
+        var options = new MessageBirdSmsDeliveryChannelOptions()
+        {
+            AccessKey = "",
+        };
+
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<MessageBirdSmsDeliveryChannelOptions>>(() =>
+        {
+            // act
+            new MessageBirdSmsDeliveryChannel(options);
+        });
+    }
+
+    [Fact(Skip = "no auth keys")]
+    public void SendEmail()
+    {
+        // arrange
+        var channel = new MessageBirdSmsDeliveryChannel(new MessageBirdSmsDeliveryChannelOptions()
+        {
+            AccessKey = TEST_ACCESSKEY
+        });
+
+        var message = SmsMessage.Compose()
+            .From(TEST_FROM_PHONE_NUMBER)
+            .To(TEST_TO_PHONE_NUMBER)
+            .WithContent("this is a test")
+            .Build();
+
+        // act
+        var result = channel.Send(message);
+
+        // assert
+        Assert.True(result.IsSuccess);
     }
 }
