@@ -15,7 +15,7 @@
 	
 	<ItemGroup>
 		<PackageReference Include="RavenSMS" Version="1.2.0" />
-		<PackageReference Include="Result.Net" Version="1.3.0" />
+		<PackageReference Include="Result.Net" Version="1.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
