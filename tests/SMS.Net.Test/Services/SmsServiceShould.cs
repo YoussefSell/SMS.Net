@@ -9,15 +9,13 @@ public class SmsServiceShould
 
     public SmsServiceShould()
     {
-        var channel1_mock = new Mock<ISmsDeliveryChannel>();
-        channel1_mock.Setup(e => e.Name).Returns(_channel_name_1);
-        channel1_mock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name_1));
-        _channel1 = channel1_mock.Object;
+        _channel1 = Substitute.For<ISmsDeliveryChannel>();
+        _channel1.Name.Returns(_channel_name_1);
+        _channel1.Send(Arg.Any<SmsMessage>()).Returns(SmsSendingResult.Success(_channel_name_1));
 
-        var channel2_mock = new Mock<ISmsDeliveryChannel>();
-        channel2_mock.Setup(e => e.Name).Returns(_channel_name_2);
-        channel2_mock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name_2));
-        _channel2 = channel2_mock.Object;
+        _channel2 = Substitute.For<ISmsDeliveryChannel>();
+        _channel2.Name.Returns(_channel_name_2);
+        _channel2.Send(Arg.Any<SmsMessage>()).Returns(SmsSendingResult.Success(_channel_name_2));
     }
 
     [Fact]

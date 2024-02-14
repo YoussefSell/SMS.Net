@@ -1,4 +1,4 @@
-﻿global using Moq;
+﻿global using NSubstitute;
 global using SMS.Net;
 global using SMS.Net.Channel;
 global using SMS.Net.Exceptions;

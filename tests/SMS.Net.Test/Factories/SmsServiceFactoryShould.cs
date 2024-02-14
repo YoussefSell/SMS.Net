@@ -7,10 +7,9 @@ public class SmsServiceFactoryShould
 
     public SmsServiceFactoryShould()
     {
-        var channelMock = new Mock<ISmsDeliveryChannel>();
-        channelMock.Setup(e => e.Name).Returns(_channel_name);
-        channelMock.Setup(e => e.Send(It.IsAny<SmsMessage>())).Returns(SmsSendingResult.Success(_channel_name));
-        _channel = channelMock.Object;
+        _channel = Substitute.For<ISmsDeliveryChannel>();
+        _channel.Name.Returns(_channel_name);
+        _channel.Send(Arg.Any<SmsMessage>()).Returns(SmsSendingResult.Success(_channel_name));
     }
 
     [Fact]
