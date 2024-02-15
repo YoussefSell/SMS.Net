@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.AspCore", "samples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.RavenSMS", "src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj", "{523858D6-69BB-4BB4-8AE0-BF07FBFCF452}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.D7Networks", "src\SmsDeliveryChannels\SMS.Net.D7networks\SMS.Net.D7Networks.csproj", "{BD32CE5B-37A9-4ADF-B2D0-CDF1B74E2D1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMS.Net.D7Networks", "src\SmsDeliveryChannels\SMS.Net.D7Networks\SMS.Net.D7Networks.csproj", "{BD32CE5B-37A9-4ADF-B2D0-CDF1B74E2D1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
