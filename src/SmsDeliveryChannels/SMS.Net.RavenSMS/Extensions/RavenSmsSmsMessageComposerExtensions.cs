@@ -1,4 +1,4 @@
-﻿namespace SMS.Net;
+﻿namespace SMS.Net.Channel.RavenSMS;
 
 /// <summary>
 /// the extensions methods over the <see cref="SmsMessageComposer"/> factory.

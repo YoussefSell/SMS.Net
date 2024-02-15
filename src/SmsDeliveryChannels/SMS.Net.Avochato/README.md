@@ -5,9 +5,6 @@ send SMS messages using Avochato.
 to get started first install
 - **[SMS.Net.Avochato](https://www.nuget.org/packages/SMS.Net.Avochato/):** `Install-Package SMS.Net.Avochato`.  
 
-if you're using Dependency Injection than install 
-- **[SMS.Net.Avochato.DependencyInjection](https://www.nuget.org/packages/SMS.Net.Avochato.DependencyInjection/):** `Install-Package SMS.Net.Avochato.DependencyInjection`.  
-
 ##### Setup
 in order to use the Avochato channel, you call the `UseAvochato()` method and pass the username and password.
 

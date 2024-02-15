@@ -17,6 +17,8 @@ jobs:
       SMS_NET_TWILIO_USERNAME: ${{secrets.SMS_NET_TWILIO_USERNAME}}
       SMS_NET_TWILIO_PASSWORD: ${{secrets.SMS_NET_TWILIO_PASSWORD}}
       SMS_NET_TEST_TO_PHONE_NUMBER: ${{secrets.SMS_NET_TEST_TO_PHONE_NUMBER}}
+      SMS_NET_D7NETWORKS_FROM_PHONE_NUMBER: ${{secrets.SMS_NET_D7NETWORKS_FROM_PHONE_NUMBER}}
+      SMS_NET_D7NETWORKS_APIKEY: ${{secrets.SMS_NET_D7NETWORKS_APIKEY}}
     steps:
       - uses: actions/checkout@v2
       - name: Setup dotnet

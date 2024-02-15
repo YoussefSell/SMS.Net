@@ -152,9 +152,8 @@ public class AvochatoSmsDeliveryChannelShould
             // attach custom data
             .SetTags(expectedTags)
             .SetMarkAddressed(true)
-            .SetMediaUrl(expectedMediaUrl);
-
-        AvochatoMessageComposerExtensions.SetStatusCallback(messageComposer, expectedStatusCallback);
+            .SetMediaUrl(expectedMediaUrl)
+            .SetStatusCallback(expectedStatusCallback);
 
         var message = messageComposer.Build();
 

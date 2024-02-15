@@ -158,11 +158,10 @@ public class TwilioSmsDeliveryChannelShould
             .SetForceDelivery(true)
             .SetProvideFeedback(true)
             .SetMediaUrl(expectedMediaUrl)
+            .SetStatusCallback(expectedStatusCallback)
             .SetApplicationSid("application_sid_value")
             .SetPersistentAction(expectedPersistentAction)
             .SetMessagingServiceSid("messaging_service_sid_value");
-
-        TwilioMessageComposerExtensions.SetStatusCallback(messageComposer, expectedStatusCallback);
 
         var message = messageComposer.Build();
 

@@ -5,9 +5,6 @@ send SMS messages using MessageBird.
 to get started first install
 - **[SMS.Net.MessageBird](https://www.nuget.org/packages/SMS.Net.MessageBird/):** `Install-Package SMS.Net.MessageBird`.  
 
-if you're using Dependency Injection than install 
-- **[SMS.Net.MessageBird.DependencyInjection](https://www.nuget.org/packages/SMS.Net.MessageBird.DependencyInjection/):** `Install-Package SMS.Net.MessageBird.DependencyInjection`.  
-
 ##### Setup
 in order to use the MessageBird channel, you call the `UseMessageBird()` method and pass the username and password.
 

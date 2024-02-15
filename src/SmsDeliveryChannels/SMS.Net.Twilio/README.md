@@ -5,9 +5,6 @@ send SMS messages using Twilio.
 to get started first install
 - **[SMS.Net.Twilio](https://www.nuget.org/packages/SMS.Net.Twilio/):** `Install-Package SMS.Net.Twilio`.  
 
-if you're using Dependency Injection than install 
-- **[SMS.Net.Twilio.DependencyInjection](https://www.nuget.org/packages/SMS.Net.Twilio.DependencyInjection/):** `Install-Package SMS.Net.Twilio.DependencyInjection`.  
-
 ##### Setup
 in order to use the Twilio channel, you call the `UseTwilio()` method and pass the username and password.
 
