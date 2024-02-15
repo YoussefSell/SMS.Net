@@ -29,8 +29,8 @@ jobs:
         run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.MessageBird/SMS.Net.MessageBird.csproj -o .
       - name: Pack SMS.Net.Twilio
         run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.Twilio/SMS.Net.Twilio.csproj -o .
-      - name: Pack SMS.Net.D7networks
-        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.D7networks/SMS.Net.D7networks.csproj -o .
+      - name: Pack SMS.Net.D7Networks
+        run: dotnet pack --include-symbols -p:SymbolPackageFormat=snupkg --no-build -c Release src/SmsDeliveryChannels/SMS.Net.D7Networks/SMS.Net.D7Networks.csproj -o .
 
       - name: Push packages
         run: dotnet nuget push *.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
