@@ -23,7 +23,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Avochato\SMS.Net.Avochato.csproj" />
-	<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.D7networks\SMS.Net.D7Networks.csproj" />
+	<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.D7Networks\SMS.Net.D7Networks.csproj" />
 	<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.MessageBird\SMS.Net.MessageBird.csproj" />
 	<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Twilio\SMS.Net.Twilio.csproj" />
   </ItemGroup>
