@@ -50,10 +50,11 @@ Delivery Channels are what actually used to send the SMS messages under the hood
 
 the pre-built channel are provided as Nuget packages:
 
-- **[SMS.Net.RavenSMS](https://www.nuget.org/packages/SMS.Net.RavenSMS/):** to send SMS messages using RavenSMS.
-- **[SMS.Net.Twilio](https://www.nuget.org/packages/SMS.Net.Twilio/):** to send SMS messages using Twilio.
-- **[SMS.Net.MessageBird](https://www.nuget.org/packages/SMS.Net.MessageBird/):** to send SMS messages using MessageBird.
-- **[SMS.Net.Avochato](https://www.nuget.org/packages/SMS.Net.Avochato/):** to send SMS messages using Avochato.
+- **[SMS.Net.RavenSMS](https://github.com/YoussefSell/SMS.Net/tree/master/src/SmsDeliveryChannels/SMS.Net.RavenSMS):** to send SMS messages using RavenSMS.
+- **[SMS.Net.Twilio](https://github.com/YoussefSell/SMS.Net/tree/master/src/SmsDeliveryChannels/SMS.Net.Twilio):** to send SMS messages using Twilio.
+- **[SMS.Net.MessageBird](https://github.com/YoussefSell/SMS.Net/tree/master/src/SmsDeliveryChannels/SMS.Net.MessageBird):** to send SMS messages using MessageBird.
+- **[SMS.Net.Avochato](https://github.com/YoussefSell/SMS.Net/tree/master/src/SmsDeliveryChannels/SMS.Net.Avochato):** to send SMS messages using Avochato.
+- **[SMS.Net.D7Networks](https://github.com/YoussefSell/SMS.Net/tree/master/src/SmsDeliveryChannels/SMS.Net.D7Networks):** to send SMS messages using D7Networks.
 
 and we will be adding more in the future, but if you want to create your own Channel you can follow this [tutorial](#) and you will learn how to build one.
 
@@ -127,9 +128,7 @@ var result = smsService.Send(message);
 
 ## working with Dependency Injection
 
-to register SMS.Net with DI we need to use [**SMS.Net.DependencyInjection**](https://www.nuget.org/packages/SMS.Net.DependencyInjection/) package, this package contains an extension method on the `IServiceCollection` interface that register the `SmsService` as a Scoped service.
-
-once you have the package downloaded you can register SMS.Net like so:
+to use SMS.NET with DI, just call `AddSMSNet` on the service collection, this function will register all services related to SMS.NET.
 
 ```csharp
 // add SMS.Net configuration
@@ -137,7 +136,7 @@ services.AddSMSNet(options =>
 {
     options.PauseSending = false;
     options.DefaultFrom = new PhoneNumber("+212100000009");
-    options.DefaultDeliveryChannel = TwilioSmsDeliveryChannel.Name;
+    options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
 })
 .UseRavenSMS();
 ```
