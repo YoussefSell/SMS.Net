@@ -30,7 +30,7 @@ public partial class D7NetworksSmsDeliveryChannel : ID7NetworksSmsDeliveryChanne
             request.Content = jsonContent;
 
             // add the api-key
-            request.Headers.Add("Authorization", $"Bearer {_options.ApiKey}");
+            request.Headers.Add("Authorization", $"Bearer {message.ChannelData.GetData(CustomChannelData.ApiKey, @default: _options.ApiKey)}");
 
             // send the message
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
