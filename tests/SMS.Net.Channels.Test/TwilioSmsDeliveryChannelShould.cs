@@ -6,6 +6,9 @@ public class TwilioSmsDeliveryChannelShould
     static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
     static readonly string TEST_USERNAME = EnvVariable.Load("SMS_NET_TWILIO_USERNAME");
     static readonly string TEST_PASSWORD = EnvVariable.Load("SMS_NET_TWILIO_PASSWORD");
+    static readonly string TEST_ACCOUNT_SID = EnvVariable.Load("SMS_NET_TWILIO_ACCOUNT_SID");
+    static readonly string TEST_AUTH_TOKEN = EnvVariable.Load("SMS_NET_TWILIO_AUTH_TOKEN");
+    static readonly string TEST_MESSAGING_SERVICE_SID = EnvVariable.Load("SMS_NET_TWILIO_MESSAGING_SERVICE_SID");
 
     [Fact]
     public void ThrowIfOptionsIsNull()
@@ -71,6 +74,24 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact]
+    public void ThrowIfOptionsNotValid_Username_IsWhitespace()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions()
+        {
+            Username = "   ",
+            Password = TEST_PASSWORD
+        };
+
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<TwilioSmsDeliveryChannelOptions>>(() =>
+        {
+            // act
+            new TwilioSmsDeliveryChannel(options);
+        });
+    }
+
+    [Fact]
     public void ThrowIfOptionsNotValid_Password_IsNull()
     {
         // arrange
@@ -103,6 +124,97 @@ public class TwilioSmsDeliveryChannelShould
             // act
             new TwilioSmsDeliveryChannel(options);
         });
+    }
+
+    [Fact]
+    public void ThrowIfOptionsNotValid_Password_IsWhitespace()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions()
+        {
+            Password = "   ",
+            Username = TEST_USERNAME
+        };
+
+        // assert
+        Assert.Throws<RequiredOptionValueNotSpecifiedException<TwilioSmsDeliveryChannelOptions>>(() =>
+        {
+            // act
+            new TwilioSmsDeliveryChannel(options);
+        });
+    }
+
+    [Fact]
+    public void ValidateOptions_ShouldNotThrow_WhenRequiredPropertiesAreSet()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions()
+        {
+            Username = TEST_USERNAME,
+            Password = TEST_PASSWORD
+        };
+
+        // act & assert - should not throw
+        options.Validate();
+    }
+
+    [Fact]
+    public void ValidateOptions_ShouldNotThrow_WhenAllPropertiesAreSet()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions()
+        {
+            Username = TEST_USERNAME,
+            Password = TEST_PASSWORD,
+            AccountSID = TEST_ACCOUNT_SID,
+            AuthToken = TEST_AUTH_TOKEN,
+            MessagingServiceSID = TEST_MESSAGING_SERVICE_SID
+        };
+
+        // act & assert - should not throw
+        options.Validate();
+    }
+
+    [Fact]
+    public void AccountSID_ShouldGetAndSet()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions();
+        var testValue = "test_account_sid";
+
+        // act
+        options.AccountSID = testValue;
+
+        // assert
+        Assert.Equal(testValue, options.AccountSID);
+    }
+
+    [Fact]
+    public void AuthToken_ShouldGetAndSet()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions();
+        var testValue = "test_auth_token";
+
+        // act
+        options.AuthToken = testValue;
+
+        // assert
+        Assert.Equal(testValue, options.AuthToken);
+    }
+
+    [Fact]
+    public void MessagingServiceSID_ShouldGetAndSet()
+    {
+        // arrange
+        var options = new TwilioSmsDeliveryChannelOptions();
+        var testValue = "test_messaging_service_sid";
+
+        // act
+        options.MessagingServiceSID = testValue;
+
+        // assert
+        Assert.Equal(testValue, options.MessagingServiceSID);
     }
 
     [Fact]

@@ -16,9 +16,19 @@ public class TwilioSmsDeliveryChannelOptions
     public string? Password { get; set; }
 
     /// <summary>
-    /// Get or Set your Twilio password.
+    /// Get or Set your Twilio Account SID.
     /// </summary>
     public string? AccountSID { get; set; }
+
+    /// <summary>
+    /// Get or Set your Twilio Auth Token.
+    /// </summary>
+    public string? AuthToken { get; set; }
+
+    /// <summary>
+    /// Get or Set your Twilio Messaging Service SID.
+    /// </summary>
+    public string? MessagingServiceSID { get; set; }
 
     /// <summary>
     /// validate if the options are all set correctly
