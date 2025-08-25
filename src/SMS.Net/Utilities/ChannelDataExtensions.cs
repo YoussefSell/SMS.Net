@@ -15,6 +15,7 @@ public static class ChannelDataExtensions
     /// </summary>
     /// <param name="data">the source list.</param>
     /// <param name="key">the data key</param>
+    /// <param name="value">the data value</param>
     /// <returns>the <see cref="ChannelData"/> instance</returns>
     public static bool TryGetData<TValue>(this IEnumerable<ChannelData> data, string key, out TValue value)
     {
@@ -34,6 +35,7 @@ public static class ChannelDataExtensions
     /// </summary>
     /// <param name="data">the source list.</param>
     /// <param name="key">the data key</param>
+    /// <param name="default">the data default value</param>
     /// <returns>the <see cref="ChannelData"/> instance</returns>
     public static TValue GetData<TValue>(this IEnumerable<ChannelData> data, string key, TValue @default)
     {
@@ -57,6 +59,7 @@ public static class ChannelDataExtensions
     /// get the value
     /// </summary>
     /// <typeparam name="TValue">the type of the value</typeparam>
+    /// <param name="default">the data default value</param>
     /// <returns>the value instance</returns>
     public static TValue GetValue<TValue>(this ChannelData? channelData, TValue @default)
     {

@@ -25,7 +25,7 @@ public class MessageComposerShould
         Assert.Equal("+212625415254", message.To.ToString());
         Assert.Equal("+212625415254", message.From.ToString());
 
-        Assert.Equal(1, message.ChannelData.Count);
+        Assert.Single(message.ChannelData);
         Assert.Equal("key", message.ChannelData.First().Key);
         Assert.Equal("value", message.ChannelData.First().Value);
 
@@ -191,7 +191,7 @@ public class MessageComposerShould
             .Build();
 
         // assert
-        Assert.Equal(1, message.ChannelData.Count);
+        Assert.Single(message.ChannelData);
         Assert.Equal("key", message.ChannelData.First().Key);
         Assert.Equal("value", message.ChannelData.First().Value);
     }
@@ -210,7 +210,7 @@ public class MessageComposerShould
             .Build();
 
         // assert
-        Assert.Equal(1, message.ChannelData.Count);
+        Assert.Single(message.ChannelData);
         Assert.Equal("key", message.ChannelData.First().Key);
         Assert.Equal("value", message.ChannelData.First().Value);
     }
