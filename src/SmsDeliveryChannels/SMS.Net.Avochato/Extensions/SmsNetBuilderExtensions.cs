@@ -15,11 +15,10 @@ public static class SmsNetBuilderExtensions
     public static SmsNetBuilder UseAvochato(this SmsNetBuilder builder, string authId, string authSecret)
        => builder.UseAvochato(op => { op.AuthId = authId; op.AuthSecret = authSecret; });
 
-
     /// <summary>
-    /// add the Avochato channel to be used with your email service.
+    /// add the Avochato channel to be used with your sms service.
     /// </summary>
-    /// <param name="builder">the emailNet builder instance.</param>
+    /// <param name="builder">the SmsNet builder instance.</param>
     /// <param name="config">the configuration builder instance.</param>
     /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
     public static SmsNetBuilder UseAvochato(this SmsNetBuilder builder, Action<AvochatoSmsDeliveryChannelOptions> config)

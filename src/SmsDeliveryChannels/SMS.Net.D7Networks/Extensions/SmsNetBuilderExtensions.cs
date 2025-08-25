@@ -15,9 +15,9 @@ public static class SmsNetBuilderExtensions
        => builder.UseD7Networks(op => { op.ApiKey = apiKey; });
 
     /// <summary>
-    /// add the D7Networks channel to be used with your email service.
+    /// add the D7Networks channel to be used with your sms service.
     /// </summary>
-    /// <param name="builder">the emailNet builder instance.</param>
+    /// <param name="builder">the SmsNet builder instance.</param>
     /// <param name="config">the configuration builder instance.</param>
     /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
     public static SmsNetBuilder UseD7Networks(this SmsNetBuilder builder, Action<D7NetworksSmsDeliveryChannelOptions> config)

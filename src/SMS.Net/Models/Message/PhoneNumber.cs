@@ -61,7 +61,7 @@ public sealed class PhoneNumber : IEquatable<PhoneNumber>, IEquatable<string>
         => other is not null && other.ToString().Equals(_number, StringComparison.OrdinalIgnoreCase);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(_number);
+    public override int GetHashCode() => _number.GetHashCode();
 
     /// <inheritdoc/>
     public static bool operator ==(PhoneNumber left, PhoneNumber right) => EqualityComparer<PhoneNumber>.Default.Equals(left, right);

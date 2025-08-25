@@ -72,7 +72,7 @@ public partial class MessageBirdSmsDeliveryChannel
     }
 
     private Client CreateClient(IEnumerable<ChannelData> data) 
-        => Client.CreateDefault(accessKey: data.GetData(CustomChannelData.AccessKey, @default: _options.AccessKey));
+        => Client.CreateDefault(accessKey: data.GetData(CustomChannelData.AccessKey, @default: _options.AccessKey)!);
 
     private static SmsSendingResult BuildResultObject(Message result)
     {

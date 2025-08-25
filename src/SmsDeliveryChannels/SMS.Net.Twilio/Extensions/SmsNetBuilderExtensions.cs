@@ -9,22 +9,11 @@ public static class SmsNetBuilderExtensions
     /// add the Twilio channel to be used with your SMS service.
     /// </summary>
     /// <param name="builder">the <see cref="SmsNetBuilder"/> instance.</param>
-    /// <param name="username">Set your Twilio username.</param>
-    /// <param name="password">Set your Twilio password.</param>
-    /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
-    public static SmsNetBuilder UseTwilio(this SmsNetBuilder builder, string username, string password)
-        => builder.UseTwilio(username, password, null);
-
-    /// <summary>
-    /// add the Twilio channel to be used with your SMS service.
-    /// </summary>
-    /// <param name="builder">the <see cref="SmsNetBuilder"/> instance.</param>
-    /// <param name="username">Set your Twilio username.</param>
-    /// <param name="password">Set your Twilio password.</param>
+    /// <param name="authToken">Set your Twilio auth token.</param>
     /// <param name="accountSID">Set your Twilio account SID.</param>
     /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
-    public static SmsNetBuilder UseTwilio(this SmsNetBuilder builder, string username, string password, string? accountSID)
-       => builder.UseTwilio(op => { op.Username = username; op.Password = password; op.AccountSID = accountSID; });
+    public static SmsNetBuilder UseTwilio(this SmsNetBuilder builder, string accountSID, string authToken)
+       => builder.UseTwilio(op => { op.AuthToken = authToken; op.AccountSID = accountSID; });
 
     /// <summary>
     /// add the Twilio channel to be used with your SMS service.

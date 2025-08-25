@@ -227,7 +227,7 @@ public class SmsServiceShould
     }
 
     [Fact]
-    public void UseDefaultSenderEmailSetInSmsServiceOptions()
+    public void UseDefaultSenderSmsSetInSmsServiceOptions()
     {
         // arrange
         var options = new SmsServiceOptions { DefaultDeliveryChannel = _channel_name_1, DefaultFrom = new PhoneNumber("+212625415254") };
@@ -245,7 +245,7 @@ public class SmsServiceShould
     }
 
     [Fact]
-    public void ThrowIfSenderEmailIsNotSetNeitherInOptionsOrMessage()
+    public void ThrowIfSenderSmsIsNotSetNeitherInOptionsOrMessage()
     {
         // arrange
         var options = new SmsServiceOptions { DefaultDeliveryChannel = _channel_name_1 };

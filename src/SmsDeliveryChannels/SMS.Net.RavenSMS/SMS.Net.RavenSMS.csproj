@@ -15,11 +15,11 @@
 	
 	<ItemGroup>
 		<PackageReference Include="RavenSMS" Version="1.2.0" />
-		<PackageReference Include="Result.Net" Version="1.5.0" />
+		<PackageReference Include="Result.Net" Version="1.7.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

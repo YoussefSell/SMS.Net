@@ -6,7 +6,7 @@
 public class AvochatoSmsDeliveryChannelOptions
 {
     /// <summary>
-    /// Get or Set your Avochato authentication key.
+    /// Get or Set your Avochato auth id.
     /// </summary>
     public string? AuthId { get; set; }
     

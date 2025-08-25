@@ -79,17 +79,17 @@ public partial class SmsMessage
 public enum Priority
 {
     /// <summary>
-    ///  The email has low priority.
+    ///  The sms has low priority.
     /// </summary>
     Low = 0,
 
     /// <summary>
-    /// The email has normal priority.
+    /// The sms has normal priority.
     /// </summary>
     Normal = 1,
 
     /// <summary>
-    /// The email has high priority.
+    /// The sms has high priority.
     /// </summary>
     High = 2
 }

@@ -13,18 +13,18 @@ public class SmsServiceFactoryShould
     }
 
     [Fact]
-    public void CreateEmailServiceWithOptionsAndSmtpEdp()
+    public void CreateSmsServiceWithOptionsAndSmtpEdp()
     {
         // arrange
         var factorty = SmsServiceFactory.Instance;
-        var defaultEmail = new PhoneNumber("+212625415254");
+        var defaultSms = new PhoneNumber("+212625415254");
 
         // act
         var service = factorty
             .UseOptions(options =>
             {
                 options.PauseSending = false;
-                options.DefaultFrom = defaultEmail;
+                options.DefaultFrom = defaultSms;
                 options.DefaultDeliveryChannel = _channel_name;
             })
             .UseChannel(_channel)
@@ -35,7 +35,7 @@ public class SmsServiceFactoryShould
         {
             Assert.Single(service.Channels);
             Assert.Equal(_channel_name, service.DefaultChannel.Name);
-            Assert.Equal(defaultEmail, service.Options.DefaultFrom);
+            Assert.Equal(defaultSms, service.Options.DefaultFrom);
         }
     }
 
@@ -44,7 +44,7 @@ public class SmsServiceFactoryShould
     {
         // arrange
         var factorty = SmsServiceFactory.Instance;
-        var defaultEmail = new PhoneNumber("+212625415254");
+        var defaultSms = new PhoneNumber("+212625415254");
 
         // assert
         Assert.Throws<RequiredOptionValueNotSpecifiedException<SmsServiceOptions>>(() =>
@@ -54,7 +54,7 @@ public class SmsServiceFactoryShould
                 .UseOptions(options =>
                 {
                     options.PauseSending = false;
-                    options.DefaultFrom = defaultEmail;
+                    options.DefaultFrom = defaultSms;
                     options.DefaultDeliveryChannel = null!;
                 });
         });

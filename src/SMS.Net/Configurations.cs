@@ -6,7 +6,7 @@
 public static class Configurations
 {
     /// <summary>
-    /// add the SMS.Net services and configuration.
+    /// add the SMS.Net services and configuration. SmsNetBuilderExtensions
     /// </summary>
     /// <param name="serviceCollection">the service collection instant</param>
     /// <param name="defaultChannel">name of the default delivery channel to be used.</param>

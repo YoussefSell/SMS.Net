@@ -168,7 +168,7 @@ public class AvochatoSmsDeliveryChannelShould
     }
 
     [Fact(Skip = "no auth keys")]
-    public void SendEmail()
+    public void SendSms()
     {
         // arrange
         var channel = new AvochatoSmsDeliveryChannel(null,  new AvochatoSmsDeliveryChannelOptions()

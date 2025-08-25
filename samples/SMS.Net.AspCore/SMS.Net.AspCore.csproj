@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.10" />
-    <PackageReference Include="Hangfire.Core" Version="1.8.10" />
-    <PackageReference Include="Hangfire.Storage.MySql" Version="2.1.0-beta" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
-    <PackageReference Include="RavenSMS.Dashboard" Version="1.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.8.21" />
+		<PackageReference Include="Hangfire.Core" Version="1.8.21" />
+		<PackageReference Include="Hangfire.MemoryStorage" Version="1.8.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="RavenSMS.Dashboard" Version="1.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Avochato\SMS.Net.Avochato.csproj" />
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.D7Networks\SMS.Net.D7Networks.csproj" />
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.MessageBird\SMS.Net.MessageBird.csproj" />
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
-    <ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Twilio\SMS.Net.Twilio.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Avochato\SMS.Net.Avochato.csproj" />
+		<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.D7Networks\SMS.Net.D7Networks.csproj" />
+		<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.MessageBird\SMS.Net.MessageBird.csproj" />
+		<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.RavenSMS\SMS.Net.RavenSMS.csproj" />
+		<ProjectReference Include="..\..\src\SmsDeliveryChannels\SMS.Net.Twilio\SMS.Net.Twilio.csproj" />
+	</ItemGroup>
 
 </Project>

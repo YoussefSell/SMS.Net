@@ -1,6 +1,3 @@
-using SMS.Net;
-using SMS.Net.Channel.RavenSMS;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,7 +27,7 @@ builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UseMariaDb(builder.Configuration.GetConnectionString("hangfire")));
+    .UseMemoryStorage());
 
 // Add the processing server as IHostedService
 builder.Services.AddHangfireServer();
@@ -43,7 +40,7 @@ builder.Services.AddSMSNet(options =>
     options.DefaultDeliveryChannel = RavenSmsDeliveryChannel.Name;
 })
 .UseAvochato(authId: "Key-1", authSecret: "Key-1")
-.UseTwilio(username: "Key-1", password: "Key-1")
+.UseTwilio(accountSID: "Key-1", authToken: "Key-1")
 .UseMessageBird(accessKey: "Key-1")
 .UseD7Networks(apiKey: "Key-1")
 .UseRavenSMS(options =>

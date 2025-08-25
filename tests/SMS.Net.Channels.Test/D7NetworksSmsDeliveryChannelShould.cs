@@ -130,7 +130,7 @@ public class D7NetworksSmsDeliveryChannelShould
     }
 
     [Fact(Skip = "no auth keys")]
-    public void SendEmail()
+    public void SendSms()
     {
         // arrange
         var channel = new D7NetworksSmsDeliveryChannel(null,  new D7NetworksSmsDeliveryChannelOptions()

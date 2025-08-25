@@ -123,7 +123,7 @@ public partial class SmsSendingResult
     /// <summary>
     /// create an instance of <see cref="SmsSendingResult"/> with a success state.
     /// </summary>
-    /// <param name="channelName">the name of the channel used to send the email.</param>
+    /// <param name="channelName">the name of the channel used to send the sms.</param>
     /// <returns>instance of <see cref="SmsSendingResult"/></returns>
     public static SmsSendingResult Success(string channelName)
         => new(true, channelName);
@@ -131,14 +131,14 @@ public partial class SmsSendingResult
     /// <summary>
     /// create an instance of <see cref="SmsSendingResult"/> with a failure state.
     /// </summary>
-    /// <param name="channelName">the name of the channel used to send the email.</param>
+    /// <param name="channelName">the name of the channel used to send the sms.</param>
     /// <param name="errors">errors associated with the failure if any.</param>
     /// <returns>instance of <see cref="SmsSendingResult"/></returns>
     public static SmsSendingResult Failure(string channelName, params SmsSendingError[] errors)
         => new(false, channelName);
 
     /// <summary>
-    /// this static class holds the keys names used in the email sending meta-data
+    /// this static class holds the keys names used in the sms sending meta-data
     /// </summary>
     public static class MetaDataKeys
     {

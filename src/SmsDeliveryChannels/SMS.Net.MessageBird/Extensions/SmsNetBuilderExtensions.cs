@@ -16,9 +16,9 @@ public static class SmsNetBuilderExtensions
 
 
     /// <summary>
-    /// add the MessageBird channel to be used with your email service.
+    /// add the MessageBird channel to be used with your sms service.
     /// </summary>
-    /// <param name="builder">the emailNet builder instance.</param>
+    /// <param name="builder">the SmsNet builder instance.</param>
     /// <param name="config">the configuration builder instance.</param>
     /// <returns>instance of <see cref="SmsNetBuilder"/> to enable methods chaining.</returns>
     public static SmsNetBuilder UseMessageBird(this SmsNetBuilder builder, Action<MessageBirdSmsDeliveryChannelOptions> config)

@@ -68,7 +68,7 @@ public class MessageBirdSmsDeliveryChannelShould
     }
 
     [Fact(Skip = "no auth keys")]
-    public void SendEmail()
+    public void SendSms()
     {
         // arrange
         var channel = new MessageBirdSmsDeliveryChannel(new MessageBirdSmsDeliveryChannelOptions()

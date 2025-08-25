@@ -6,22 +6,13 @@
 public static class TwilioMessageComposerExtensions
 {
     /// <summary>
-    /// pass a custom channel data to configure a custom userName to be used when initializing the Twilio client instead of using the one set in the <see cref="TwilioSmsDeliveryChannelOptions.Username"/>
+    /// pass a custom channel data to configure a custom auth token to be used when initializing the Twilio client instead of using the one set in the <see cref="TwilioSmsDeliveryChannelOptions.AuthToken"/>
     /// </summary>
     /// <param name="messageComposer">the message composer instance.</param>
-    /// <param name="userName">the userName to be used.</param>
+    /// <param name="authToken">the auth token to be used.</param>
     /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
-    public static SmsMessageComposer UseUserName(this SmsMessageComposer messageComposer, string userName)
-        => messageComposer.WithCustomData(CustomChannelData.Username, userName);
-
-    /// <summary>
-    /// pass a custom channel data to configure a custom password to be used when initializing the Twilio client instead of using the one set in the <see cref="TwilioSmsDeliveryChannelOptions.Password"/>
-    /// </summary>
-    /// <param name="messageComposer">the message composer instance.</param>
-    /// <param name="password">the password to be used.</param>
-    /// <returns>Instance of <see cref="SmsMessageComposer"/> to enable fluent chaining.</returns>
-    public static SmsMessageComposer UsePassword(this SmsMessageComposer messageComposer, string password)
-        => messageComposer.WithCustomData(CustomChannelData.Password, password);
+    public static SmsMessageComposer UseAuthToken(this SmsMessageComposer messageComposer, string authToken)
+        => messageComposer.WithCustomData(CustomChannelData.AuthToken, authToken);
 
     /// <summary>
     /// pass a custom channel data to configure a custom accountSID to be used when initializing the Twilio client instead of using the one set in the <see cref="TwilioSmsDeliveryChannelOptions.AccountSID"/>

@@ -1,3 +1,4 @@
 ﻿global using Hangfire;
-global using Microsoft.EntityFrameworkCore;
-global using SMS.Net.Persistence;
+global using Hangfire.MemoryStorage;
+global using SMS.Net;
+global using SMS.Net.Channel.RavenSMS;

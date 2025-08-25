@@ -90,18 +90,11 @@ public partial class TwilioSmsDeliveryChannel
 
     private void CreateClient(IEnumerable<ChannelData> data)
     {
-        // get the userName, password & accountSId from the data list if any.
-        var userName = data.GetData(CustomChannelData.Username, @default: _options.Username);
-        var password = data.GetData(CustomChannelData.Password, @default: _options.Password);
+        // get the auth token & account SID from the data list if any.
         var accountSid = data.GetData(CustomChannelData.AccountSID, @default: _options.AccountSID);
+        var accountAuthToken = data.GetData(CustomChannelData.AuthToken, @default: _options.AuthToken);
 
-        if (!string.IsNullOrEmpty(accountSid) && !string.IsNullOrWhiteSpace(accountSid))
-        {
-            TwilioClient.Init(userName, password, accountSid);
-            return;
-        }
-
-        TwilioClient.Init(userName, password);
+        TwilioClient.Init(accountSid, accountAuthToken);
     }
 
     private static SmsSendingResult BuildResultObject(MessageResource result)

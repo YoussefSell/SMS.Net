@@ -54,7 +54,7 @@ public partial class AvochatoMessage
     public Uri? MediaUrl { get; set; }
 
     /// <summary>
-    /// Send a callback via http POST to this domain when the delivery status is updated
+    /// Send a callback via HTTP POST to this domain when the delivery status is updated
     /// </summary>
     [JsonProperty("status_callback")]
     public Uri? StatusCallback { get; set; }

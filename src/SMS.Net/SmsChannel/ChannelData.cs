@@ -78,7 +78,7 @@ public partial struct ChannelData : IEquatable<ChannelData>
     public readonly bool Equals(ChannelData other) => other.Key == Key;
 
     /// <inheritdoc/>
-    public override readonly int GetHashCode() => HashCode.Combine(Key);
+    public override readonly int GetHashCode() => Key.GetHashCode();
 
     /// <inheritdoc/>
     public static bool operator ==(ChannelData left, ChannelData right) => EqualityComparer<ChannelData>.Default.Equals(left, right);

@@ -1,7 +1,7 @@
 ﻿namespace SMS.Net;
 
 /// <summary>
-/// class defines the email sending error
+/// class defines the sms sending error
 /// </summary>
 public class SmsSendingError
 {

@@ -4,8 +4,8 @@ public class TwilioSmsDeliveryChannelShould
 {
     static readonly string TEST_FROM_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TWILIO_FROM_PHONE_NUMBER");
     static readonly string TEST_TO_PHONE_NUMBER = EnvVariable.Load("SMS_NET_TEST_TO_PHONE_NUMBER");
-    static readonly string TEST_USERNAME = EnvVariable.Load("SMS_NET_TWILIO_USERNAME");
-    static readonly string TEST_PASSWORD = EnvVariable.Load("SMS_NET_TWILIO_PASSWORD");
+    static readonly string ACCOUNT_SID = EnvVariable.Load("SMS_NET_TWILIO_ACCOUNT_SID");
+    static readonly string AUTH_TOKEN = EnvVariable.Load("SMS_NET_TWILIO_AUTH_TOKEN");
 
     [Fact]
     public void ThrowIfOptionsIsNull()
@@ -36,12 +36,12 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact]
-    public void ThrowIfOptionsNotValid_Username_IsNull()
+    public void ThrowIfOptionsNotValid_AccountSID_IsNull()
     {
         // arrange
         var options = new TwilioSmsDeliveryChannelOptions()
         {
-            Password = TEST_PASSWORD
+            AuthToken = AUTH_TOKEN
         };
 
         // assert
@@ -53,13 +53,13 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact]
-    public void ThrowIfOptionsNotValid_Username_IsEmpty()
+    public void ThrowIfOptionsNotValid_AccountSID_IsEmpty()
     {
         // arrange
         var options = new TwilioSmsDeliveryChannelOptions()
         {
-            Username = "",
-            Password = TEST_PASSWORD
+            AccountSID = "",
+            AuthToken = AUTH_TOKEN
         };
 
         // assert
@@ -71,12 +71,12 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact]
-    public void ThrowIfOptionsNotValid_Password_IsNull()
+    public void ThrowIfOptionsNotValid_AuthToken_IsNull()
     {
         // arrange
         var options = new TwilioSmsDeliveryChannelOptions()
         {
-            Username = TEST_USERNAME
+            AccountSID = ACCOUNT_SID
         };
 
         // assert
@@ -88,13 +88,13 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact]
-    public void ThrowIfOptionsNotValid_Password_IsEmpty()
+    public void ThrowIfOptionsNotValid_AuthToken_IsEmpty()
     {
         // arrange
         var options = new TwilioSmsDeliveryChannelOptions()
         {
-            Password = "",
-            Username = TEST_USERNAME
+            AuthToken = "",
+            AccountSID = ACCOUNT_SID
         };
 
         // assert
@@ -111,8 +111,8 @@ public class TwilioSmsDeliveryChannelShould
         // arrange
         var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
         {
-            Password = TEST_PASSWORD,
-            Username = TEST_USERNAME
+            AuthToken = AUTH_TOKEN,
+            AccountSID = ACCOUNT_SID
         });
 
         var message = SmsMessage.Compose()
@@ -136,8 +136,8 @@ public class TwilioSmsDeliveryChannelShould
         // arrange
         var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
         {
-            Password = TEST_PASSWORD,
-            Username = TEST_USERNAME
+            AuthToken = AUTH_TOKEN,
+            AccountSID = ACCOUNT_SID
         });
 
         var expectedPersistentAction = new List<string> { "value_1" };
@@ -184,13 +184,13 @@ public class TwilioSmsDeliveryChannelShould
     }
 
     [Fact(Skip = "no auth keys")]
-    public void SendEmail()
+    public void SendSms()
     {
         // arrange
         var channel = new TwilioSmsDeliveryChannel(new TwilioSmsDeliveryChannelOptions()
         {
-            Password = TEST_PASSWORD,
-            Username = TEST_USERNAME
+            AuthToken = AUTH_TOKEN,
+            AccountSID = ACCOUNT_SID
         });
 
         var message = SmsMessage.Compose()

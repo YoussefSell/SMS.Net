@@ -14,17 +14,17 @@ public class SmsDeliveryChannelNotFoundException : Exception
     public string SmsDeliveryChannelName { get; set; }
 
     /// <inheritdoc/>
-    public SmsDeliveryChannelNotFoundException(string emailDeliveryProviderName)
-        : base(message.Replace("{{name}}", emailDeliveryProviderName)) 
+    public SmsDeliveryChannelNotFoundException(string smsDeliveryChannelName)
+        : base(message.Replace("{{name}}", smsDeliveryChannelName)) 
     {
         SmsDeliveryChannelName = string.Empty;
     }
 
     /// <inheritdoc/>
-    public SmsDeliveryChannelNotFoundException(string message, string emailDeliveryProviderName)
+    public SmsDeliveryChannelNotFoundException(string message, string smsDeliveryChannelName)
         : base(message)
     {
-        SmsDeliveryChannelName = emailDeliveryProviderName;
+        SmsDeliveryChannelName = smsDeliveryChannelName;
     }
 
     /// <inheritdoc/>

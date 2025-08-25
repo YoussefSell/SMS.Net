@@ -6,14 +6,9 @@
 internal static class CustomChannelData
 {
     /// <summary>
-    /// the account username
+    /// the account auth token
     /// </summary>
-    public const string Username = "username";
-
-    /// <summary>
-    /// the account password
-    /// </summary>
-    public const string Password = "password";
+    public const string AuthToken = "auth_token";
 
     /// <summary>
     /// the account SID

@@ -78,7 +78,7 @@ public class MessageComposerShould
         // arrange
         var composser = SmsMessage.Compose()
             .WithContent("this the message content")
-            .To(new PhoneNumber("test@email.net"));
+            .To(new PhoneNumber("test@sms.net"));
 
         var expected = "+212625415254";
 
@@ -113,7 +113,7 @@ public class MessageComposerShould
     #region Message "To" value tests
 
     [Fact]
-    public void ThrowExceptionIfNoToEmail()
+    public void ThrowExceptionIfNoToSms()
     {
         // arrange
         var composser = SmsMessage.Compose()
